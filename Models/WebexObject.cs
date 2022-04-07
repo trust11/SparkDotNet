@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace SparkDotNet
 {
@@ -8,14 +9,26 @@ namespace SparkDotNet
     /// </summary>
     public abstract class WebexObject
     {
+        public enum JsonFormatting
+        {
+            None = Formatting.None,
+            Indented = Formatting.Indented
+        }
 
         /// <summary>
         /// Returns the JSON representation of the object
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
+        public string ToString(JsonFormatting format = JsonFormatting.None)
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this, (Formatting)format);
+        }
+
+        public override string ToString() { return this.ToString(); }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString(JsonFormatting.Indented);
         }
     }
 }

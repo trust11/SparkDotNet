@@ -7,6 +7,7 @@ namespace SparkDotNet
     /// This is a common superclass for all Webex API objects.
     /// It will bundle their common behavior
     /// </summary>
+    [DebuggerDisplay("{"+nameof(GetDebuggerDisplay)+"(),nq}")]
     public abstract class WebexObject
     {
         public enum JsonFormatting

@@ -7,7 +7,7 @@ namespace SparkDotNet
     /// This is a common superclass for all Webex API objects.
     /// It will bundle their common behavior
     /// </summary>
-    [DebuggerDisplay("{"+nameof(GetDebuggerDisplay)+"(),nq}")]
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     public abstract class WebexObject
     {
         public enum JsonFormatting
@@ -25,7 +25,10 @@ namespace SparkDotNet
             return JsonConvert.SerializeObject(this, (Formatting)format);
         }
 
-        public override string ToString() { return this.ToString(); }
+        public override string ToString()
+        {
+            return this.ToString();
+        }
 
         private string GetDebuggerDisplay()
         {

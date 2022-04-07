@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static Newtonsoft.Json.JsonConvert;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using System;
 using static System.Net.WebUtility;
-using System.Text;
-using Newtonsoft.Json;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.IO;
 
 namespace SparkDotNet
 {
@@ -24,6 +26,15 @@ namespace SparkDotNet
 
         public Spark(string accessToken)
         {
+            var serializerSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Populate
+            };
+            serializerSettings.Converters.Add(new StringEnumConverter(false));
+            serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); // use camel case so we can use proper .net notation
+            JsonConvert.DefaultSettings = () => serializerSettings;
+
             this.accessToken = accessToken;
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -122,6 +133,19 @@ namespace SparkDotNet
             return DeserializeObject<T>(await response.Content.ReadAsStringAsync());
         }
 
+        private async Task UpdateItemAsync<T>(string path, T body)
+        {
+            var jsonBody = JsonConvert.SerializeObject(body);
+            StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PutAsync(path, content);
+            await CheckForErrorResponse(response);
+        }
+
+        private async Task UpdateItemAsync(string path, Dictionary<string, object> bodyParams)
+        {
+            await UpdateItemAsync<Dictionary<string, object>>(path, bodyParams);
+        }
+
         private async Task<T> GetItemAsync<T>(string path)
         {
             HttpResponseMessage response = await client.GetAsync(path);
@@ -130,7 +154,7 @@ namespace SparkDotNet
             return DeserializeObject<T>(await response.Content.ReadAsStringAsync());
         }
 
-        private async Task<List<T>> GetItemsAsync<T>(string path, string rootNode  = "items")
+        private async Task<List<T>> GetItemsAsync<T>(string path, string rootNode = "items")
         {
             HttpResponseMessage response = await client.GetAsync(path);
             await CheckForErrorResponse(response);
@@ -159,7 +183,8 @@ namespace SparkDotNet
                 return true; // assume it's a local file if we can't create a URI out of it...
             }
         }
-        #endregion
+
+        #endregion Private Helper Methods
 
         public async Task<PaginationResult<T>> GetItemsWithLinksAsync<T>(string path)
         {
@@ -181,7 +206,8 @@ namespace SparkDotNet
                 var link = response.Headers.GetValues("Link").FirstOrDefault();
                 if (link != null && !"".Equals(link))
                 {
-                    // borrowed regex from spark-java-sdk https://github.com/ciscospark/spark-java-sdk/blob/master/src/main/java/com/ciscospark/LinkedResponse.java
+                    // borrowed regex from spark-java-sdk
+                    // https://github.com/ciscospark/spark-java-sdk/blob/master/src/main/java/com/ciscospark/LinkedResponse.java
                     Regex r = new Regex("\\s*<(\\S+)>\\s*;\\s*rel=\"(\\S+)\",?", RegexOptions.Compiled);
                     MatchCollection regmatch = r.Matches(link);
                     foreach (Match item in regmatch)
@@ -194,12 +220,15 @@ namespace SparkDotNet
                             case "next":
                                 links.Next = linkUrl.PathAndQuery;
                                 break;
+
                             case "prev":
                                 links.Prev = linkUrl.PathAndQuery;
                                 break;
+
                             case "first":
                                 links.First = linkUrl.PathAndQuery;
                                 break;
+
                             default:
                                 break;
                         }

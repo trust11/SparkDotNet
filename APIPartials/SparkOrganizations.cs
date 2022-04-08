@@ -20,7 +20,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max", max.ToString());
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
-            var path = getURL(organizationsBase, queryParams);
+            var path = GetURL(organizationsBase, queryParams);
             return await GetItemsAsync<Organization>(path);
         }
 
@@ -35,7 +35,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
-            var path = getURL($"{organizationsBase}/{orgId}", queryParams);
+            var path = GetURL($"{organizationsBase}/{orgId}", queryParams);
             return await GetItemAsync<Organization>(path);
         }
 

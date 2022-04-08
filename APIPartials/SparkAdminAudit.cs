@@ -33,7 +33,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", Math.Min(max, 200).ToString());
             if (offsett > 0) queryParams.Add("offsett", offsett.ToString());
 
-            var path = getURL($"{adminEventsBase}/events", queryParams);
+            var path = GetURL($"{adminEventsBase}/events", queryParams);
             return await GetItemsAsync<AdminEvent>(path);
         }
 

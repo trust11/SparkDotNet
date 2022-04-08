@@ -24,7 +24,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("deviceId", deviceId);
             queryParams.Add("name", name);
-            var path = getURL($"{xAPIBase}/status", queryParams);
+            var path = GetURL($"{xAPIBase}/status", queryParams);
             return await GetItemAsync<XAPIStatus>(path);
         }
 

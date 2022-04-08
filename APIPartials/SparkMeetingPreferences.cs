@@ -21,7 +21,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
 
-            var path = getURL($"{meetingsPreferencesBase}/sites", queryParams);
+            var path = GetURL($"{meetingsPreferencesBase}/sites", queryParams);
             return await GetItemsAsync<MeetingSite>(path, "sites");
         }
 
@@ -35,7 +35,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("defaultSite", defaultSite.ToString());
-            var path = getURL($"{meetingsPreferencesBase}/sites", queryParams);
+            var path = GetURL($"{meetingsPreferencesBase}/sites", queryParams);
 
             var postBody = new Dictionary<string, object>();
             postBody.Add("siteUrl", siteUrl);
@@ -55,7 +55,7 @@ namespace SparkDotNet
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
-            var path = getURL($"{meetingsPreferencesBase}/schedulingOptions", queryParams);
+            var path = GetURL($"{meetingsPreferencesBase}/schedulingOptions", queryParams);
 
             return await GetItemAsync<MeetingSchedulingOptions>(path);
         }
@@ -99,7 +99,7 @@ namespace SparkDotNet
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
-            var path = getURL($"{meetingsPreferencesBase}/video", queryParams);
+            var path = GetURL($"{meetingsPreferencesBase}/video", queryParams);
             return await GetItemsAsync<MeetingVideoDevice>(path, "videoDevices");
         }
 
@@ -128,7 +128,7 @@ namespace SparkDotNet
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
-            var path = getURL($"{meetingsPreferencesBase}/personalMeetingRoom", queryParams);
+            var path = GetURL($"{meetingsPreferencesBase}/personalMeetingRoom", queryParams);
             return await GetItemAsync<MeetingPreferencesPMR>(path);
         }
 
@@ -171,7 +171,7 @@ namespace SparkDotNet
             if (userEmail != null) postBody.Add("userEmail", userEmail);
             if (siteUrl != null) postBody.Add("siteUrl", siteUrl);
 
-            var path = getURL($"{meetingsPreferencesBase}/personalMeetingRoom", queryParams);
+            var path = GetURL($"{meetingsPreferencesBase}/personalMeetingRoom", queryParams);
             return await UpdateItemAsync<MeetingPreferencesPMR>(path, postBody);
         }
 

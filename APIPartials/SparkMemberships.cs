@@ -28,7 +28,7 @@ namespace SparkDotNet
             if (personEmail != null) queryParams.Add("personEmail",personEmail);
             if (max > 0) queryParams.Add("max",max.ToString());
 
-            var path = getURL(membershipsBase, queryParams);
+            var path = GetURL(membershipsBase, queryParams);
             return await GetItemsAsync<Membership>(path);
         }
 
@@ -41,7 +41,7 @@ namespace SparkDotNet
         public async Task<Membership> GetMembershipAsync(string membershipId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{membershipsBase}/{membershipId}", queryParams);
+            var path = GetURL($"{membershipsBase}/{membershipId}", queryParams);
             return await GetItemAsync<Membership>(path);
         }
 

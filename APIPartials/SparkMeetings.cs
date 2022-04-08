@@ -54,7 +54,7 @@ namespace SparkDotNet
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
             if (integrationTag != null) queryParams.Add("integrationTag", integrationTag);
 
-            var path = getURL(meetingsBase, queryParams);
+            var path = GetURL(meetingsBase, queryParams);
             return await GetItemsAsync<Meeting>(path);
         }
 
@@ -77,7 +77,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
-            var path = getURL($"{meetingsBase}/{meetingId}", queryParams);
+            var path = GetURL($"{meetingsBase}/{meetingId}", queryParams);
             return await GetItemAsync<Meeting>(path);
         }
 
@@ -204,7 +204,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
-            var path = getURL($"{meetingsBase}/{meetingId}", queryParams);
+            var path = GetURL($"{meetingsBase}/{meetingId}", queryParams);
 
             return await DeleteItemAsync(path);
         }
@@ -251,7 +251,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
-            var path = getURL($"{meetingsBase}", queryParams);
+            var path = GetURL($"{meetingsBase}", queryParams);
             return await GetItemsAsync<Meeting>(path);
         }
 
@@ -336,7 +336,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("meetingId", meetingId);
 
-            var path = getURL($"{meetingsBase}/controls", queryParams);
+            var path = GetURL($"{meetingsBase}/controls", queryParams);
 
             return await GetItemAsync<MeetingControls>(path);
         }
@@ -365,7 +365,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("meetingId", meetingId);
 
-            var path = getURL($"{meetingsBase}/controls", queryParams);
+            var path = GetURL($"{meetingsBase}/controls", queryParams);
 
             var bodyParameters = new Dictionary<string, object>();
             if (recordingStarted != null) bodyParameters.Add("recordingStarted", recordingStarted);

@@ -16,7 +16,7 @@ namespace SparkDotNet
         public async Task<AttachmentAction> GetAttachmentActionAsync(string attachmentActionId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{attachmentActionBase}/{attachmentActionId}", queryParams);
+            var path = GetURL($"{attachmentActionBase}/{attachmentActionId}", queryParams);
             return await GetItemAsync<AttachmentAction>(path);
         }
 

@@ -21,7 +21,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("roomId", roomId);
       
-            var path = getURL($"{roomTabsBase}" , queryParams);
+            var path = GetURL($"{roomTabsBase}" , queryParams);
             return await GetItemsAsync<RoomTab>(path);
         }
 
@@ -44,7 +44,7 @@ namespace SparkDotNet
         public async Task<RoomTab> GetRoomTabAsync(string roomTabId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{roomTabsBase}/{roomTabId}", queryParams);
+            var path = GetURL($"{roomTabsBase}/{roomTabId}", queryParams);
             return await GetItemAsync<RoomTab>(path);
         }
 

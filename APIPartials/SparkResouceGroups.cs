@@ -20,7 +20,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
-            var path = getURL(resourceGroupsBase, queryParams);
+            var path = GetURL(resourceGroupsBase, queryParams);
             return await GetItemsAsync<ResourceGroup>(path);
         }
 
@@ -33,7 +33,7 @@ namespace SparkDotNet
         public async Task<ResourceGroup> GetResourceGroupAsync(string resourceGroupId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{resourceGroupsBase}/{resourceGroupId}", queryParams);
+            var path = GetURL($"{resourceGroupsBase}/{resourceGroupId}", queryParams);
             return await GetItemAsync<ResourceGroup>(path);
         }
 

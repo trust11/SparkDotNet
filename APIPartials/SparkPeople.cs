@@ -31,7 +31,7 @@ namespace SparkDotNet
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
             if (locationId != null) queryParams.Add("locationId", locationId);
             if (showAllTypes != null) queryParams.Add("showAllTypes", showAllTypes.ToString());
-            var path = getURL(peopleBase, queryParams);
+            var path = GetURL(peopleBase, queryParams);
             return await GetItemsAsync<Person>(path);
         }
 
@@ -43,7 +43,7 @@ namespace SparkDotNet
         public async Task<Person> GetMeAsync(bool? callingData = false) {
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
-            var path = getURL($"{peopleBase}/me", queryParams);
+            var path = GetURL($"{peopleBase}/me", queryParams);
             return await GetItemAsync<Person>(path);
         }
 
@@ -57,7 +57,7 @@ namespace SparkDotNet
         public async Task<Person> GetPersonAsync(string personId, bool? callingData = null) {
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
-            var path = getURL($"{peopleBase}/{personId}", queryParams);
+            var path = GetURL($"{peopleBase}/{personId}", queryParams);
             return await GetItemAsync<Person>(path);
         }
 
@@ -84,7 +84,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
-            var path = getURL(peopleBase, queryParams);
+            var path = GetURL(peopleBase, queryParams);
 
             var postBody = new Dictionary<string, object>();
             postBody.Add("emails", emails);
@@ -164,7 +164,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
             if (showAllTypes != null) queryParams.Add("showAllTypes", showAllTypes.ToString());
-            var path = getURL($"{peopleBase}/{personId}", queryParams);
+            var path = GetURL($"{peopleBase}/{personId}", queryParams);
 
             var putBody = new Dictionary<string, object>();
             putBody.Add("personId",personId);

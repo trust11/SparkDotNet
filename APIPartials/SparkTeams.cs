@@ -19,7 +19,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
-            var path = getURL(teamsBase, queryParams);
+            var path = GetURL(teamsBase, queryParams);
             return await GetItemsAsync<Team>(path);
         }
 
@@ -32,7 +32,7 @@ namespace SparkDotNet
         public async Task<Team> GetTeamAsync(string teamId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{teamsBase}/{teamId}", queryParams);
+            var path = GetURL($"{teamsBase}/{teamId}", queryParams);
             return await GetItemAsync<Team>(path);
         }
 

@@ -18,7 +18,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             
-            var path = getURL(classificationsBase, queryParams);
+            var path = GetURL(classificationsBase, queryParams);
             return await GetItemsAsync<SpaceClassification>(path);
         }
     }

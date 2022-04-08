@@ -28,7 +28,7 @@ namespace SparkDotNet
             if (orgId != null) queryParams.Add("orgId", orgId);
             if (max > 0) queryParams.Add("max", max.ToString());
 
-            var path = getURL(locationsBase, queryParams);
+            var path = GetURL(locationsBase, queryParams);
             return await GetItemsAsync<Location>(path);
         }
 
@@ -42,7 +42,7 @@ namespace SparkDotNet
         public async Task<Location> GetLocationAsync(string locationId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{locationsBase}/{locationId}", queryParams);
+            var path = GetURL($"{locationsBase}/{locationId}", queryParams);
             return await GetItemAsync<Location>(path);
         }
     }

@@ -18,7 +18,7 @@ namespace SparkDotNet
         public async Task<List<ReportTemplate>> GetReportTemplatesAsync()
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL(reportTemplateBase, queryParams);
+            var path = GetURL(reportTemplateBase, queryParams);
             return await GetItemsAsync<ReportTemplate>(path);
         }
    }

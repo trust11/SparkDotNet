@@ -31,7 +31,7 @@ namespace SparkDotNet
             if (to != null) queryParams.Add("to", ((DateTime)to).ToString("o"));
             if (meetingId != null) queryParams.Add("meetingId", meetingId);
 
-            var path = getURL(recordingsBase, queryParams);
+            var path = GetURL(recordingsBase, queryParams);
 
             return await GetItemsAsync<Recording>(path);
         }
@@ -62,7 +62,7 @@ namespace SparkDotNet
         public async Task<Recording>GetRecordingAsync(string recordingId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{recordingsBase}/{recordingId}", queryParams);
+            var path = GetURL($"{recordingsBase}/{recordingId}", queryParams);
             return await GetItemAsync<Recording>(path);
         }
 

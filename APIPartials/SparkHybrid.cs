@@ -23,7 +23,7 @@ namespace SparkDotNet
 
             if (orgId != null) queryParams.Add("orgId", orgId);
             
-            var path = getURL($"{hybridBase}/connectors", queryParams);
+            var path = GetURL($"{hybridBase}/connectors", queryParams);
             return await GetItemsAsync<HybridConnector>(path);
         }
 
@@ -36,7 +36,7 @@ namespace SparkDotNet
         public async Task<HybridConnector> GetHybridConnectorAsync(string connectorId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{hybridBase}/connectors/{connectorId}", queryParams);
+            var path = GetURL($"{hybridBase}/connectors/{connectorId}", queryParams);
             return await GetItemAsync<HybridConnector>(path);
         }
         #endregion HybridConnector
@@ -54,7 +54,7 @@ namespace SparkDotNet
 
             if (orgId != null) queryParams.Add("orgId", orgId);
 
-            var path = getURL($"{hybridBase}/clusters", queryParams);
+            var path = GetURL($"{hybridBase}/clusters", queryParams);
             return await GetItemsAsync<HybridCluster>(path);
         }
 
@@ -67,7 +67,7 @@ namespace SparkDotNet
         public async Task<HybridCluster> GetHybridClusterAsync(string hybridClusterId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{hybridBase}/clusters/{hybridClusterId}", queryParams);
+            var path = GetURL($"{hybridBase}/clusters/{hybridClusterId}", queryParams);
             return await GetItemAsync<HybridCluster>(path);
         }
         #endregion HybridCluster

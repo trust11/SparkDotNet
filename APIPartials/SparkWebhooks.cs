@@ -18,7 +18,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
-            var path = getURL(webhooksBase, queryParams);
+            var path = GetURL(webhooksBase, queryParams);
             return await GetItemsAsync<Webhook>(path);
         }
 
@@ -31,7 +31,7 @@ namespace SparkDotNet
         public async Task<Webhook> GetWebhookAsync(string webhookId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{webhooksBase}/{webhookId}", queryParams);
+            var path = GetURL($"{webhooksBase}/{webhookId}", queryParams);
             return await GetItemAsync<Webhook>(path);
         }
 

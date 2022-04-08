@@ -66,7 +66,7 @@ namespace SparkDotNet
         /// <returns>A list of Device objects</returns>
         public async Task<List<Device>> GetDevicesAsync<Device>(Dictionary<string, string> queryParameters)
         {
-            var path = getURL(devicesBase, queryParameters);
+            var path = GetURL(devicesBase, queryParameters);
             return await GetItemsAsync<Device>(path);
         }
 
@@ -80,7 +80,7 @@ namespace SparkDotNet
         public async Task<Device>GetDeviceAsync(string deviceId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{devicesBase}/{deviceId}", queryParams);
+            var path = GetURL($"{devicesBase}/{deviceId}", queryParams);
             return await GetItemAsync<Device>(path);
         }
 

@@ -24,7 +24,7 @@ namespace SparkDotNet
             queryParams.Add("meetingId", meetingId);
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
-            var path = getURL(meetingParticipantsBase, queryParams);
+            var path = GetURL(meetingParticipantsBase, queryParams);
             return await GetItemsAsync<MeetingParticipant>(path);
         }
 

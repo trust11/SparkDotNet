@@ -24,7 +24,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", max.ToString());
             if (offset > 0) queryParams.Add("offset", offset.ToString());
 
-            var path = getURL(meetingQualitiesBase, queryParams, "https://analytics.webexapis.com");
+            var path = GetURL(meetingQualitiesBase, queryParams, "https://analytics.webexapis.com");
             return await GetItemsAsync<MeetingQuality>(path);
 
         }

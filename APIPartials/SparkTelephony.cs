@@ -18,7 +18,7 @@ namespace SparkDotNet
         public async Task<List<Call>> GetCallsAsync()
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{telephonyBase}/calls", queryParams);
+            var path = GetURL($"{telephonyBase}/calls", queryParams);
             return await GetItemsAsync<Call>(path);
         }
 
@@ -30,7 +30,7 @@ namespace SparkDotNet
         public async Task<Call> GetCallAsync(string callId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{telephonyBase}/calls/{callId}", queryParams);
+            var path = GetURL($"{telephonyBase}/calls/{callId}", queryParams);
             return await GetItemAsync<Call>(path);
         }
 
@@ -44,7 +44,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (type != null) queryParams.Add("direction", type);
-            var path = getURL($"{telephonyBase}/calls/history", queryParams);
+            var path = GetURL($"{telephonyBase}/calls/history", queryParams);
             return await GetItemsAsync<CallHistoryRecord>(path);
         }
         #endregion Calls GET commands

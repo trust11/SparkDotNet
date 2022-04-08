@@ -37,7 +37,7 @@ namespace SparkDotNet
             if (beforeMessage != null) queryParams.Add("beforeMessage",beforeMessage);
             if (max > 0) queryParams.Add("max",max.ToString());
 
-            var path = getURL(messagesBase, queryParams);
+            var path = GetURL(messagesBase, queryParams);
             return await GetItemsAsync<Message>(path);
         }
 
@@ -58,7 +58,7 @@ namespace SparkDotNet
             if (personId != null) queryParams.Add("personId", parentId);
             if (personEmail != null) queryParams.Add("personEmail", personEmail);
 
-            var path = getURL($"{messagesBase}/direct", queryParams);
+            var path = GetURL($"{messagesBase}/direct", queryParams);
             return await GetItemsAsync<Message>(path);
         }
 
@@ -72,7 +72,7 @@ namespace SparkDotNet
         public async Task<Message> GetMessageAsync(string messageId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{messagesBase}/{messageId}", queryParams);
+            var path = GetURL($"{messagesBase}/{messageId}", queryParams);
             return await GetItemAsync<Message>(path);
         }
 
@@ -158,7 +158,7 @@ namespace SparkDotNet
             if (text != null) postBody.Add("text", text);
             if (markdown != null) postBody.Add("markdown", markdown);
 
-            var path = getURL($"{messagesBase}/{messageId}", queryParams);
+            var path = GetURL($"{messagesBase}/{messageId}", queryParams);
 
             return await UpdateItemAsync<Message>(path, postBody);
         }

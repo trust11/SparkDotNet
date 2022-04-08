@@ -20,7 +20,7 @@ namespace SparkDotNet
     public partial class Spark
     {
         private string accessToken { get; set; }
-        private static string baseURL = "https://webexapis.com";
+        private const string baseURL  = "https://webexapis.com";
 
         private HttpClient client = new HttpClient();
 
@@ -28,7 +28,7 @@ namespace SparkDotNet
         {
             var serializerSettings = new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Include,
                 DefaultValueHandling = DefaultValueHandling.Populate
             };
             serializerSettings.Converters.Add(new StringEnumConverter(false));
@@ -99,12 +99,7 @@ namespace SparkDotNet
             return DeserializeObject<T>(await response.Content.ReadAsStringAsync());
         }
 
-        private string getURL(string path, Dictionary<string, string> dict)
-        {
-            return getURL(path, dict, baseURL);
-        }
-
-        private string getURL(string path, Dictionary<string, string> dict, string basePath)
+        private string GetURL(string path, Dictionary<string, string> dict, string basePath = baseURL)
         {
             UriBuilder uriBuilder = new UriBuilder(basePath);
             uriBuilder.Path = path;

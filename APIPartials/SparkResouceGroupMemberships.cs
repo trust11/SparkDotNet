@@ -41,7 +41,7 @@ namespace SparkDotNet
         /// <returns>A list of ResourceGroupMembership objects</returns>
         public async Task<List<ResourceGroupMembership>> GetResourceGroupMembershipsAsync(Dictionary<string, string> queryParameters)
         {
-            var path = getURL(resourceGroupsBase, queryParameters);
+            var path = GetURL(resourceGroupsBase, queryParameters);
             return await GetItemsAsync<ResourceGroupMembership>(path);
         }
 
@@ -54,7 +54,7 @@ namespace SparkDotNet
         public async Task<ResourceGroupMembership> GetResourceGroupMembershipAsync(string resourceGroupMembershipId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{resourceGroupMembershipsBase}/{resourceGroupMembershipId}", queryParams);
+            var path = GetURL($"{resourceGroupMembershipsBase}/{resourceGroupMembershipId}", queryParams);
             return await GetItemAsync<ResourceGroupMembership>(path);
         }
 

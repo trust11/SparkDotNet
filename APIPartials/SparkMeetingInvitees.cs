@@ -33,7 +33,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", max.ToString());
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
-            var path = getURL($"{meetingInviteesBase}/{meetingId}", queryParams);
+            var path = GetURL($"{meetingInviteesBase}/{meetingId}", queryParams);
             return await GetItemsAsync<MeetingInvitee>(path);
         }
 
@@ -48,7 +48,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
-            var path = getURL($"{meetingInviteesBase}/{meetingInviteeId}", queryParams);
+            var path = GetURL($"{meetingInviteesBase}/{meetingInviteeId}", queryParams);
             return await GetItemAsync<MeetingInvitee>(path);
         }
 
@@ -123,7 +123,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
-            var path = getURL($"{meetingInviteesBase}/{meetingInviteeId}", queryParams);
+            var path = GetURL($"{meetingInviteesBase}/{meetingInviteeId}", queryParams);
             return await DeleteItemAsync(path);
         }
 

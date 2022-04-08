@@ -39,7 +39,7 @@ namespace SparkDotNet
             if (calling != null) queryParams.Add("calling", calling);
             if (calendar != null) queryParams.Add("calendar", calendar);
 
-            var path = getURL(workspacesBase, queryParams);
+            var path = GetURL(workspacesBase, queryParams);
             return await GetItemsAsync<Workspace>(path);
         }
 
@@ -52,7 +52,7 @@ namespace SparkDotNet
         public async Task<Workspace> GetWorkspaceAsync(string workspaceId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{workspacesBase}/{workspaceId}", queryParams);
+            var path = GetURL($"{workspacesBase}/{workspaceId}", queryParams);
             return await GetItemAsync<Workspace>(path);
         }
 

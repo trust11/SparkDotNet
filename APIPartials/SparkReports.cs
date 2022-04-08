@@ -33,7 +33,7 @@ namespace SparkDotNet
             if (templateId != null) queryParams.Add("templateId", templateId);
             if (from != null) queryParams.Add("from", ((DateTime)from).ToString("yyyy-MM-dd"));
             if (to != null) queryParams.Add("to", ((DateTime)from).ToString("yyyy-MM-dd"));
-            var path = getURL(reportBase, queryParams);
+            var path = GetURL(reportBase, queryParams);
             return await GetItemsAsync<Report>(path);
         }
 
@@ -48,7 +48,7 @@ namespace SparkDotNet
         public async Task<Report> GetReportAsync(string reportId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{reportBase}/{reportId}", queryParams);
+            var path = GetURL($"{reportBase}/{reportId}", queryParams);
             return await GetItemAsync<Report>(path);
         }
 

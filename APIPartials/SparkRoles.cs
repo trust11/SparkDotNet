@@ -19,7 +19,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
-            var path = getURL(rolesBase, queryParams);
+            var path = GetURL(rolesBase, queryParams);
             return await GetItemsAsync<Role>(path);
         }
 
@@ -32,7 +32,7 @@ namespace SparkDotNet
         public async Task<Role> GetRoleAsync(string roleId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{rolesBase}/{roleId}", queryParams);
+            var path = GetURL($"{rolesBase}/{roleId}", queryParams);
             return await GetItemAsync<Role>(path);
         }
 

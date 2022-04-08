@@ -26,7 +26,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", System.Math.Max(max, 1000).ToString());
             if (sortBy != null) queryParams.Add("sortBy", sortBy);
 
-            var path = getURL(roomsBase, queryParams);
+            var path = GetURL(roomsBase, queryParams);
             return await GetItemsAsync<Room>(path);
         }
 
@@ -39,7 +39,7 @@ namespace SparkDotNet
         public async Task<Room> GetRoomAsync(string roomId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{roomsBase}/{roomId}", queryParams);
+            var path = GetURL($"{roomsBase}/{roomId}", queryParams);
             return await GetItemAsync<Room>(path);
         }
 
@@ -52,7 +52,7 @@ namespace SparkDotNet
         public async Task<MeetingDetails> GetRoomMeetingDetailsAsync(string roomId)
         {
             var queryParams = new Dictionary<string, string>();
-            var path = getURL($"{roomsBase}/{roomId}/meetingInfo", queryParams);
+            var path = GetURL($"{roomsBase}/{roomId}/meetingInfo", queryParams);
             return await GetItemAsync<MeetingDetails>(path);
         }
 

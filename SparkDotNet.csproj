@@ -1,49 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <VersionPrefix>1.2.7</VersionPrefix>
-    <TargetFrameworks>net48</TargetFrameworks>
-    <DebugType>portable</DebugType>
-    <AssemblyName>SparkDotNet</AssemblyName>
-    <PackageId>SparkDotNet</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
-    <PackageLicenseUrl>https://github.com/darrenparkinson/SparkDotNet/blob/master/LICENSE</PackageLicenseUrl>
-    <Description>An unofficial dotnet library for consuming RESTful APIs for Cisco Spark (now Webex Teams). Please visit Cisco at https://developer.webex.com.</Description>
-    <Authors>Darren Parkinson</Authors>
-    <PackageProjectUrl>https://github.com/darrenparkinson/SparkDotNet</PackageProjectUrl>
-    <RepositoryType>git</RepositoryType>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  </PropertyGroup>
+	<PropertyGroup>
+		<VersionPrefix>1.2.7</VersionPrefix>
+		<TargetFrameworks>net48</TargetFrameworks>
+		<DebugType>portable</DebugType>
+		<AssemblyName>SparkDotNet</AssemblyName>
+		<PackageId>SparkDotNet</PackageId>
+		<NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
+		<PackageLicenseUrl>https://github.com/darrenparkinson/SparkDotNet/blob/master/LICENSE</PackageLicenseUrl>
+		<Description>An unofficial dotnet library for consuming RESTful APIs for Cisco Spark (now Webex Teams). Please visit Cisco at https://developer.webex.com.</Description>
+		<Authors>Darren Parkinson</Authors>
+		<PackageProjectUrl>https://github.com/darrenparkinson/SparkDotNet</PackageProjectUrl>
+		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
 
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+	</ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Threading.Tasks" Version="4.0.11" />
-    <PackageReference Include="System.Text.Encoding" Version="4.0.11" />
-    <PackageReference Include="System.Runtime" Version="4.1.0" />
-    <PackageReference Include="System.Net.Primitives" Version="4.0.11" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Threading.Tasks" Version="4.0.11" />
+		<PackageReference Include="System.Text.Encoding" Version="4.0.11" />
+		<PackageReference Include="System.Runtime" Version="4.1.0" />
+		<PackageReference Include="System.Net.Primitives" Version="4.0.11" />
+		<Reference Include="System" />
+		<Reference Include="Microsoft.CSharp" />
+	</ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<Reference Include="System" />
+		<Reference Include="Microsoft.CSharp" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Net.Http" />
+	</ItemGroup>
 
 </Project>

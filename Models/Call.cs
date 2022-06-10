@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     public class Call : WebexObject
     {
@@ -50,7 +52,7 @@ namespace SparkDotNet {
         /// forwarding in C's incoming call details. Only present when there were previous redirections and the incoming
         /// call's state is alerting.
         /// </summary>
-        public object[] Redirections { get; set; }
+        public List<Object> Redirections { get; set; }
 
         /// <summary>
         /// The reason the incoming call was redirected.

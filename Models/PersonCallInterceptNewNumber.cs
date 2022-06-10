@@ -1,4 +1,4 @@
-﻿namespace SparkDotNet
+﻿namespace SparkDotNet.Models
 {
     /// <summary>
     /// Information about the new number announcement.

@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace SparkDotNet
         /// <param name="to">List events which occurred before a specific date and time.</param>
         /// <param name="max">Limit the maximum number of events in the response. Default: 100</param>
         /// <returns></returns>
-        public async Task<List<Event>> GetEventsAsync(string resource = null, string type = null, string actorId = null,
+        public async Task<SparkApiConnectorApiOperationResult<List<Event>>> GetEventsAsync(string resource = null, string type = null, string actorId = null,
                                                        DateTime? from = null, DateTime? to = null, int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
@@ -43,7 +45,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="eventId">The unique identifier for the event.</param>
         /// <returns>the Event object of the requested Event id</returns>
-        public async Task<Event> GetEventAsync(string eventId)
+        public async Task<SparkApiConnectorApiOperationResult<Event>> GetEventAsync(string eventId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{eventsBase}/{eventId}", queryParams);

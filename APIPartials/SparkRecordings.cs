@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,7 +24,7 @@ namespace SparkDotNet
         /// <param name="to">Ending date and time (exclusive) for List recordings to return, in any ISO 8601 compliant format. to cannot be after current date and time or before from. Default: Current date and time</param>
         /// <param name="meetingId">Unique identifier for the parent meeting series, scheduled meeting or meeting instance for which recordings are being requested. If a meeting series ID is specified, the operation returns an array of recordings for the specified meeting series; if a scheduled meeting ID is specified, the operation returns an array of recordings for the specified scheduled meeting; if a meeting instance ID is specified, the operation returns an array of recordings for the specified meeting instance. If not specified, the operation returns an array of recordings for all meetings of the current user.</param>
         /// <returns></returns>
-        public async Task<List<Recording>> GetRecordingsAsync(int max = 0, DateTime? from = null, DateTime? to = null, string meetingId = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Recording>>> GetRecordingsAsync(int max = 0, DateTime? from = null, DateTime? to = null, string meetingId = null)
         {
             var queryParams = new Dictionary<string, string>();
 
@@ -48,7 +50,7 @@ namespace SparkDotNet
         /// <param name="to">Ending date and time (exclusive) for List recordings to return, in any ISO 8601 compliant format. to cannot be after current date and time or before from. Default: Current date and time</param>
         /// <param name="meeting">Meeting object for the parent meeting series, scheduled meeting or meeting instance for which recordings are being requested. If a meeting is specified, the operation returns an array of recordings for the specified meeting series; if a scheduled meeting ID is specified, the operation returns an array of recordings for the specified scheduled meeting; if a meeting instance ID is specified, the operation returns an array of recordings for the specified meeting instance. If not specified, the operation returns an array of recordings for all meetings of the current user.</param>
         /// <returns></returns>
-        public async Task<List<Recording>> GetRecordingsAsync(int max = 0, DateTime? from = null, DateTime? to = null, Meeting meeting = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Recording>>> GetRecordingsAsync(int max = 0, DateTime? from = null, DateTime? to = null, Meeting meeting = null)
         {
             return await GetRecordingsAsync(max, from, to, meeting == null ? null : meeting.Id);
         }
@@ -59,7 +61,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="recordingId">A unique identifier for the recording.</param>
         /// <returns></returns>
-        public async Task<Recording>GetRecordingAsync(string recordingId)
+        public async Task<SparkApiConnectorApiOperationResult<Recording>> GetRecordingAsync(string recordingId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{recordingsBase}/{recordingId}", queryParams);
@@ -72,7 +74,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="recordingId">A unique identifier for the recording.</param>
         /// <returns>true if the recording was deleted, false otherwise</returns>
-        public async Task<bool> DeleteRecordingAsync(string recordingId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRecordingAsync(string recordingId)
         {
             return await DeleteItemAsync($"{recordingsBase}/{recordingId}");
         }
@@ -83,7 +85,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="recordingId">A unique identifier for the recording.</param>
         /// <returns>true if the recording was deleted, false otherwise</returns>
-        public async Task<bool> DeleteRecordingAsync(Recording recording)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRecordingAsync(Recording recording)
         {
             return await DeleteRecordingAsync(recording.Id);
         }

@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     /// <summary>
     /// Events are generated when actions take place within Webex Teams, such as when someone creates or deletes a message.

@@ -1,4 +1,5 @@
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     /// <summary>
     /// Resource Groups are collections of on-premise clusters which provide Hybrid Services to a particular subset of people in an organization.
     /// If a person has a Hybrid Services license associated with their account, they will be associated with a resource group to use specific

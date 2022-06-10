@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,7 +18,7 @@ namespace SparkDotNet
         /// <param name="orgId">List licenses for this organization.</param>
         /// <param name="max"></param>
         /// <returns>List of License objects.</returns>
-        public async Task<List<License>> GetLicensesAsync(string orgId = null, int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<License>>> GetLicensesAsync(string orgId = null, int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
@@ -31,7 +33,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="licenseId">The unique identifier for the license.</param>
         /// <returns>License object.</returns>
-        public async Task<License> GetLicenseAsync(string licenseId)
+        public async Task<SparkApiConnectorApiOperationResult<License>> GetLicenseAsync(string licenseId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{licensesBase}/{licenseId}", queryParams);

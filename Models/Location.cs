@@ -1,6 +1,7 @@
 using System;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     /// <summary>
     /// Locations are used to organize Webex Calling (BroadCloud) features within physical locations.
@@ -29,5 +30,5 @@ namespace SparkDotNet {
         /// The address of the location.
         /// </summary>
         public LocationAddress Address { get; set; }
-   }
+    }
 }

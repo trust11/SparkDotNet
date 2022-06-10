@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,7 +19,7 @@ namespace SparkDotNet
         /// <param name="teamId">List memberships for a team, by ID.</param>
         /// <param name="max">Limit the maximum number of team memberships in the response. Default: 100</param>
         /// <returns>List of TeamMembership objects.</returns>
-        public async Task<List<TeamMembership>> GetTeamMembershipsAsync(string teamId, int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<TeamMembership>>> GetTeamMembershipsAsync(string teamId, int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
             if (teamId != null) queryParams.Add("teamId",teamId);
@@ -32,7 +34,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membershipId">The unique identifier for the team membership.</param>
         /// <returns>TeamMembership object.</returns>
-        public async Task<TeamMembership> GetTeamMembershipAsync(string membershipId)
+        public async Task<SparkApiConnectorApiOperationResult<TeamMembership>> GetTeamMembershipAsync(string membershipId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{teamMembershipsBase}/{membershipId}", queryParams);
@@ -47,7 +49,7 @@ namespace SparkDotNet
         /// <param name="personEmail">The email address of the person.</param>
         /// <param name="isModerator">Whether or not the participant is a team moderator.</param>
         /// <returns>TeamMembership object.</returns>
-        public async Task<TeamMembership> CreateTeamMembershipAsync(string teamId, string personId = null, string personEmail = null, bool isModerator = false)
+        public async Task<SparkApiConnectorApiOperationResult<TeamMembership>> CreateTeamMembershipAsync(string teamId, string personId = null, string personEmail = null, bool isModerator = false)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("teamId", teamId);
@@ -63,7 +65,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membershipId">The unique identifier for the team membership.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteTeamMembershipAsync(string membershipId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamMembershipAsync(string membershipId)
         {
             return await DeleteItemAsync($"{teamMembershipsBase}/{membershipId}");            
         }
@@ -73,7 +75,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membership">The team membership object to be deleted.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteTeamMembershipAsync(TeamMembership membership)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamMembershipAsync(TeamMembership membership)
         {
             return await DeleteTeamMembershipAsync(membership.id);
         }
@@ -85,7 +87,7 @@ namespace SparkDotNet
         /// <param name="membershipId">The unique identifier for the team membership.</param>
         /// <param name="isModerator">Whether or not the participant is a team moderator.</param>
         /// <returns>TeamMembership object.</returns>
-        public async Task<TeamMembership> UpdateTeamMembershipAsync(string membershipId, bool isModerator)
+        public async Task<SparkApiConnectorApiOperationResult<TeamMembership>> UpdateTeamMembershipAsync(string membershipId, bool isModerator)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("isModerator",isModerator);

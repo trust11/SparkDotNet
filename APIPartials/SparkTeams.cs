@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,7 +17,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="max">Limit the maximum number of teams in the response. Default: 100</param>
         /// <returns>List of Team objects.</returns>
-        public async Task<List<Team>> GetTeamsAsync(int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<Team>>> GetTeamsAsync(int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
@@ -29,7 +31,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="teamId">The unique identifier for the team.</param>
         /// <returns>Team object.</returns>
-        public async Task<Team> GetTeamAsync(string teamId)
+        public async Task<SparkApiConnectorApiOperationResult<Team>> GetTeamAsync(string teamId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{teamsBase}/{teamId}", queryParams);
@@ -42,7 +44,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="name">A user-friendly name for the team.</param>
         /// <returns>Team object.</returns>
-        public async Task<Team> CreateTeamAsync(string name)
+        public async Task<SparkApiConnectorApiOperationResult<Team>> CreateTeamAsync(string name)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("name", name);
@@ -55,7 +57,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="teamId">The unique identifier for the team.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteTeamAsync(string teamId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamAsync(string teamId)
         {
             return await DeleteItemAsync($"{teamsBase}/{teamId}");
         }
@@ -65,7 +67,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="team">The team object.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteTeamAsync(Team team)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamAsync(Team team)
         {
             return await DeleteTeamAsync(team.id);
         }
@@ -77,7 +79,7 @@ namespace SparkDotNet
         /// <param name="teamId">The unique identifier for the team.</param>
         /// <param name="name">A user-friendly name for the team.</param>
         /// <returns>Team object.</returns>
-        public async Task<Team> UpdateTeamAsync(string teamId, string name)
+        public async Task<SparkApiConnectorApiOperationResult<Team>> UpdateTeamAsync(string teamId, string name)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("name",name);

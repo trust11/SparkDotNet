@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
 
     public class AdminEventData : WebexObject
@@ -40,7 +41,7 @@ namespace SparkDotNet
         /// Admin roles for the person.
         /// </summary>
         [JsonProperty("adminRoles")]
-        public string[] AdminRoles { get; set; }
+        public List<string> AdminRoles { get; set; }
 
         /// <summary>
         /// A tracking identifier for the event.

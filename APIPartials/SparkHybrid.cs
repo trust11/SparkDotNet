@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="orgId">List hybrid connectors in this organization. If an organization is not specified, the organization of the caller will be used.</param>
         /// <returns>A list of HybridConnectors</returns>
-        public async Task<List<HybridConnector>> GetHybridConnectorsAsync(string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<HybridConnector>>> GetHybridConnectorsAsync(string orgId = null)
         {
             var queryParams = new Dictionary<string, string>();
 
@@ -33,7 +35,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="connectorId">The ID of the connector.</param>
         /// <returns>A hybrid Connector Object</returns>
-        public async Task<HybridConnector> GetHybridConnectorAsync(string connectorId)
+        public async Task<SparkApiConnectorApiOperationResult<HybridConnector>> GetHybridConnectorAsync(string connectorId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{hybridBase}/connectors/{connectorId}", queryParams);
@@ -48,7 +50,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="orgId">List hybrid clusters in this organization. If an organization is not specified, the organization of the caller will be used.</param>
         /// <returns>A list of HybridClusters</returns>
-        public async Task<List<HybridCluster>> GetHybridClustersAsync(string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<HybridCluster>>> GetHybridClustersAsync(string orgId = null)
         {
             var queryParams = new Dictionary<string, string>();
 
@@ -64,7 +66,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="hybridClusterId">The ID of the clsuter.</param>
         /// <returns>A hybrid Clsuter Object</returns>
-        public async Task<HybridCluster> GetHybridClusterAsync(string hybridClusterId)
+        public async Task<SparkApiConnectorApiOperationResult<HybridCluster>> GetHybridClusterAsync(string hybridClusterId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{hybridBase}/clusters/{hybridClusterId}", queryParams);

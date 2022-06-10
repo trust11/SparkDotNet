@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// People are registered users of Webex Teams.
@@ -22,19 +23,23 @@ namespace SparkDotNet
         /// <summary>
         /// The email addresses of the person.
         /// </summary>
-        public string[] emails { get; set; }
+        public List<string> emails { get; set; } = new List<string>();
+
+
 
         /// <summary>
         /// Phone numbers for the person.
         /// </summary>
         [JsonProperty("phoneNumbers")]
-        public PhoneNumber[] PhoneNumbers { get; set; }
+        public List<PhoneNumber> PhoneNumbers { get; set; } = new List<PhoneNumber>();
+
 
         /// <summary>
         /// Sip addresses for the person.
         /// </summary>
         [JsonProperty("sipAddresses")]
-        public SipAddress[] SipAddresses { get; set; }
+        public List<SipAddress> SipAddresses { get; set; } = new List<SipAddress>();
+
 
         /// <summary>
         /// The extension of the person retrieved from BroadCloud.
@@ -81,12 +86,13 @@ namespace SparkDotNet
         /// <summary>
         /// An array of role strings representing the roles to which this person belongs.
         /// </summary>
-        public string[] roles { get; set; }
+        public List<string> roles { get; set; } = new List<string>();
 
         /// <summary>
         /// An array of license strings allocated to this person.
         /// </summary>
-        public string[] licenses { get; set; }
+        public List<string> licenses { get; set; } = new List<string>();
+
 
         /// <summary>
         /// The date and time the person was created.

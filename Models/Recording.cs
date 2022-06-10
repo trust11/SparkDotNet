@@ -1,6 +1,6 @@
 using System;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Recordings are meeting content captured in a meeting or files uploaded via the upload page for your Webex site.

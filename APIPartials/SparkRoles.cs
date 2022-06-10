@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,7 +17,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="max">The maximum number of objects to be returned</param>
         /// <returns>List of Role objects.</returns>
-        public async Task<List<Role>> GetRolesAsync(int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<Role>>> GetRolesAsync(int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
@@ -29,7 +31,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roleId">The unique identifier for the role.</param>
         /// <returns>Role object.</returns>
-        public async Task<Role> GetRoleAsync(string roleId)
+        public async Task<SparkApiConnectorApiOperationResult<Role>> GetRoleAsync(string roleId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{rolesBase}/{roleId}", queryParams);

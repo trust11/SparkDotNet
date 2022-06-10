@@ -1,6 +1,6 @@
 using System;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// eam Memberships represent a person's relationship to a team. Use this API to list members of any team that you're in

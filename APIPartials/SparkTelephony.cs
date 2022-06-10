@@ -1,21 +1,21 @@
-
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SparkDotNet
 {
-
     public partial class Spark
     {
-
         private readonly string telephonyBase = "/v1/telephony";
 
         #region Calls GET commands
+
         /// <summary>
         /// Get the list of details for all active calls associated with the user.
         /// </summary>
         /// <returns>List of Call objects.</returns>
-        public async Task<List<Call>> GetCallsAsync()
+        public async Task<SparkApiConnectorApiOperationResult<List<Call>>> GetCallsAsync()
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{telephonyBase}/calls", queryParams);
@@ -27,7 +27,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="callId">The call identifier of the call.</param>
         /// <returns>A call object.</returns>
-        public async Task<Call> GetCallAsync(string callId)
+        public async Task<SparkApiConnectorApiOperationResult<Call>> GetCallAsync(string callId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{telephonyBase}/calls/{callId}", queryParams);
@@ -40,16 +40,18 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="type">The type of call history records to retrieve. If not specified, then all call history records are retrieved.</param>
         /// <returns>List of Call History objects.</returns>
-        public async Task<List<CallHistoryRecord>> GetCallHistoryAsync(string type = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<CallHistoryRecord>>> GetCallHistoryAsync(string type = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (type != null) queryParams.Add("direction", type);
             var path = GetURL($"{telephonyBase}/calls/history", queryParams);
             return await GetItemsAsync<CallHistoryRecord>(path);
         }
+
         #endregion Calls GET commands
 
         #region Calls POST commands
+
         /// <summary>
         /// Initiate an outbound call to a specified destination.
         /// This is also commonly referred to as Click to Call or Click to Dial.
@@ -59,7 +61,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="destination">The destination to be dialed. The destination can be digits or a URI. Some examples for destination include: 1234, 2223334444, +12223334444, *73, tel:+12223334444, user@company.domain, sip:user@company.domain</param>
         /// <returns>Dictionary with call information (callId: A unique identifier for the call which is used in all subsequent commands for this call; callSessionId: A unique identifier for the call session the call belongs to. This can be used to correlate multiple calls that are part of the same call session.)</returns>
-        public async Task<Dictionary<string, string>> CallDialAync(string destination)
+        public async Task<SparkApiConnectorApiOperationResult<Dictionary<string, string>>> CallDialAync(string destination)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("destination", destination);
@@ -169,7 +171,7 @@ namespace SparkDotNet
         /// <param name="destination">dentifes where the call is to be parked. If not provided, the call is parked against the parking user. The destination can be digits or a URI. Some examples for destination include: 1234, 2223334444, +12223334444, *73, tel:+12223334444, user@company.domain, sip:user@company.domain</param>
         /// <param name="isGroupPark">If set to true, the call is parked against an automatically selected member of the user's call park group and the destination parameter is ignored.</param>
         /// <returns>A Call Park Against object containing the details of where the call has been parked.</returns>
-        public async Task<CallParkedAgainst> CallParkAsync(string callId, string destination, bool isGroupPark)
+        public async Task<SparkApiConnectorApiOperationResult<CallParkedAgainst>> CallParkAsync(string callId, string destination, bool isGroupPark)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("callId", callId);
@@ -185,13 +187,13 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="destination">dentifies where the call is parked. The number field from the park command response can be used as the destination for the retrieve command. If not provided, the call parked against the retrieving user is retrieved. The destination can be digits or a URI. Some examples for destination include: 1234, 2223334444, +12223334444, *73, tel:+12223334444, user@company.domain, sip:user@company.domain</param>
         /// <returns>Dictionary with call information (callId: A unique identifier for the call which is used in all subsequent commands for this call; callSessionId: A unique identifier for the call session the call belongs to. This can be used to correlate multiple calls that are part of the same call session.)</returns>
-        public async Task<Dictionary<string, string>> CallRetrieveAsync(string destination)
+        public async Task<SparkApiConnectorApiOperationResult<Dictionary<string, string>>> CallRetrieveAsync(string destination)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("destination", destination);
             return await PostItemAsync<Dictionary<string, string>>($"(telephonyBase)/calls/retrieve", postBody);
         }
+
         #endregion Calls POST commands
     }
-
 }

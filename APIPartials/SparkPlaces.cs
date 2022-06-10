@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,7 +19,7 @@ namespace SparkDotNet
         /// <param name="orgId"> (optional) List places in this organization. Only admin users of another organization (such as partners) may use this parameter.</param>
         /// <param name="max">(optional) Limit the maximum number of places in the response.</param>
         /// <returns>A list of Place objects matching the query</returns>
-        public async Task<List<Place>> GetPlacesAsync(string displayName = null, string orgId = null, int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<Place>>> GetPlacesAsync(string displayName = null, string orgId = null, int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
@@ -33,7 +35,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="placeId">A unique identifier for the place.</param>
         /// <returns>A Place object</returns>
-        public async Task<Place> GetPlaceAsync(string placeId)
+        public async Task<SparkApiConnectorApiOperationResult<Place>> GetPlaceAsync(string placeId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{placesBase}/{placeId}", queryParams);
@@ -45,7 +47,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="displayName">A friendly name for the place.</param>
         /// <returns>A Place object.</returns>
-        public async Task<Place> CreatePlaceAsync(string displayName)
+        public async Task<SparkApiConnectorApiOperationResult<Place>> CreatePlaceAsync(string displayName)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("displayName", displayName);
@@ -58,7 +60,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="placeId">A unique identifier for the place.</param>
         /// <returns>true if the Place was deleted, false otherwise</returns>
-        public async Task<bool> DeletePlaceAsync(string placeId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePlaceAsync(string placeId)
         {
             return await DeleteItemAsync($"{placesBase}/{placeId}");
         }
@@ -68,7 +70,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="place">A Place object.</param>
         /// <returns>true if the Place was deleted, false otherwise</returns>
-        public async Task<bool> DeletePlaceAsync(Place place)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePlaceAsync(Place place)
         {
             return await DeletePlaceAsync(place.Id);
         }
@@ -80,7 +82,7 @@ namespace SparkDotNet
         /// <param name="placeId">A unique identifier for the place.</param>
         /// <param name="displayName">A friendly name for the place.</param>
         /// <returns>A Place object of the update place</returns>
-        public async Task<Place> UpdatePlaceAsync(string placeId, string displayName)
+        public async Task<SparkApiConnectorApiOperationResult<Place>> UpdatePlaceAsync(string placeId, string displayName)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("displayName", displayName);
@@ -93,7 +95,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="place">A place object wich should be updated</param>
         /// <returns>A Place object of the update place</returns>
-        public async Task<Place> UpdatePlaceAsync(Place place)
+        public async Task<SparkApiConnectorApiOperationResult<Place>> UpdatePlaceAsync(Place place)
         {
             return await UpdatePlaceAsync(place.Id, place.DisplayName);
         }

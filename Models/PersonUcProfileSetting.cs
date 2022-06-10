@@ -1,4 +1,7 @@
-namespace SparkDotNet
+#nullable enable
+using SparkDotNet;
+
+namespace SparkDotNet.Models
 {
     public class PersonUcProfileSetting : WebexObject
     {

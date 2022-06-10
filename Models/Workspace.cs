@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Workspaces represent where people work, such as conference rooms, meeting spaces, lobbies,
@@ -44,7 +44,7 @@ namespace SparkDotNet
         /// other: Unspecified.
         /// </summary>
         [JsonProperty("type")]
-        public string Type { get; set; }
+        public WorkspaceType Type { get; set; }
 
         /// <summary>
         /// OrgId associate with the workspace
@@ -81,5 +81,53 @@ namespace SparkDotNet
         /// </summary>
         [JsonProperty("notes")]
         public string Notes { get; set; }
+
+        /// <summary>
+        /// Location associated with the workspace.
+        /// </summary>
+        public string WorkspaceLocationId { get; set; }
+
+        /// <summary>
+        /// Floor associated with the workspace.
+        /// </summary>
+        public string FloorId { get; set; }
+    }
+
+    public enum WorkspaceType
+    {
+        /// <summary>
+        /// No workspace type set.
+        /// </summary>
+        NotSet,
+
+        /// <summary>
+        /// High concentration.
+        /// </summary>
+        Focus,
+
+        /// <summary>
+        /// Brainstorm/collaboration.
+        /// </summary>
+        HudDle,
+
+        /// <summary>
+        /// Dedicated meeting space.
+        /// </summary>
+        MeetingRoom,
+
+        /// <summary>
+        /// Unstructured agile.
+        /// </summary>
+        Open,
+
+        /// <summary>
+        /// Individual.
+        /// </summary>
+        Desk,
+
+        /// <summary>
+        ///     Unspecified.
+        ///     </summary>
+        Other
     }
 }

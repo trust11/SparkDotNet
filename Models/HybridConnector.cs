@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     /// <summary>
     /// Hybrid Connectors are pieces of software that run on-premise and provide a link between the Cisco Webex Cloud and on-premise resources.
@@ -55,6 +57,6 @@ namespace SparkDotNet {
         /// <summary>
         /// A list of alarms raised on the connector.
         /// </summary>
-        public HybridConnectorAlarm[] Alarms { get; set; }
+        public List<HybridConnectorAlarm> Alarms { get; set; }
     }
 }

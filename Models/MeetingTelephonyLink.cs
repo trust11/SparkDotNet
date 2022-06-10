@@ -1,4 +1,4 @@
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// HATEOAS information of global call-in numbers for joining teleconference from a phone.

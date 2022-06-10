@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     public class ReportTemplate
     {
         /// <summary>
@@ -31,6 +33,6 @@ namespace SparkDotNet {
         /// <summary>
         /// Validation Rules Collection
         /// </summary>
-        public ReportTemplateValidation[] Validations { get; set; }
+        public List<ReportTemplateValidation> Validations { get; set; }
     }
 }

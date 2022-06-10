@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="max">Limit the maximum number of webhooks in the response. Default: 100</param>
         /// <returns>List of Webhook objects.</returns>
-        public async Task<List<Webhook>> GetWebhooksAsync(int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<Webhook>>> GetWebhooksAsync(int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
@@ -28,7 +30,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="webhookId">The unique identifier for the webhook.</param>
         /// <returns>Webhook object.</returns>
-        public async Task<Webhook> GetWebhookAsync(string webhookId)
+        public async Task<SparkApiConnectorApiOperationResult<Webhook>> GetWebhookAsync(string webhookId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{webhooksBase}/{webhookId}", queryParams);
@@ -45,7 +47,7 @@ namespace SparkDotNet
         /// <param name="secret">The secret used to generate payload signature.</param>
         /// <param name="filter">The filter that defines the webhook scope.</param>
         /// <returns>Webhook object.</returns>
-        public async Task<Webhook> CreateWebhookAsync(string name, string targetUrl, string resource, string sparkEvent, string secret = null, string filter = null)
+        public async Task<SparkApiConnectorApiOperationResult<Webhook>> CreateWebhookAsync(string name, string targetUrl, string resource, string sparkEvent, string secret = null, string filter = null)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("name", name);
@@ -63,7 +65,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="webhookId">The unique identifier for the webhook.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteWebhookAsync(string webhookId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWebhookAsync(string webhookId)
         {
             return await DeleteItemAsync($"{webhooksBase}/{webhookId}");            
         }
@@ -74,7 +76,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="webhook">The Webhook object to be deleted</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteWebhookAsync(Webhook webhook)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWebhookAsync(Webhook webhook)
         {
             return await DeleteWebhookAsync(webhook.id);
         }
@@ -89,7 +91,7 @@ namespace SparkDotNet
         /// <param name="secret">The secret used to generate payload signature.</param>
         /// <param name="status">The status of the webhook. Use active to reactivate a disabled webhook. Possible values: active, inactive</param>
         /// <returns>Webhook object.</returns>
-        public async Task<Webhook> UpdateWebhookAsync(string webhookId, string name, string targetUrl, string secret = null, string status = null)
+        public async Task<SparkApiConnectorApiOperationResult<Webhook>> UpdateWebhookAsync(string webhookId, string name, string targetUrl, string secret = null, string status = null)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("name",name);

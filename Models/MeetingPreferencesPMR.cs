@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     public class MeetingPreferencesPMR : WebexObject
     {
@@ -83,7 +84,7 @@ namespace SparkDotNet
         /// This attribute can be modified by Update Personal Meeting Room Options API.
         /// </summary>
         [JsonProperty("coHosts")]
-        public MeetingPreferencesCoHost[] choHosts { get; set; }
+        public List<MeetingPreferencesCoHost> choHosts { get; set; }
 
         /// <summary>
         /// SIP address for callback from a video system.
@@ -102,7 +103,7 @@ namespace SparkDotNet
         /// </summary>
         [JsonProperty("telephony")]
         public MeetingTelephony Telephony { get; set; }
-   }
+    }
 
 
 }

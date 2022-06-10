@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -23,7 +25,7 @@ namespace SparkDotNet
         /// <param name="from">List reports that were created on or after this date.</param>
         /// <param name="to">List reports that were created before this date.</param>
         /// <returns>List of Report  objects.</returns>
-        public async Task<List<Report>> GetReportsAsync(string reportId = null, string service = null,
+        public async Task<SparkApiConnectorApiOperationResult<List<Report>>> GetReportsAsync(string reportId = null, string service = null,
                                                         string templateId = null, DateTime? from = null,
                                                         DateTime? to = null)
         {
@@ -45,7 +47,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="reportId">The unique identifier for the report.</param>
         /// <returns>The report object</returns>
-        public async Task<Report> GetReportAsync(string reportId)
+        public async Task<SparkApiConnectorApiOperationResult<Report>> GetReportAsync(string reportId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{reportBase}/{reportId}", queryParams);
@@ -66,7 +68,7 @@ namespace SparkDotNet
         /// <param name="endDate">Data in the report will be till this date</param>
         /// <param name="siteList">Sites belonging to user's organization. This attribute is needed for site-based templates</param>
         /// <returns>A report object</returns>
-        public async Task<Report> CreateReportAsync(int templateId, DateTime? startDate = null, DateTime? endDate = null, string siteList = null)
+        public async Task<SparkApiConnectorApiOperationResult<Report>> CreateReportAsync(int templateId, DateTime? startDate = null, DateTime? endDate = null, string siteList = null)
         {
             var bodyParams = new Dictionary<string, object>();
             bodyParams.Add("templateId", templateId);
@@ -85,7 +87,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="reportId">The unique identifier for the report</param>
         /// <returns>true if Report was deleted, false otherwise</returns>
-        public async Task<bool> DeleteReportAsync(string reportId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteReportAsync(string reportId)
         {
             return await DeleteItemAsync($"{reportBase}/{reportId}");
         }
@@ -98,7 +100,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="report">The report object to be deleted</param>
         /// <returns>true if Report was deleted, false otherwise</returns>
-        public async Task<bool> DeleteReportAsync(Report report)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteReportAsync(Report report)
         {
             return await DeleteReportAsync(report.Id);
         }

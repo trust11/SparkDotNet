@@ -1,6 +1,7 @@
 using System;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     /// <summary>
     /// Teams are groups of people with a set of rooms that are visible to all members of that team.
     /// This API is used to manage the teams themselves. Teams are created and deleted with this API.

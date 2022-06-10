@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,18 +28,22 @@ namespace SparkDotNet
         /// <param name="max">Limit the maximum number of workspaces in the response.</param>
         /// <param name="calling">List workspaces by calling type. Possible values: freeCalling, hybridCalling, webexCalling, webexEdgeForDevices</param>
         /// <param name="calendar">List workspaces by calendar type. Possible values: none, google, microsoft</param>
+        /// <param name="floorId">List workspaces by floorId associated with the workspace.</param>
+        /// <param name="workspaceLocationId">List workspaces by workspaceLocationId</param>
         /// <returns>List of Workspace objects.</returns>
-        public async Task<List<Workspace>> GetWorkspacesAsync(string displayName = null, int? capacity = null, string type = null, string orgId = null, int start = 0, int max = 0, string calling = null, string calendar = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Workspace>>> GetWorkspacesAsync(string displayName = null, int? capacity = null, string type = null, string orgId = null, int start = 0, int max = 0, string calling = null, string calendar = null, string workspaceLocationId = null, string floorId = null)
         {
             var queryParams = new Dictionary<string, string>();
-            if (displayName != null) queryParams.Add("displayName", displayName);
-            if (capacity != null) queryParams.Add("capacity", capacity.ToString());
-            if (type != null) queryParams.Add("type", type);
-            if (orgId != null) queryParams.Add("orgId", orgId);
-            if (start > 0) queryParams.Add("start", start.ToString());
-            if (max > 0) queryParams.Add("max", max.ToString());
-            if (calling != null) queryParams.Add("calling", calling);
-            if (calendar != null) queryParams.Add("calendar", calendar);
+            if (displayName != null) queryParams.Add(nameof(displayName), displayName);
+            if (capacity != null) queryParams.Add(nameof(capacity), capacity.ToString());
+            if (type != null) queryParams.Add(nameof(type), type);
+            if (orgId != null) queryParams.Add(nameof(orgId), orgId);
+            if (start > 0) queryParams.Add(nameof(start), start.ToString());
+            if (max > 0) queryParams.Add(nameof(max), max.ToString());
+            if (calling != null) queryParams.Add(nameof(calling), calling);
+            if (calendar != null) queryParams.Add(nameof(calendar), calendar);
+            if (floorId != null) queryParams.Add(nameof(floorId), floorId);
+            if (workspaceLocationId != null) queryParams.Add(nameof(workspaceLocationId), workspaceLocationId);
 
             var path = GetURL(workspacesBase, queryParams);
             return await GetItemsAsync<Workspace>(path);
@@ -49,7 +55,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="workspaceId">A unique identifier for the workspace.</param>
         /// <returns>The Workspace object.</returns>
-        public async Task<Workspace> GetWorkspaceAsync(string workspaceId)
+        public async Task<SparkApiConnectorApiOperationResult<Workspace>> GetWorkspaceAsync(string workspaceId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{workspacesBase}/{workspaceId}", queryParams);
@@ -68,7 +74,7 @@ namespace SparkDotNet
         /// <param name="calendar">Workspace calendar configuration. Provide a type (microsoft, google or none) and an emailAddress. Default is none.</param>
         /// <param name="notes">Notes associated to the workspace.</param>
         /// <returns>The newly created Workspace object.</returns>
-        public async Task<Workspace> CreateWorkspaceAsync(string displayName, string orgId = null, int? capacity = null, string type = null,
+        public async Task<SparkApiConnectorApiOperationResult<Workspace>> CreateWorkspaceAsync(string displayName, string orgId = null, int? capacity = null, string type = null,
                                                           WorkspaceCallingType calling = null, WorkspaceCalendar calendar = null, string notes = null)
         {
             var postBody = new Dictionary<string, object>();
@@ -89,7 +95,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="workspaceId">A unique identifier for the workspace.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteWorkspaceAsync(string workspaceId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWorkspaceAsync(string workspaceId)
         {
             return await DeleteItemAsync($"{workspacesBase}/{workspaceId}");            
         }
@@ -99,7 +105,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="workspace">The workspace object to be deleted.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteWorkspaceAsync(Workspace workspace)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWorkspaceAsync(Workspace workspace)
         {
             return await DeleteWorkspaceAsync(workspace.Id);
         }
@@ -116,7 +122,7 @@ namespace SparkDotNet
         /// <param name="calendar">An empty/null calendar field will not cause any changes. Provide a type (microsoft, google or none) and an emailAddress. Removing calendar is done by setting the none type, and setting none type does not require an emailAddress.</param>
         /// <param name="notes">Notes associated to the workspace.</param>
         /// <returns>The updated workspace object</returns>
-        public async Task<Workspace> UpdateWorkspaceAsync(string workspaceId, string displayName, int? capacity = null, string type = null, WorkspaceCalendar calendar = null, string notes = null)
+        public async Task<SparkApiConnectorApiOperationResult<Workspace>> UpdateWorkspaceAsync(string workspaceId, string displayName, int? capacity = null, string type = null, WorkspaceCalendar calendar = null, string notes = null)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("displayName", displayName);
@@ -133,9 +139,9 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="workspace">The workspace object to be updated.</param>
         /// <returns>The udated workspace object</returns>
-        public async Task<Workspace> UpdateWorkspacesync(Workspace workspace)
+        public async Task<SparkApiConnectorApiOperationResult<Workspace>> UpdateWorkspacesync(Workspace workspace)
         {
-            return await UpdateWorkspaceAsync(workspace.Id, workspace.DisplayName, workspace.Capacity, workspace.Type, workspace.Calendar, workspace.Notes);
+            return await UpdateWorkspaceAsync(workspace.Id, workspace.DisplayName, workspace.Capacity, workspace.Type.ToString(), workspace.Calendar, workspace.Notes);
         }
     }
 

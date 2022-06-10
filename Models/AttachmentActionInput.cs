@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
-namespace SparkDotNet
+
+namespace SparkDotNet.Models
 {
     public class AttachmentActionInput : WebexObject
     {

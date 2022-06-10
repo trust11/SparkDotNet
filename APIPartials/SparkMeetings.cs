@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,7 +36,7 @@ namespace SparkDotNet
         /// <param name="siteUrl">URL of the Webex site which the API lists meetings from. If not specified, the API lists meetings from user's preferred site. All available Webex sites and preferred site of the user can be retrieved by Get Site List API.</param>
         /// <param name="integrationTag">External key created by an integration application. This parameter is used by the integration application to query meetings by a key in its own domain such as a Zendesk ticket ID, a Jira ID, a Salesforce Opportunity ID, etc.</param>
         /// <returns>A list of Meeting objects</returns>
-        public async Task<List<Meeting>> GetMeetingsAsync(string meetingNumber = null, string webLink = null, string meetingType = null,
+        public async Task<SparkApiConnectorApiOperationResult<List<Meeting>>> GetMeetingsAsync(string meetingNumber = null, string webLink = null, string meetingType = null,
                                                           string state = null, string participantEmail = null, bool? current = null,
                                                           string from = null, string to = null,
                                                           int max = 0, string hostEmail = null, string siteUrl = null,
@@ -70,7 +72,7 @@ namespace SparkDotNet
         /// <param name="hostEmail">Email address for the meeting host. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user in a site they manage and the API will return details for a meeting that is hosted by that user.</param>
         /// <param name="siteUrl">Webex site URL to query. If siteUrl is not specified, the users' preferred site will be used. If the authorization token has the admin-level scopes, the admin can set the Webex site URL on behalf of the user specified in the hostEmail parameter.</param>
         /// <returns></returns>
-        public async Task<Meeting> GetMeetingAsync(string meetingId, bool? current = null, string hostEmail = null, string siteUrl = null)
+        public async Task<SparkApiConnectorApiOperationResult<Meeting>> GetMeetingAsync(string meetingId, bool? current = null, string hostEmail = null, string siteUrl = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (current != null) queryParams.Add("current", current.ToString());
@@ -98,10 +100,10 @@ namespace SparkDotNet
         /// <param name="invitees">Invitees for meeting.</param>
         /// <returns>The new created Meeting object.</returns>
         /// <remarks>This method is kept due to compatibility</remarks>
-        public async Task<Meeting> CreateMeetingAsync(string title, string password, DateTime start, DateTime end,
+        public async Task<SparkApiConnectorApiOperationResult<Meeting>> CreateMeetingAsync(string title, string password, DateTime start, DateTime end,
                                                     bool enabledAutoRecordMeeting, bool allowAnyUserToBeCoHost,
                                                     string agenda = null, TimeZoneInfo timezone = null, string recurrence = null,
-                                                    MeetingInvitee[] invitees = null)
+                                                    List<MeetingInvitee> invitees = null)
         {
             return await CreateMeetingAsync(title, start, end, enabledAutoRecordMeeting, allowAnyUserToBeCoHost, password);
         }
@@ -134,15 +136,15 @@ namespace SparkDotNet
         /// <param name="registration">Meeting registration. When this option is enabled, meeting invitee must register personal information in order to join the meeting. Meeting invitee will receive an email with a registration link for the registration. When the registration form has been submitted and approved, an email with a real meeting link will be received. By clicking that link the meeting invitee can join the meeting. Please note that meeting registration does not apply to a meeting when it's a recurring meeting with recurrence field or it has no password, or the Join Before Host option is enabled for the meeting. Read Register for a Meeting in Cisco Webex Meetings for details.</param>
         /// <param name="integrationTags">External keys created by an integration application in its own domain. They could be Zendesk ticket IDs, Jira IDs, Salesforce Opportunity IDs, etc. The integration application queries meetings by a key in its own domain. The maximum size of integrationTags is 3 and each item of integrationTags can be a maximum of 64 characters long.</param>
         /// <returns>The new created Meeting object.</returns>
-        public async Task<Meeting> CreateMeetingAsync(string title, DateTime start, DateTime end,
+        public async Task<SparkApiConnectorApiOperationResult<Meeting>> CreateMeetingAsync(string title, DateTime start, DateTime end,
                                                     bool enabledAutoRecordMeeting, bool allowAnyUserToBeCoHost,
                                                     string password = null, string agenda = null, TimeZoneInfo timezone = null, string recurrence = null,
-                                                    MeetingInvitee[] invitees = null, string hostEmail = null,
+                                                    List<MeetingInvitee> invitees = null, string hostEmail = null,
                                                     string siteUrl = null, bool? enabledJoinBeforeHost = null,
                                                     bool? enableConnectAudioBeforeHost = null, int? joinBeforeHostMinutes = null,
                                                     bool? allowFirstUserToBeCoHost = null, bool? allowAuthenticatedDevices = null,
                                                     bool? sendEmail = null, MeetingRegistration registration = null,
-                                                    string[] integrationTags = null)
+                                                    List<string> integrationTags = null)
         {
             var bodyParameters = new Dictionary<string, object>();
             bodyParameters.Add("title", title);
@@ -180,7 +182,7 @@ namespace SparkDotNet
         /// <param name="integrationTags">External keys created by an integration application in its own domain. They could be Zendesk ticket IDs, Jira IDs, Salesforce Opportunity IDs, etc. The integration application queries meetings by a key in its own domain. The maximum size of integrationTags is 3 and each item of integrationTags can be a maximum of 64 characters long.</param>
         /// <param name="sendEmail">Whether or not to send emails to host and invitees. It is an optional field and default value is true.</param>
         /// <returns>The new created Meeting object.</returns>
-        public async Task<Meeting> CreateMeetingAsync(Meeting meeting, MeetingInvitee[] invitees = null, string[] integrationTags = null, bool? sendEmail = null )
+        public async Task<SparkApiConnectorApiOperationResult<Meeting>> CreateMeetingAsync(Meeting meeting, List<MeetingInvitee> invitees = null, List<string> integrationTags = null, bool? sendEmail = null )
         {
             return await CreateMeetingAsync(meeting.Title, meeting.Start, meeting.End, meeting.EnabledAutoRecordMeeting,
                                             meeting.AllowAnyUserToBeCoHost, meeting.Password, meeting.Agenda, meeting.Timezone, meeting.Recurrence,
@@ -198,7 +200,7 @@ namespace SparkDotNet
         /// <param name="hostEmail">Email address for the meeting host. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user in a site they manage and the API will delete a meeting that is hosted by that user.</param>
         /// <param name="siteUrl">Webex site URL to query. If siteUrl is not specified, the users' preferred site will be used. If the authorization token has the admin-level scopes, the admin can set the Webex site URL on behalf of the user specified in the hostEmail parameter.</param>
         /// <returns>true if the Meeting was deleted, false otherwise</returns>
-        public async Task<bool> DeleteMeetingAsync(string meetingId, string hostEmail = null, string siteUrl = null)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMeetingAsync(string meetingId, string hostEmail = null, string siteUrl = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
@@ -216,7 +218,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="meeting">Meeting object for the meeting to be deleted.</param>
         /// <returns>true if the Meeting was deleted, false otherwise</returns>
-        public async Task<bool> DeleteMeetingAsync(Meeting meeting)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMeetingAsync(Meeting meeting)
         {
             return await DeleteMeetingAsync(meeting.Id, meeting.HostEmail, meeting.SiteUrl);
         }
@@ -236,7 +238,7 @@ namespace SparkDotNet
         /// <param name="hostEmail">Email address for the meeting host. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user in a site they manage and the API will return details for meetings that are hosted by that user.</param>
         /// <param name="siteUrl">URL of the Webex site which the API lists meetings from. If not specified, the API lists meetings from user's preferred site. All available Webex sites and preferred site of the user can be retrieved by Get Site List API.</param>
         /// <returns>A list of Meeting objects of the given meetin series</returns>
-        public async Task<List<Meeting>> GetMeetingsOfSeriesAsync(string meetingSeriesId, DateTime? from = null, DateTime? to = null,
+        public async Task<SparkApiConnectorApiOperationResult<List<Meeting>>> GetMeetingsOfSeriesAsync(string meetingSeriesId, DateTime? from = null, DateTime? to = null,
                                                                   string state = null, bool? isModified = null, int max = 0,
                                                                   string hostEmail = null, string siteUrl = null)
         {
@@ -278,7 +280,7 @@ namespace SparkDotNet
         /// <param name="sendEmail">Whether or not to send emails to host and invitees. It is an optional field and default value is true.</param>
         /// <param name="registration">Meeting registration. When this option is enabled, meeting invitee must register personal information in order to join the meeting. Meeting invitee will receive an email with a registration link for the registration. When the registration form has been submitted and approved, an email with a real meeting link will be received. By clicking that link the meeting invitee can join the meeting. Please note that meeting registration does not apply to a meeting when it's a recurring meeting with recurrence field or it has no password, or the Join Before Host option is enabled for the meeting. Read Register for a Meeting in Cisco Webex Meetings for details.</param>
         /// <returns>The updated Meeting object.</returns>
-        public async Task<Meeting> UpdateMeetingAsync(string meetingId, string title, string password, DateTime start, DateTime end,
+        public async Task<SparkApiConnectorApiOperationResult<Meeting>> UpdateMeetingAsync(string meetingId, string title, string password, DateTime start, DateTime end,
                                             bool enabledAutoRecordMeeting, bool? allowAnyUserToBeCoHost = null,
                                             string agenda = null, TimeZoneInfo timezone = null, string recurrence = null,
                                             string hostEmail = null, string siteUrl = null, bool? enabledJoinBeforeHost = null,
@@ -316,7 +318,7 @@ namespace SparkDotNet
         /// <param name="meeting">The Meeting object to be updated</param>
         /// <param name="sendEmail">Whether or not to send emails to host and invitees. It is an optional field and default value is true.</param>
         /// <returns>The updated Meeting object.</returns>
-        public async Task<Meeting> UpdateMeetingAsync(Meeting meeting, bool? sendEmail = null)
+        public async Task<SparkApiConnectorApiOperationResult<Meeting>> UpdateMeetingAsync(Meeting meeting, bool? sendEmail = null)
         {
             return await UpdateMeetingAsync(meeting.Id, meeting.Title, meeting.Password, meeting.Start, meeting.End,
                                             meeting.EnabledAutoRecordMeeting, meeting.AllowAnyUserToBeCoHost, meeting.Agenda,
@@ -331,13 +333,11 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="meetingId">Unique identifier for the meeting.</param>
         /// <returns>The controls status objects for the meeting</returns>
-        public async Task<MeetingControls> GetMeetingControlsAsync(string meetingId)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingControls>> GetMeetingControlsAsync(string meetingId)
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("meetingId", meetingId);
-
             var path = GetURL($"{meetingsBase}/controls", queryParams);
-
             return await GetItemAsync<MeetingControls>(path);
         }
 
@@ -346,7 +346,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="meeting">The meeting object.</param>
         /// <returns>The controls status objects for the meeting</returns>
-        public async Task<MeetingControls> GetMeetingControlsAsync(Meeting meeting)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingControls>> GetMeetingControlsAsync(Meeting meeting)
         {
             return await GetMeetingControlsAsync(meeting.Id);
         }
@@ -359,7 +359,7 @@ namespace SparkDotNet
         /// <param name="recordingPaused">The value can be true or false, will be ignored if 'recordingStarted' sets to false, and true to resume the recording only if the recording is paused vise versa.</param>
         /// <param name="locked">The value is true or false.</param>
         /// <returns>The updated meeting state object</returns>
-        public async Task<MeetingControls> UpdateMeetingControlsAsync(string meetingId, bool? recordingStarted = null,
+        public async Task<SparkApiConnectorApiOperationResult<MeetingControls>> UpdateMeetingControlsAsync(string meetingId, bool? recordingStarted = null,
                                                                       bool? recordingPaused = null, bool? locked = null)
         {
             var queryParams = new Dictionary<string, string>();
@@ -381,7 +381,7 @@ namespace SparkDotNet
         /// <param name="meeting">The meeting object to be updated</param>
         /// <param name="controls">The new meeting control settings</param>
         /// <returns>The updated meeting state object</returns>
-        public async Task<MeetingControls> UpdateMeetingControlsAsync(Meeting meeting, MeetingControls controls)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingControls>> UpdateMeetingControlsAsync(Meeting meeting, MeetingControls controls)
         {
             return await UpdateMeetingControlsAsync(meeting.Id, controls.RecordingStarted, controls.RecordingPaused, controls.Locked);
         }

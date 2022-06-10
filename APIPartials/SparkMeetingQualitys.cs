@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace SparkDotNet
         /// <param name="max">Limit the maximum number of media sessions in the response. Default: 100</param>
         /// <param name="offset">Offset from the first result that you want to fetch. Default: 0</param>
         /// <returns>Returns the Meeting Qualities for the specified meeting</returns>
-        public async Task<List<MeetingQuality>> GetMeetingQualitiesAsync(string meetingId, int max = 100, int offset = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<MeetingQuality>>> GetMeetingQualitiesAsync(string meetingId, int max = 100, int offset = 0)
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("meetingId", meetingId);

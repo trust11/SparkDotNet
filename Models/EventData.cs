@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     public class EventData : WebexObject
     {
         [JsonProperty("id")]

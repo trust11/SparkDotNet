@@ -1,4 +1,4 @@
-﻿namespace SparkDotNet
+﻿namespace SparkDotNet.Models
 {
     /// <summary>
     /// Settings related to how outgoing calls are handled when the intercept feature is enabled.

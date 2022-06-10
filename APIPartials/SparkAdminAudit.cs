@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace SparkDotNet
         /// <param name="max">Limit the maximum number of events in the response. The maximum value is 200. Default: 100</param>
         /// <param name="offsett">Offset from the first result that you want to fetch. Default: 0</param>
         /// <returns>A list of AdminEvent objects</returns>
-        public async Task<List<AdminEvent>> GetAdminAuditEventsAsync(string orgId, DateTime from, DateTime to, string actorId,
+        public async Task<SparkApiConnectorApiOperationResult<List<AdminEvent>>> GetAdminAuditEventsAsync(string orgId, DateTime from, DateTime to, string actorId,
                                                                      int max = 0, int offsett = 0)
         {
             var queryParams = new Dictionary<string, string>();

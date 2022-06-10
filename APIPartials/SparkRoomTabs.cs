@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,7 +18,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomId">List Room Tabs associated with a room, by ID.</param>
         /// <returns>List of RoomTab objects.</returns>
-        public async Task<List<RoomTab>> GetRoomTabsAsync(string roomId)
+        public async Task<SparkApiConnectorApiOperationResult<List<RoomTab>>> GetRoomTabsAsync(string roomId)
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("roomId", roomId);
@@ -30,7 +32,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="room">List Room Tabs associated with a room.</param>
         /// <returns>List of RoomTab objects.</returns>
-        public async Task<List<RoomTab>> GetRoomTabsAsync(Room room)
+        public async Task<SparkApiConnectorApiOperationResult<List<RoomTab>>> GetRoomTabsAsync(Room room)
         {
             return await GetRoomTabsAsync(room.id);
         }
@@ -41,7 +43,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomTabId">The unique identifier for the room tab.</param>
         /// <returns>Room Tab object.</returns>
-        public async Task<RoomTab> GetRoomTabAsync(string roomTabId)
+        public async Task<SparkApiConnectorApiOperationResult<RoomTab>> GetRoomTabAsync(string roomTabId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{roomTabsBase}/{roomTabId}", queryParams);
@@ -56,7 +58,7 @@ namespace SparkDotNet
         /// <param name="contentUrl">Content Url of the Room Tab. Needs to use the https protocol.</param>
         /// <param name="displayName">Display name of the Room tab.</param>
         /// <returns>The newly created Room Tab object.</returns>
-        public async Task<RoomTab> CreateRoomTabAsync(string roomId, string contentUrl, string displayName)
+        public async Task<SparkApiConnectorApiOperationResult<RoomTab>> CreateRoomTabAsync(string roomId, string contentUrl, string displayName)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("roomId", roomId);
@@ -72,7 +74,7 @@ namespace SparkDotNet
         /// <param name="roomTab">The Room Tab object to be created</param>
         /// <returns>The newly created Room Tab object.</returns>
         /// <returns></returns>
-        public async Task<RoomTab> CreateRoomTabAsync(RoomTab roomTab)
+        public async Task<SparkApiConnectorApiOperationResult<RoomTab>> CreateRoomTabAsync(RoomTab roomTab)
         {
             return await CreateRoomTabAsync(roomTab.RoomId, roomTab.ContentUrl, roomTab.DisplayName);
         }
@@ -83,7 +85,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomTabId">The unique identifier for the room tab.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteRoomTabAsync(string roomTabId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomTabAsync(string roomTabId)
         {
             return await DeleteItemAsync($"{roomTabsBase}/{roomTabId}");            
         }
@@ -93,7 +95,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomTab">The room tab object to be deleted.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteRoomTabAsync(RoomTab roomTab)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomTabAsync(RoomTab roomTab)
         {
             return await DeleteRoomTabAsync(roomTab.Id);
         }
@@ -106,7 +108,7 @@ namespace SparkDotNet
         /// <param name="contentUrl">Content Url of the Room Tab. Needs to use the https protocol.</param>
         /// <param name="displayName">User-friendly name for the room tab.</param>
         /// <returns>The updated room tab object</returns>
-        public async Task<RoomTab> UpdateRoomTabAsync(string roomTabId, string contentUrl, string displayName)
+        public async Task<SparkApiConnectorApiOperationResult<RoomTab>> UpdateRoomTabAsync(string roomTabId, string contentUrl, string displayName)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("contentUrl", contentUrl);
@@ -121,7 +123,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomTab">The room tab object to be updated.</param>
         /// <returns>The udated room tab object</returns>
-        public async Task<RoomTab> UpdateRoomTabAsync(RoomTab roomTab)
+        public async Task<SparkApiConnectorApiOperationResult<RoomTab>> UpdateRoomTabAsync(RoomTab roomTab)
         {
             return await UpdateRoomTabAsync(roomTab.Id, roomTab.ContentUrl, roomTab.DisplayName);
         }

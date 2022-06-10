@@ -1,4 +1,4 @@
-﻿namespace SparkDotNet
+﻿namespace SparkDotNet.Models
 {
     /// <summary>
     /// Settings for sending calls to a destination of your choice if your phone is not connected to

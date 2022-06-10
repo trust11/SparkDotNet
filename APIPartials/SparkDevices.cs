@@ -1,13 +1,12 @@
-
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SparkDotNet
 {
-
     public partial class Spark
     {
-
         private readonly string devicesBase = "/v1/devices";
 
         /// <summary>
@@ -30,8 +29,8 @@ namespace SparkDotNet
         /// <param name="start">Offset. Default is 0.</param>
         /// <param name="max">Limit the maximum number of devices in the response.</param>
         /// <returns>A list of Device objects</returns>
-        public async Task<List<Device>> GetDevicesAsync(string personId = null, string placeId = null, string orgId = null,
-                                                        string displayName = null, string product = null, string tag = null, 
+        public async Task<SparkApiConnectorApiOperationResult<List<Device>>> GetDevicesAsync(string personId = null, string placeId = null, string orgId = null,
+                                                        string displayName = null, string product = null, string tag = null,
                                                         string connectionStatus = null, string serial = null, string software = null,
                                                         string upgradeChannel = null, string errorCode = null, string capability = null,
                                                         string permission = null,
@@ -52,7 +51,7 @@ namespace SparkDotNet
             if (errorCode != null) queryParams.Add("errorCode", errorCode);
             if (capability != null) queryParams.Add("capability", capability);
             if (permission != null) queryParams.Add("permission", permission);
-            if (start > 0) queryParams.Add("start",max.ToString());
+            if (start > 0) queryParams.Add("start", max.ToString());
             if (max > 0) queryParams.Add("max", max.ToString());
 
             return await GetDevicesAsync<Device>(queryParams);
@@ -64,12 +63,11 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="queryParameters">Dictionary with request parameters</param>
         /// <returns>A list of Device objects</returns>
-        public async Task<List<Device>> GetDevicesAsync<Device>(Dictionary<string, string> queryParameters)
+        public async Task<SparkApiConnectorApiOperationResult<List<Device>>> GetDevicesAsync<Device>(Dictionary<string, string> queryParameters)
         {
             var path = GetURL(devicesBase, queryParameters);
-            return await GetItemsAsync<Device>(path);
+            return await GetItemsAsync<Device>(path).ConfigureAwait(false);
         }
-
 
         /// <summary>
         /// Shows details for a device, by ID.
@@ -77,7 +75,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="deviceId">A unique identifier for the device.</param>
         /// <returns>A device objects</returns>
-        public async Task<Device>GetDeviceAsync(string deviceId)
+        public async Task<SparkApiConnectorApiOperationResult<Device>> GetDeviceAsync(string deviceId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{devicesBase}/{deviceId}", queryParams);
@@ -90,7 +88,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="deviceId">A unique identifier for the device.</param>
         /// <returns>true if the device was deleted, false otherwise</returns>
-        public async Task<bool> DeleteDeviceAsync(string deviceId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteDeviceAsync(string deviceId)
         {
             return await DeleteItemAsync($"{devicesBase}/{deviceId}");
         }
@@ -101,7 +99,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="device">A Device object to delete.</param>
         /// <returns>true if the device was deleted, false otherwise</returns>
-        public async Task<bool> DeleteDeviceAsync(Device device)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteDeviceAsync(Device device)
         {
             return await DeleteDeviceAsync(device.Id);
         }
@@ -112,7 +110,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="placeId">The placeId of the place where the device will be activated.</param>
         /// <returns>A Device Activation COde objects</returns>
-        public async Task<DeviceActivationCode> CreateDeviceActivationCodeAsync(string placeId)
+        public async Task<SparkApiConnectorApiOperationResult<DeviceActivationCode>> CreateDeviceActivationCodeAsync(string placeId)
         {
             var bodyParams = new Dictionary<string, object>();
             bodyParams.Add("placeId", placeId);
@@ -125,13 +123,9 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="place">The place object of the place where the device will be activated.</param>
         /// <returns>A Device Activation COde objects</returns>
-        public async Task<DeviceActivationCode> CreateDeviceActivationCodeAsync(Place place)
+        public async Task<SparkApiConnectorApiOperationResult<DeviceActivationCode>> CreateDeviceActivationCodeAsync(Place place)
         {
             return await CreateDeviceActivationCodeAsync(place.Id);
         }
-
-
     }
-
-
 }

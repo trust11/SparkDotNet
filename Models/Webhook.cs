@@ -1,7 +1,8 @@
 using System;
 using Newtonsoft.Json;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     /// <summary>
     /// Webhooks allow your app to be notified via HTTP when a specific event occurs in Webex Teams. For example,
     /// your app can register a webhook to be notified when a new message is posted into a specific room.
@@ -51,7 +52,7 @@ namespace SparkDotNet {
         /// The secret used to generate payload signature.
         /// </summary>
         public string secret { get; set; }
-        
+
         /// <summary>
         /// The status of the webhook. Use active to reactivate a disabled webhook.
         /// active: the webhook is active

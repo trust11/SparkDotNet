@@ -1,4 +1,5 @@
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     /// <summary>
     /// Room Tabs represent an always available tab that is added as a shortcut to a rooms tab row and
     /// configured with a content url. Use this API to list tabs of any room that you are in.
@@ -23,7 +24,7 @@ namespace SparkDotNet {
         /// direct: 1:1 room
         /// group: group room
         /// </summary>
-        public string RoomType {get; set; }
+        public string RoomType { get; set; }
 
         /// <summary>
         /// User-friendly name for the room tab.

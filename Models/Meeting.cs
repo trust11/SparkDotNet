@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Meetings are virtual conferences where users can collaborate in real time using audio, video, content sharing, chat,
@@ -74,7 +74,7 @@ namespace SparkDotNet
         /// but it does not apply to meeting instances which have ended.
         /// </summary>
         [JsonProperty("phoneAndVideoSystemPassword")]
-        public string PhoneAndVideoSystemPassword  { get; set; }
+        public string PhoneAndVideoSystemPassword { get; set; }
 
         /// <summary>
         /// Meeting type.
@@ -111,7 +111,7 @@ namespace SparkDotNet
         /// </summary>
         [JsonProperty("timezone")]
         [JsonConverter(typeof(TimeZoneInfoConverter))]
-        public System.TimeZoneInfo Timezone { get; set; }
+        public TimeZoneInfo Timezone { get; set; }
 
         /// <summary>
         /// Start time for meeting in ISO 8601 compliant format.
@@ -122,7 +122,7 @@ namespace SparkDotNet
         /// This attribute can be modified for meeting series or scheduled meeting by Update a Meeting API.
         /// </summary>
         [JsonProperty("start")]
-        public System.DateTime Start { get; set; }
+        public DateTime Start { get; set; }
 
         /// <summary>
         /// End time for meeting in ISO 8601 compliant format.
@@ -134,7 +134,7 @@ namespace SparkDotNet
         /// This attribute can be modified for meeting series or scheduled meeting by Update a Meeting API.
         /// </summary>
         [JsonProperty("end")]
-        public System.DateTime End { get; set; }
+        public DateTime End { get; set; }
 
         /// <summary>
         /// Meeting series recurrence rule (conforming with RFC 2445), applying only to recurring meeting series.

@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http.Headers;
 
-namespace SparkDotNet
+namespace SparkDotNet.ExceptionHandling
 {
     /// <summary>
     /// Provides a Spark Exception class which will return the original headers for a request

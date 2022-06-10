@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +20,7 @@ namespace SparkDotNet
         /// <param name="type">List rooms by type. Possible values: direct, group</param>
         /// <param name="sortBy">Sort results. Possible values: id, lastactivity, created</param>
         /// <returns>List of Room objects.</returns>
-        public async Task<List<Room>> GetRoomsAsync(string teamId = null, int max = 0, string type = null, string sortBy = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Room>>> GetRoomsAsync(string teamId = null, int max = 0, string type = null, string sortBy = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (teamId != null) queryParams.Add("teamId",teamId);
@@ -36,7 +38,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomId">The unique identifier for the room.</param>
         /// <returns>Room object.</returns>
-        public async Task<Room> GetRoomAsync(string roomId)
+        public async Task<SparkApiConnectorApiOperationResult<Room>> GetRoomAsync(string roomId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{roomsBase}/{roomId}", queryParams);
@@ -49,7 +51,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomId">The unique identifier for the room.</param>
         /// <returns>MeetingDetails object.</returns>
-        public async Task<MeetingDetails> GetRoomMeetingDetailsAsync(string roomId)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingDetails>> GetRoomMeetingDetailsAsync(string roomId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{roomsBase}/{roomId}/meetingInfo", queryParams);
@@ -63,7 +65,7 @@ namespace SparkDotNet
         /// <param name="teamId">The ID for the team with which this room is associated.</param>
         /// <param name="classificationId">Space classification id represents the space's current classification. It can be attached during space creation time, and can be modified at the request of an authorized user.</param>
         /// <returns>Room object.</returns>
-        public async Task<Room> CreateRoomAsync(string title, string teamId = null, string classificationId = null)
+        public async Task<SparkApiConnectorApiOperationResult<Room>> CreateRoomAsync(string title, string teamId = null, string classificationId = null)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("title", title);
@@ -79,7 +81,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomId">The unique identifier for the room.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteRoomAsync(string roomId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomAsync(string roomId)
         {
             return await DeleteItemAsync($"{roomsBase}/{roomId}");            
         }
@@ -90,7 +92,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="room">The room object to be deleted.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteRoomAsync(Room room)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomAsync(Room room)
         {
             return await DeleteRoomAsync(room.id);
         }
@@ -102,7 +104,7 @@ namespace SparkDotNet
         /// <param name="roomId">The unique identifier for the room.</param>
         /// <param name="title">A user-friendly name for the room.</param>
         /// <returns>The updated room object</returns>
-        public async Task<Room> UpdateRoomAsync(string roomId, string title, string classificationId = null)
+        public async Task<SparkApiConnectorApiOperationResult<Room>> UpdateRoomAsync(string roomId, string title, string classificationId = null)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("title",title);
@@ -116,7 +118,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="room">The room object to be updated.</param>
         /// <returns>The udated room object</returns>
-        public async Task<Room> UpdateRoomAsync(Room room)
+        public async Task<SparkApiConnectorApiOperationResult<Room>> UpdateRoomAsync(Room room)
         {
             return await UpdateRoomAsync(room.id, room.title, room.ClassificationId);
         }

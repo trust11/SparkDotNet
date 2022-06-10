@@ -1,4 +1,4 @@
-﻿namespace SparkDotNet
+﻿namespace SparkDotNet.Models
 {
     /// <summary>
     /// Settings for forwarding which only occurs when you are away or not answering your phone.

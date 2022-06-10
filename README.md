@@ -112,7 +112,7 @@ namespace ConsoleApplication
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main(List<string> args)
         {
             RunAsync().Wait();
         }
@@ -206,7 +206,7 @@ spark.GetRoomsAsync(max: 400);
 Where a parameter requires a string array, these can be specified as follows:
 
 ```
-spark.UpdatePersonAsync(id,new string[] {"someone@example.com"},orgId, new string[] {role}, name);
+spark.UpdatePersonAsync(id,new List<string> {"someone@example.com"},orgId, new List<string> {role}, name);
 ```
 
 Most methods return an object of the type you are retrieving or updating.  Methods where you expect multiple objects are returned as a List<> of that object.  The exception to this is when deleting an object where the returned value is a boolean indicating the success of the operation.
@@ -217,11 +217,11 @@ As of version 1.2.0, when posting files in messages using `CreateMessageAsync()`
 
 You could already send files available publicly using the existing `files` object:
 
-`var message = await spark.CreateMessageAsync(roomId, text:"Here is the logo you wanted.", files:new string[] {"https://developer.cisco.com/images/mobility/Spark.png"} );`
+`var message = await spark.CreateMessageAsync(roomId, text:"Here is the logo you wanted.", files:new List<string> {"https://developer.cisco.com/images/mobility/Spark.png"} );`
 
 To upload a local file, you simple replace the URI with a local filename:
 
-`var message = await spark.CreateMessageAsync(roomId, text:"Here is the logo you wanted.", files:new string[] {"Spark.png"} );`
+`var message = await spark.CreateMessageAsync(roomId, text:"Here is the logo you wanted.", files:new List<string> {"Spark.png"} );`
 
 This example assumes the `Spark.png` file is in the same location you are running the application. 
 

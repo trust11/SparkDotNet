@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     public class MeetingPreferencesCoHost : WebexObject
     {
@@ -17,7 +17,7 @@ namespace SparkDotNet
         /// </summary>
         [JsonProperty("displayName")]
         public string DisplayName { get; set; }
-   }
+    }
 
 
 }

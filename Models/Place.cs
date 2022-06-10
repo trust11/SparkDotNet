@@ -1,6 +1,6 @@
 using System;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Places represent where people work, such as conference rooms, meeting spaces, lobbies, and lunch rooms. Devices may be associated with places.

@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     public class PaginationResult<T>
     {
         public List<T> Items { get; set; }
-        public Links Links {get; set; }
-        
-        public override string ToString() {
+        public Links Links { get; set; }
+
+        public override string ToString()
+        {
             return JsonConvert.SerializeObject(this);
         }
     }

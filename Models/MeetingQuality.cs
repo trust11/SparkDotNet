@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     /// <summary>
     /// To retrieve quality information, you must use an administrator token with the analytics:read_all scope.

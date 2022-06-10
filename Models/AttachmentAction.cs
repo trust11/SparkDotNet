@@ -1,6 +1,6 @@
 using System;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Users create attachment actions by interacting with message attachments such as clicking on a submit button in a card.

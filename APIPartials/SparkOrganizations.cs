@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,7 +17,7 @@ namespace SparkDotNet
         /// <param name="max">The maxmimum number of  objects to be returned.</param>
         /// <param name="callingData">Include XSI Endpoint values in the response (if applicable) for the organization. Requires special permissions</param>
         /// <returns>List of Organization objects.</returns>
-        public async Task<List<Organization>> GetOrganizationsAsync(int max = 0, bool? callingData = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Organization>>> GetOrganizationsAsync(int max = 0, bool? callingData = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max", max.ToString());
@@ -31,7 +33,7 @@ namespace SparkDotNet
         /// <param name="orgId">The unique identifier for the organization.</param>
         /// <param name="callingData">Include XSI Endpoint values in the response (if applicable) for the organization. Requires special permissions.</param>
         /// <returns>Organization object.</returns>
-        public async Task<Organization> GetOrganizationAsync(string orgId, bool? callingData = null)
+        public async Task<SparkApiConnectorApiOperationResult<Organization>> GetOrganizationAsync(string orgId, bool? callingData = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
@@ -59,7 +61,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="orgId">The id of the organization to be deleted</param>
         /// <returns>True if the deletion succeeded, false otherwise</returns>
-        public async Task<bool> DeleteOrganizationAsync(string orgId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(string orgId)
         {
             return await DeleteItemAsync($"{organizationsBase}/{orgId}");
         }
@@ -84,7 +86,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="organization">The organization to be deleted</param>
         /// <returns>True if the deletion succeeded, false otherwise</returns>
-        public async Task<bool> DeleteOrganizationAsync(Organization organization)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(Organization organization)
         {
             return await DeleteOrganizationAsync(organization.id);
         }

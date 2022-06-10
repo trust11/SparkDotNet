@@ -1,6 +1,7 @@
 using System;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     /// <summary>
     /// A set of people in Webex Teams.
@@ -28,7 +29,7 @@ namespace SparkDotNet {
         /// <summary>
         /// The base path to xsi-actions.
         /// </summary>
-        public string XsiActionsEndpoint  { get; set; }
+        public string XsiActionsEndpoint { get; set; }
 
         /// <summary>
         /// The base path to xsi-events.

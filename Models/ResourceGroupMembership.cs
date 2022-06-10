@@ -1,4 +1,5 @@
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     /// <summary>
     /// Resource Group Memberships represent a person's relationship to a Resource Group for a particular Hybrid Services license.
     /// Users assigned a new license will be automatically placed in a "default" Resource Group.

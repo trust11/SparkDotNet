@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,7 +18,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="userEmail">Email address for the user. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user and the API will return the list of Webex sites for that user.</param>
         /// <returns>Array of sites for the user. Users can have one site or multiple sites. This concept is specific to Webex Meetings. Any siteUrl in the site list can be assigned as user's default site by Update Default Site of Meeting Preference API.</returns>
-        public async Task<List<MeetingSite>> GetMeetingSitesAsync(string userEmail = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<MeetingSite>>> GetMeetingSitesAsync(string userEmail = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
@@ -31,7 +33,7 @@ namespace SparkDotNet
         /// <param name="defaultSite">Whether or not to change user's default site. Note: defaultSite must be true.</param>
         /// <param name="siteUrl">Access URL for the site.</param>
         /// <returns>The updated MeetingSite object</returns>
-        public async Task<MeetingSite> UpdateDefaultMeetingSite(bool defaultSite, string siteUrl)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingSite>> UpdateDefaultMeetingSite(bool defaultSite, string siteUrl)
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("defaultSite", defaultSite.ToString());
@@ -49,7 +51,7 @@ namespace SparkDotNet
         /// <param name="userEmail">Email address for the user. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user in a site they manage and the API will return details of the scheduling options for that user.</param>
         /// <param name="siteUrl">URL of the Webex site to query. For individual use, if siteUrl is not specified, the query will use the default site of the user. For admin use, if siteUrl is not specified, the query will use the default site for the admin's authorization token used to make the call. In the case where the user belongs to a site different than the admin’s default site, the admin can set the site to query using the siteUrl parameter. All available Webex sites and default site of a user can be retrieved from /meetingPreferences/sites.</param>
         /// <returns>Meeting Scheduling Options object for the user.</returns>
-        public async Task<MeetingSchedulingOptions> GetMeetingSchedulingOptionsAsync(string userEmail = null, string siteUrl = null)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingSchedulingOptions>> GetMeetingSchedulingOptionsAsync(string userEmail = null, string siteUrl = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
@@ -67,7 +69,7 @@ namespace SparkDotNet
         /// <param name="joinBeforeHostMinutes">Number of minutes before the start time that an invitee can join a meeting if enabledJoinBeforeHost is true. Valid options are 0, 5, 10 and 15. This attribute can be modified by Update Scheduling Options API.</param>
         /// <param name="enabledAutoShareRecording">Flag to enable/disable the automatic sharing of the meeting recording with invitees when it is available. This attribute can be modified by Update Scheduling Options API.</param>
         /// <returns>The updated Meeting Scheduling Options</returns>
-        public async Task<MeetingSchedulingOptions> UpdateMeetingSchedulingOptionsAsync(bool enabledJoinBeforeHost, int joinBeforeHostMinutes, bool enabledAutoShareRecording)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingSchedulingOptions>> UpdateMeetingSchedulingOptionsAsync(bool enabledJoinBeforeHost, int joinBeforeHostMinutes, bool enabledAutoShareRecording)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("enabledJoinBeforeHost", enabledJoinBeforeHost);
@@ -82,7 +84,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="meetingSchedulingOptions">The new scheduling options</param>
         /// <returns>The updated Meeting Scheduling Options</returns>
-        public async Task<MeetingSchedulingOptions> UpdateMeetingSchedulingOptionsAsync(MeetingSchedulingOptions meetingSchedulingOptions)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingSchedulingOptions>> UpdateMeetingSchedulingOptionsAsync(MeetingSchedulingOptions meetingSchedulingOptions)
         {
             return await UpdateMeetingSchedulingOptionsAsync(meetingSchedulingOptions.EnabledJoinBeforeHost, meetingSchedulingOptions.JoinBeforeHostMinutes, meetingSchedulingOptions.EnabledAutoShareRecording);
         }
@@ -93,7 +95,7 @@ namespace SparkDotNet
         /// <param name="userEmail">Email address for the user. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user in a site they manage and the API will return details of the scheduling options for that user.</param>
         /// <param name="siteUrl">URL of the Webex site to query. For individual use, if siteUrl is not specified, the query will use the default site of the user. For admin use, if siteUrl is not specified, the query will use the default site for the admin's authorization token used to make the call. In the case where the user belongs to a site different than the admin’s default site, the admin can set the site to query using the siteUrl parameter. All available Webex sites and default site of a user can be retrieved from /meetingPreferences/sites.</param>
         /// <returns>List of possible Video Device Objects</returns>
-        public async Task<List<MeetingVideoDevice>> GetMeetingVideoDevicesAsync(string userEmail = null, string siteUrl = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<MeetingVideoDevice>>> GetMeetingVideoDevicesAsync(string userEmail = null, string siteUrl = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
@@ -108,7 +110,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="meetingVideoDevices">Array of video devices. If the array is not empty, one device and no more than one devices must be set as default device.</param>
         /// <returns>List of Video Devices</returns>
-        public async Task<List<MeetingVideoDevice>> UpdateMeetingVideoDevicesAsync(List<MeetingVideoDevice> meetingVideoDevices)
+        public async Task<SparkApiConnectorApiOperationResult<List<MeetingVideoDevice>>> UpdateMeetingVideoDevicesAsync(List<MeetingVideoDevice> meetingVideoDevices)
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("meetingVideoDevices", meetingVideoDevices);
@@ -122,7 +124,7 @@ namespace SparkDotNet
         /// Retrieves the Personal Meeting Room options for the authenticated user.
         /// </summary>
         /// <returns>A meeting room option object</returns>
-        public async Task<MeetingPreferencesPMR> GetPersonalMeetingRoomOptionsAsync(string userEmail = null, string siteUrl = null)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingPreferencesPMR>> GetPersonalMeetingRoomOptionsAsync(string userEmail = null, string siteUrl = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
@@ -148,8 +150,8 @@ namespace SparkDotNet
         /// <param name="userEmail">Email address for the user. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user in a site they manage and the API will update Personal Meeting Room options for that user.</param>
         /// <param name="siteUrl">URL of the Webex site to query. For individual use, if siteUrl is not specified, the query will use the default site of the user. For admin use, if siteUrl is not specified, the query will use the default site for the admin's authorization token used to make the call. In the case where the user belongs to a site different than the admin’s default site, the admin can set the site to query using the siteUrl parameter. All available Webex sites and default site of a user can be retrieved from /meetingPreferences/sites.</param>
         /// <returns>The updated personal room options</returns>
-        public async Task<MeetingPreferencesPMR> UpdatePersonalMeetingRoomOptionsAsync(string topic, string hostPin, bool enableAutoLock, int autoLockMinutes, bool enabledNotifyHost,
-                                                                                       bool supportCoHost, bool supportAnyoneAsCoHost, MeetingPreferencesCoHost[] coHosts,
+        public async Task<SparkApiConnectorApiOperationResult<MeetingPreferencesPMR>> UpdatePersonalMeetingRoomOptionsAsync(string topic, string hostPin, bool enableAutoLock, int autoLockMinutes, bool enabledNotifyHost,
+                                                                                       bool supportCoHost, bool supportAnyoneAsCoHost, List<MeetingPreferencesCoHost> coHosts,
                                                                                        bool? allowFirstUserToBeCoHost = null, bool? allowAuthenticatedDevices = null,
                                                                                        string userEmail = null, string siteUrl = null)
         {
@@ -182,7 +184,7 @@ namespace SparkDotNet
         /// <param name="userEmail">Email address for the user. This parameter is only used if the user or application calling the API has the admin-level scopes. If set, the admin may specify the email of a user in a site they manage and the API will update Personal Meeting Room options for that user.</param>
         /// <param name="siteUrl">URL of the Webex site to query. For individual use, if siteUrl is not specified, the query will use the default site of the user. For admin use, if siteUrl is not specified, the query will use the default site for the admin's authorization token used to make the call. In the case where the user belongs to a site different than the admin’s default site, the admin can set the site to query using the siteUrl parameter. All available Webex sites and default site of a user can be retrieved from /meetingPreferences/sites.</param>
         /// <returns>The updated personal room options</returns>
-        public async Task<MeetingPreferencesPMR> UpdatePersonalMeetingRoomOptionsAsync(MeetingPreferencesPMR pmr, string userEmail = null, string siteUrl = null)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingPreferencesPMR>> UpdatePersonalMeetingRoomOptionsAsync(MeetingPreferencesPMR pmr, string userEmail = null, string siteUrl = null)
         {
             return await UpdatePersonalMeetingRoomOptionsAsync(pmr.Topic, pmr.HostPin, pmr.EnabledAutoLock, pmr.AutoLockMinutes,
                                                                pmr.EnabledNotifyHost, pmr.SupportCoHost, pmr.SupportAnyoneAsCoHost,

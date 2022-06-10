@@ -1,4 +1,4 @@
-﻿namespace SparkDotNet
+﻿namespace SparkDotNet.Models
 {
     /// <summary>
     /// Settings for forwarding all incoming calls to the destination

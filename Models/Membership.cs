@@ -1,6 +1,6 @@
 using System;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Memberships represent a person's relationship to a room. Use this API to list members of any room that you're in or

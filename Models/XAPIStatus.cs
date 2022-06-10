@@ -1,4 +1,4 @@
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Query the current status of the Webex RoomOS Device.

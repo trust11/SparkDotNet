@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,7 +15,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="attachmentActionId">A unique identifier for the attachment action.</param>
         /// <returns>AttachmentAction object.</returns>
-        public async Task<AttachmentAction> GetAttachmentActionAsync(string attachmentActionId)
+        public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> GetAttachmentActionAsync(string attachmentActionId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{attachmentActionBase}/{attachmentActionId}", queryParams);
@@ -27,7 +29,7 @@ namespace SparkDotNet
         /// <param name="messageId">The ID of the message which contains the attachment.</param>
         /// <param name="inputs">The attachment action's inputs.</param>
         /// <returns>The newly created Attachment Action object</returns>
-        public async Task<AttachmentAction> CreateAttachmentActionAsync(string type, string messageId, AttachmentActionInput inputs)
+        public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> CreateAttachmentActionAsync(string type, string messageId, AttachmentActionInput inputs)
         {
             var putBody = new Dictionary<string, object>();
             putBody.Add("type", type);
@@ -41,7 +43,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="attachment">The Attachment Action object to be created</param>
         /// <returns>The newly created Attachment Action object</returns>
-        public async Task<AttachmentAction> CreateAttachmentActionAsync(AttachmentAction attachment)
+        public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> CreateAttachmentActionAsync(AttachmentAction attachment)
         {
             return await CreateAttachmentActionAsync(attachment.type, attachment.messageId, attachment.inputs);
         }

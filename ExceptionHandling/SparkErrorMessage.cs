@@ -1,4 +1,4 @@
-﻿namespace SparkDotNet
+﻿namespace SparkDotNet.ExceptionHandling
 {
     public class SparkErrorMessage
     {

@@ -1,4 +1,5 @@
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     public class SipAddress : WebexObject
     {
         public string Type { get; set; }

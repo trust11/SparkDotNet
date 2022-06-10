@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace SparkDotNet
         /// List all the space classifications configured in your org.
         /// </summary>
         /// <returns>List of SpaceClassification objects.</returns>
-        public async Task<List<SpaceClassification>> GetSpaceClassificationsAsync()
+        public async Task<SparkApiConnectorApiOperationResult<List<SpaceClassification>>> GetSpaceClassificationsAsync()
         {
             var queryParams = new Dictionary<string, string>();
             

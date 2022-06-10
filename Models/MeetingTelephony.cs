@@ -1,4 +1,6 @@
-namespace SparkDotNet
+using System.Collections.Generic;
+
+namespace SparkDotNet.Models
 {
     public class MeetingTelephony : WebexObject
     {
@@ -12,12 +14,12 @@ namespace SparkDotNet
         /// <summary>
         /// Array of call-in numbers for joining teleconference from a phone.
         /// </summary>
-        public MeetingTelephonyCallInNumber[] CallInNumbers { get; set; }
+        public List<MeetingTelephonyCallInNumber> CallInNumbers { get; set; }
 
         /// <summary>
         /// HATEOAS information of global call-in numbers for joining teleconference from a phone.
         /// </summary>
-        public MeetingTelephonyLink[] Links { get; set; }
+        public List<MeetingTelephonyCallInNumber> Links { get; set; }
     }
 
 

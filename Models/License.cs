@@ -1,4 +1,5 @@
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     /// <summary>
     /// An allowance for features and services that are provided to users on a Webex Teams services subscription.

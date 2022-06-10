@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace SparkDotNet
         /// <param name="orgId">List locations in this organization. Only admin users of another organization (such as partners) may use this parameter.</param>
         /// <param name="max">Limit the maximum number of location in the response. Default: 100</param>
         /// <returns>A list of matching Location objects</returns>
-        public async Task<List<Location>> GetLocationsAsync(string name = null, string id = null, string orgId = null, int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<Location>>> GetLocationsAsync(string name = null, string id = null, string orgId = null, int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
 
@@ -39,7 +41,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="locationId">A unique identifier for the location.</param>
         /// <returns>A location object</returns>
-        public async Task<Location> GetLocationAsync(string locationId)
+        public async Task<SparkApiConnectorApiOperationResult<Location>> GetLocationAsync(string locationId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{locationsBase}/{locationId}", queryParams);

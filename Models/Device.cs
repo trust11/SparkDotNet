@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Devices represent cloud-registered Webex RoomOS devices, as well as actively-connected Webex soft clients on mobile or desktop.
@@ -40,12 +41,12 @@ namespace SparkDotNet
         /// <summary>
         /// The capabilities of the device.
         /// </summary>
-        public string[] Capabilities { get; set; }
+        public List<string> Capabilities { get; set; }
 
         /// <summary>
         /// The permissions the user has for this device. For example, xapi means this user is entitled to using the xapi against this device.
         /// </summary>
-        public string[] Permissions { get; set; }
+        public List<string> Permissions { get; set; }
 
         /// <summary>
         /// The connection status of the device.
@@ -60,7 +61,7 @@ namespace SparkDotNet
         /// <summary>
         /// Tags assigned to the device.
         /// </summary>
-        public string[] Tags { get; set; }
+        public List<string> Tags { get; set; }
 
         /// <summary>
         /// The current IP address of the device.
@@ -85,7 +86,7 @@ namespace SparkDotNet
         /// <summary>
         /// All SIP addresses to dial this device.
         /// </summary>
-        public string[] SipUrls { get; set; }
+        public List<string> SipUrls { get; set; }
 
         /// <summary>
         /// Serial number for the device.

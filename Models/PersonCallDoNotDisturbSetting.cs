@@ -1,4 +1,4 @@
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     public class PersonCallDoNotDisturbSetting : WebexObject
     {

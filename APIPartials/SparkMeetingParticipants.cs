@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +20,7 @@ namespace SparkDotNet
         /// <param name="meetingId">The unique identifier for the meeting.</param>
         /// <param name="hostEmail">Email address for the meeting host. This parameter is only used if the user or application calling the API has the admin-level scopes, the admin may specify the email of a user in a site they manage and the API will return meeting participants of the meetings that are hosted by that user.</param>
         /// <returns>A list of all meeting participants.</returns>
-        public async Task<List<MeetingParticipant>> GetMeetingParticipantsAsync(string meetingId, string hostEmail = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<MeetingParticipant>>> GetMeetingParticipantsAsync(string meetingId, string hostEmail = null)
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("meetingId", meetingId);
@@ -34,7 +36,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="participantId">The unique identifier for the meeting and the participant.</param>
         /// <returns>The requested meeting participant.</returns>
-        public async Task<MeetingParticipant> GetMeetingParticipantDetailsAsync(string participantId)
+        public async Task<SparkApiConnectorApiOperationResult<MeetingParticipant>> GetMeetingParticipantDetailsAsync(string participantId)
         {
             return await GetItemAsync<MeetingParticipant>($"{meetingParticipantsBase}/{participantId}");
         }
@@ -50,7 +52,7 @@ namespace SparkDotNet
         /// <param name="admin">The value can be true or false. The value of true is to admit a participant to the meeting if the participant is in the lobby, No-Op if the participant is not in the lobby or when the value is set to false.</param>
         /// <param name="expel">The attribute is exclusive and its value can be true or false. The value of true means that the participant will be expelled from the meeting, the value of false means No-Op.</param>
         /// <returns>The updated meeting participant object</returns>
-        public async Task<Meeting> UpdateMeetingParticipantAsync(string participantId, bool? muted = null, bool? admin = null, bool? expel = null)
+        public async Task<SparkApiConnectorApiOperationResult<Meeting>> UpdateMeetingParticipantAsync(string participantId, bool? muted = null, bool? admin = null, bool? expel = null)
         {
             var bodyParameters = new Dictionary<string, object>();
 

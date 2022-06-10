@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,14 +22,14 @@ namespace SparkDotNet
         /// <param name="locationId">List people present in this location.</param>
         /// <param name="showAllTypes">If the status is removed due to performance issues (ie. when querying via orgId or ids), it can be forced to be returned anyway by setting this to true</param>
         /// <returns>List of People objects.</returns>
-        public async Task<List<Person>> GetPeopleAsync(string email = null, string displayName = null, string[] ids = null, string orgId = null, int max = 0, bool? callingData = null, string locationId = null, bool? showAllTypes = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Person>>> GetPeopleAsync(string email = null, string displayName = null, List<string> ids = null, string orgId = null, int max = 0, bool? callingData = null, string locationId = null, bool? showAllTypes = null)
         {
             var queryParams = new Dictionary<string, string>();
-            if (email != null) queryParams.Add("email",email);
-            if (displayName != null) queryParams.Add("displayName",displayName);
+            if (email != null) queryParams.Add("email", email);
+            if (displayName != null) queryParams.Add("displayName", displayName);
             if (ids != null) queryParams.Add("id", string.Join(",", ids));
             if (orgId != null) queryParams.Add("orgId", orgId);
-            if (max > 0) queryParams.Add("max",max.ToString());
+            if (max > 0) queryParams.Add("max", max.ToString());
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
             if (locationId != null) queryParams.Add("locationId", locationId);
             if (showAllTypes != null) queryParams.Add("showAllTypes", showAllTypes.ToString());
@@ -40,7 +42,8 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="callingData">Include BroadCloud user details in the response. Default: false</param>
         /// <returns>A person object representing the querying user.</returns>
-        public async Task<Person> GetMeAsync(bool? callingData = false) {
+        public async Task<SparkApiConnectorApiOperationResult<Person>> GetMeAsync(bool? callingData = false)
+        {
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
             var path = GetURL($"{peopleBase}/me", queryParams);
@@ -54,7 +57,8 @@ namespace SparkDotNet
         /// <param name="personId">A unique identifier for the person.</param>
         /// <param name="callingData">Include BroadCloud user details in the response. Default: false</param>
         /// <returns>Person object.</returns>
-        public async Task<Person> GetPersonAsync(string personId, bool? callingData = null) {
+        public async Task<SparkApiConnectorApiOperationResult<Person>> GetPersonAsync(string personId, bool? callingData = null)
+        {
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
             var path = GetURL($"{peopleBase}/{personId}", queryParams);
@@ -77,13 +81,14 @@ namespace SparkDotNet
         /// <param name="extension">The extension of the person retrieved from BroadCloud.</param>
         /// <param name="locationId">The ID of the location for this person retrieved from BroadCloud.</param>
         /// <returns>Person object.</returns>
-        public async Task<Person> CreatePersonAsync(string[] emails, string displayName = null, string firstName = null, string lastName = null,
-                                                    string avatar = null, string orgId = null, string[] roles = null, string[] licenses = null,
-                                                    bool? callingData = null, PhoneNumber[] phoneNumbers = null, string extension = null,
+        public async Task<SparkApiConnectorApiOperationResult<Person>> CreatePersonAsync(List<string> emails, string displayName = null, string firstName = null, string lastName = null,
+                                                    string avatar = null, string orgId = null, List<string> roles = null, List<string> licenses = null,
+                                                    bool? callingData = null, List<PhoneNumber> phoneNumbers = null, string extension = null,
                                                     string locationId = null)
         {
             var queryParams = new Dictionary<string, string>();
-            if (callingData != null) queryParams.Add("callingData", callingData.ToString());
+            callingData ??= false;
+            queryParams.Add("callingData", callingData.ToString().ToLower());
             var path = GetURL(peopleBase, queryParams);
 
             var postBody = new Dictionary<string, object>();
@@ -98,8 +103,6 @@ namespace SparkDotNet
             if (phoneNumbers != null) postBody.Add("phoneNumbers", phoneNumbers);
             if (extension != null) postBody.Add("extension", extension);
             if (locationId != null) postBody.Add("locationId", locationId);
-
-
             return await PostItemAsync<Person>(path, postBody);
         }
 
@@ -109,7 +112,7 @@ namespace SparkDotNet
         /// <param name="person">A person object representing the person to be created</param>
         /// <param name="callingData">Include BroadCloud user details in the response. Default: false</param>
         /// <returns>The newly created person</returns>
-        public async Task<Person> CreatePersonAsync(Person person, bool? callingData = false)
+        public async Task<SparkApiConnectorApiOperationResult<Person>> CreatePersonAsync(Person person, bool? callingData = null)
         {
             return await CreatePersonAsync(person.emails, person.displayName, person.firstName, person.lastName, person.avatar, person.orgId,
                                            person.roles, person.licenses, callingData, person.PhoneNumbers, person.Extension, person.LocationId);
@@ -121,7 +124,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="personId">A unique identifier for the person.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeletePersonAsync(string personId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePersonAsync(string personId)
         {
             return await DeleteItemAsync($"{peopleBase}/{personId}");
         }
@@ -132,7 +135,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="person">A person object.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeletePersonAsync(Person person)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePersonAsync(Person person)
         {
             return await DeletePersonAsync(person.id);
         }
@@ -156,9 +159,9 @@ namespace SparkDotNet
         /// <param name="phoneNumbers">Phone numbers for the person. Can only be set for Webex Calling. Needs a Webex Calling license.</param>
         /// <param name="showAllTypes">Include additional user data like #attendee role</param>
         /// <returns>Person object.</returns>
-        public async Task<Person> UpdatePersonAsync(string personId, string displayName, string[] emails = null, string orgId = null, string[] roles = null,
+        public async Task<SparkApiConnectorApiOperationResult<Person>> UpdatePersonAsync(string personId, string displayName, List<string> emails = null, string orgId = null, List<string> roles = null,
                                                     string firstName = null, string lastName = null, string avatar = null,
-                                                    string[] licenses = null, bool? callingData = null, PhoneNumber[] phoneNumbers = null,
+                                                    List<string> licenses = null, bool? callingData = null, List<PhoneNumber> phoneNumbers = null,
                                                     string extension = null, bool? loginEnabled = null, bool? showAllTypes = null)
         {
             var queryParams = new Dictionary<string, string>();
@@ -167,7 +170,7 @@ namespace SparkDotNet
             var path = GetURL($"{peopleBase}/{personId}", queryParams);
 
             var putBody = new Dictionary<string, object>();
-            putBody.Add("personId",personId);
+            putBody.Add("personId", personId);
             if (emails != null) putBody.Add("emails", emails);
             putBody.Add("displayName", displayName);
             if (firstName != null) putBody.Add("firstName", firstName);
@@ -178,7 +181,7 @@ namespace SparkDotNet
             if (licenses != null) putBody.Add("licenses", licenses);
             if (phoneNumbers != null) putBody.Add("phoneNumbers", phoneNumbers);
             if (extension != null) putBody.Add("extension", extension);
-            if (loginEnabled != null) putBody.Add("extension", loginEnabled);
+            if (loginEnabled != null) putBody.Add("loginEnabled", loginEnabled);
 
             return await UpdateItemAsync<Person>(path, putBody);
         }
@@ -191,11 +194,11 @@ namespace SparkDotNet
         /// <param name="callingData">Include BroadCloud user details in the response. Default: false</param>
         /// <param name="showAllTypes">Include additional user data like #attendee role</param>
         /// <returns>Person object.</returns>
-        public async Task<Person> UpdatePersonAsync(Person person, bool? callingData = null, bool? showAllTypes = null)
+        public async Task<SparkApiConnectorApiOperationResult<Person>> UpdatePersonAsync(Person person, bool? callingData = null, bool? showAllTypes = null)
         {
             return await UpdatePersonAsync(person.id, person.displayName, person.emails, person.orgId, person.roles,
                                            person.firstName, person.lastName, person.avatar, person.licenses,
-                                           callingData, person.PhoneNumbers, person.Extension,  person.LoginEnabled, showAllTypes
+                                           callingData, person.PhoneNumbers, person.Extension, person.LoginEnabled, showAllTypes
 );
         }
 

@@ -1,4 +1,5 @@
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
 
     /// <summary>
     /// Hybrid Clusters are groups of hosts, and the connectors these hosts contain, that are managed as a unit. All the connectors of a single type in a cluster share the same configuration.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     public class PersonCallIdSetting
     {

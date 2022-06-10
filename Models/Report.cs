@@ -1,4 +1,5 @@
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     /// <summary>
     /// Reports available via Webex Control Hub may be generated and downloaded via the Reports API. To access this API, the authenticated user must be a read-only or full administrator of the organization to which the report belongs.
     /// For more information about Reports, see the Admin API guide.
@@ -59,5 +60,5 @@ namespace SparkDotNet {
         /// The link from which the report can be downloaded
         /// </summary>
         public string DownloadUrl { get; set; }
-   }
+    }
 }

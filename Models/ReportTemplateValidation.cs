@@ -1,6 +1,7 @@
 using System;
 
-namespace SparkDotNet {
+namespace SparkDotNet.Models
+{
     public class ReportTemplateValidation
     {
         public string Field { get; set; }

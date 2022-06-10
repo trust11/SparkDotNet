@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// Messages are how we communicate in a room.In Webex Teams, each message is displayed on its own line along with a timestamp and sender information.
@@ -62,7 +63,7 @@ namespace SparkDotNet
         /// Public URLs for files attached to the message.
         /// For the supported media types and the behavior of file uploads, see Message Attachments.
         /// </summary>
-        public string[] files { get; set; }
+        public List<string> files { get; set; }
 
         /// <summary>
         /// The person ID of the message author.
@@ -77,17 +78,17 @@ namespace SparkDotNet
         /// <summary>
         /// People IDs for anyone mentioned in the message.
         /// </summary>
-        public string[] mentionedPeople { get; set; }
+        public List<string> mentionedPeople { get; set; }
 
         /// <summary>
         /// Group names for the groups mentioned in the message.
         /// </summary>
-        public string[] mentionedGroups { get; set; }
+        public List<string> mentionedGroups { get; set; }
 
         /// <summary>
         /// Message content attachments attached to the message. See the Cards Guide for more information.
         /// </summary>
-        public object[] attachments { get; set; }
+        public List<Object> attachments { get; set; }
 
         /// <summary>
         /// The date and time the message was created.

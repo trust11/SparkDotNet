@@ -1,4 +1,6 @@
 
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,7 +22,7 @@ namespace SparkDotNet
         /// <param name="status">Limit resource group memberships to a specific status.</param>
         /// <param name="max">Limit the maximum number of resource group memberships in the response.</param>
         /// <returns>A list of ResourceGroupMembership objects</returns>
-        public async Task<List<ResourceGroupMembership>> GetResourceGroupMembershipsAsync(string licenseId = null, string personId = null,
+        public async Task<SparkApiConnectorApiOperationResult<List<ResourceGroupMembership>>> GetResourceGroupMembershipsAsync(string licenseId = null, string personId = null,
                                                                                           string personOrgId = null, string status = null,
                                                                                           int max = 0)
         {
@@ -39,7 +41,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="queryParameters">Dictionary with query parameters.</param>
         /// <returns>A list of ResourceGroupMembership objects</returns>
-        public async Task<List<ResourceGroupMembership>> GetResourceGroupMembershipsAsync(Dictionary<string, string> queryParameters)
+        public async Task<SparkApiConnectorApiOperationResult<List<ResourceGroupMembership>>> GetResourceGroupMembershipsAsync(Dictionary<string, string> queryParameters)
         {
             var path = GetURL(resourceGroupsBase, queryParameters);
             return await GetItemsAsync<ResourceGroupMembership>(path);
@@ -51,7 +53,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="resourceGroupMembershipId">The unique identifier for the resource group membership.</param>
         /// <returns>A ResourceGroupMembership object</returns>
-        public async Task<ResourceGroupMembership> GetResourceGroupMembershipAsync(string resourceGroupMembershipId)
+        public async Task<SparkApiConnectorApiOperationResult<ResourceGroupMembership>> GetResourceGroupMembershipAsync(string resourceGroupMembershipId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{resourceGroupMembershipsBase}/{resourceGroupMembershipId}", queryParams);
@@ -72,7 +74,7 @@ namespace SparkDotNet
         /// <param name="personOrgId">The organization ID of the person.</param>
         /// <param name="status">The activation status of the resource group membership.</param>
         /// <returns>true if the update succeeded, false otherwise</returns>
-        public async Task<bool> UpdateReourceGroupMembershipAsync(string resourceGroupMembershipId, string resourceGroupId, string licenseId, string personId, string personOrgId, string status)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> UpdateReourceGroupMembershipAsync(string resourceGroupMembershipId, string resourceGroupId, string licenseId, string personId, string personOrgId, string status)
         {
             var bodyParameter = new Dictionary<string, object>();
             bodyParameter.Add("resourceGroupId", resourceGroupId);
@@ -92,7 +94,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="resourceGroupMembership">The ResourceGroupMembership that should be updated.</param>
         /// <returns>true if the update succeeded, false otherwise</returns>
-        public async Task<bool> UpdateReourceGroupMembershipAsync(ResourceGroupMembership resourceGroupMembership)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> UpdateReourceGroupMembershipAsync(ResourceGroupMembership resourceGroupMembership)
         {
             return await UpdateReourceGroupMembershipAsync(resourceGroupMembership.Id, resourceGroupMembership.ResourceGroupId, resourceGroupMembership.LicenseId, resourceGroupMembership.PersonId, resourceGroupMembership.PersonOrgId, resourceGroupMembership.Status);
         }

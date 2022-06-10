@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics;
 
-namespace SparkDotNet
+namespace SparkDotNet.Models
 {
     /// <summary>
     /// This is a common superclass for all Webex API objects.
@@ -27,7 +27,7 @@ namespace SparkDotNet
 
         public override string ToString()
         {
-            return this.ToString();
+            return ToString();
         }
 
         private string GetDebuggerDisplay()

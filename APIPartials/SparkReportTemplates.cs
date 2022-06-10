@@ -1,13 +1,12 @@
-
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SparkDotNet
 {
-
     public partial class Spark
     {
-
         private readonly string reportTemplateBase = "/v1/report/templates";
 
         /// <summary>
@@ -15,12 +14,11 @@ namespace SparkDotNet
         /// CSV reports for Teams services are only supported for organizations based in the North American region.
         /// Organizations based in a different region will return blank CSV files for any Teams reports.
         /// <returns>List of Report Template objects.</returns>
-        public async Task<List<ReportTemplate>> GetReportTemplatesAsync()
+        public async Task<SparkApiConnectorApiOperationResult<List<ReportTemplate>>> GetReportTemplatesAsync()
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL(reportTemplateBase, queryParams);
             return await GetItemsAsync<ReportTemplate>(path);
         }
-   }
-
+    }
 }

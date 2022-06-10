@@ -1,3 +1,5 @@
+using SparkDotNet.ExceptionHandling;
+using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace SparkDotNet
         /// <param name="beforeMessage">List messages sent before a message, by ID.</param>
         /// <param name="max">Limit the maximum number of messages in the response. Default: 50</param>
         /// <returns>List of Message objects.</returns>
-        public async Task<List<Message>> GetMessagesAsync(string roomId, string parentId = null,
+        public async Task<SparkApiConnectorApiOperationResult<List<Message>>> GetMessagesAsync(string roomId, string parentId = null,
                                                           string mentionedPeople = null, DateTime? before = null,
                                                           string beforeMessage = null, int max = 0)
         {
@@ -50,7 +52,7 @@ namespace SparkDotNet
         /// <param name="personId">List messages in a 1:1 room, by person ID.</param>
         /// <param name="personEmail">List messages in a 1:1 room, by person email.</param>
         /// <returns>List of direct Messages</returns>
-        public async Task<List<Message>> GetDirectMessagesAsync(string parentId = null, string personId = null, string personEmail = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Message>>> GetDirectMessagesAsync(string parentId = null, string personId = null, string personEmail = null)
         {
             var queryParams = new Dictionary<string, string>();
 
@@ -69,7 +71,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="messageId">The unique identifier for the message.</param>
         /// <returns>Message object.</returns>
-        public async Task<Message> GetMessageAsync(string messageId)
+        public async Task<SparkApiConnectorApiOperationResult<Message>> GetMessageAsync(string messageId)
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{messagesBase}/{messageId}", queryParams);
@@ -88,9 +90,9 @@ namespace SparkDotNet
         /// <param name="files">The public URL to a binary file to be posted into the room. Only one file is allowed per message. Uploaded files are automatically converted into a format that all Webex Teams clients can render. For the supported media types and the behavior of uploads, see the Message Attachments Guide. Possible values: http://www.example.com/images/media.png</param>
         /// <param name="attachments">Content attachments to attach to the message. Only one card per message is supported. See the Cards Guide for more information.</param>
         /// <returns>Message object.</returns>
-        public async Task<Message> CreateMessageAsync(string roomId = null, string parentId = null, string toPersonId = null,
+        public async Task<SparkApiConnectorApiOperationResult<Message>> CreateMessageAsync(string roomId = null, string parentId = null, string toPersonId = null,
                                                       string toPersonEmail = null, string text = null, string markdown = null,
-                                                      string[] files = null, string attachments = null)
+                                                      List<string> files = null, string attachments = null)
         {
             var postBody = new Dictionary<string, object>();
             if (roomId != null) postBody.Add("roomId",roomId);
@@ -110,7 +112,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="messageId">The unique identifier for the message.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteMessageAsync(string messageId)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(string messageId)
         {
             return await DeleteItemAsync($"{messagesBase}/{messageId}");
         }
@@ -121,7 +123,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="message">The message object for the message.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<bool> DeleteMessageAsync(Message message)
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(Message message)
         {
             return await DeleteMessageAsync(message.id);
         }
@@ -148,7 +150,7 @@ namespace SparkDotNet
         /// <param name="text">The message, in plain text. If markdown is specified this parameter may be optionally used to provide alternate text for UI clients that do not support rich text. The maximum message length is 7439 bytes.</param>
         /// <param name="markdown">The message, in Markdown format. If this attribute is set ensure that the request does NOT contain an html attribute.</param>
         /// <returns>The updated message object</returns>
-        public async Task<Message> UpdateMessageAsync(string messageId, string roomId = null, string text = null, string markdown = null)
+        public async Task<SparkApiConnectorApiOperationResult<Message>> UpdateMessageAsync(string messageId, string roomId = null, string text = null, string markdown = null)
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("messageId", messageId);
@@ -168,7 +170,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="message">The message to be updated</param>
         /// <returns>The updated message object</returns>
-        public async Task<Message> UpdateMessageAsync(Message message)
+        public async Task<SparkApiConnectorApiOperationResult<Message>> UpdateMessageAsync(Message message)
         {
             return await UpdateMessageAsync(message.id, message.roomId, message.text, message.markdown);
         }

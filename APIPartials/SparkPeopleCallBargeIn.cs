@@ -26,9 +26,9 @@ namespace SparkDotNet
             return await GetPersonSettingAsync<PersonBargeInSetting>(BargeInBaseUrl, personId, orgId);
         }
 
-        public async Task UpdatePersonBargeSettingAsync(string personId, PersonBargeInSetting personBargeInSetting, string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult<PersonBargeInSetting>> UpdatePersonBargeSettingAsync(string personId, PersonBargeInSetting personBargeInSetting, string orgId = null)
         {
-            await UpdatePersonSettingAsync(BargeInBaseUrl, personId, personBargeInSetting, orgId);
+            return await UpdatePersonSettingAsync(BargeInBaseUrl, personId, personBargeInSetting, orgId);
         }
     }
 }

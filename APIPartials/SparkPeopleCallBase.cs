@@ -6,7 +6,7 @@ namespace SparkDotNet
 {
     public partial class Spark
     {
-        private async Task<SparkApiConnectorApiOperationResult<T>> GetPersonSettingAsync<T>(string url, string personId, string orgId = null, string profileId = null)
+        private async Task<SparkApiConnectorApiOperationResult<T>> GetPersonSettingAsync<T>(string url, string personId, string orgId = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
@@ -14,12 +14,12 @@ namespace SparkDotNet
             return await GetItemAsync<T>(path);
         }
 
-        private async Task<SparkApiConnectorApiOperationResult<T>> UpdatePersonSettingAsync<T>(string url, string personId, T personCallSetting, string orgId = null)
+        private async Task<SparkApiConnectorApiOperationResult<T>> UpdatePersonSettingAsync<T>(string url, string personId, T setting, string orgId = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
             var path = GetURL(string.Format(url, personId), queryParams);
-            return await UpdateItemAsync(path, personCallSetting);
+            return await UpdateItemAsync(path, setting);
         }
     }
 }

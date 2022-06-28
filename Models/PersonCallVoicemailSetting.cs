@@ -1,15 +1,27 @@
 namespace SparkDotNet.Models
 {
+    using SparkDotNet.Models.PersonCallVoicemail;
+
     public class PersonCallVoicemailSetting : WebexObject
     {
-        /// <summary>
-        /// true if the Do Not Disturb feature is enabled.
-        /// </summary>
-        public bool Enabled { get; set; }
+        public EmailCopyOfMessage EmailCopyOfMessage { get; set; } = new EmailCopyOfMessage();
 
-        /// <summary>
-        /// Enables a Ring Reminder to play a brief tone on your desktop phone when you receive incoming calls.
-        /// </summary>
-        public bool RingSplashEnabled { get; set; }
+        public bool Enabled { get; set; } = true;
+
+        public FaxMessago FaxMessage { get; set; } = new FaxMessago();
+
+        public MessageStorage MessageStorage { get; set; } = new MessageStorage();
+
+        public Notifications Notifications { get; set; } = new Notifications();
+
+        public SendAllCalls SendAllCalls { get; set; } = new SendAllCalls();
+
+        public SendBusyCalls SendBusyCalls { get; set; } = new SendBusyCalls();
+
+        public SendUnansweredCalls SendUnansweredCalls { get; set; } = new SendUnansweredCalls();
+
+        public TransferToNumber TransferToNumber { get; set; } = new TransferToNumber();
+
+        public bool VoiceMessageForwardingEnabled { get; set; }
     }
 }

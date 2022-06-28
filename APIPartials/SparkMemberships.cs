@@ -5,18 +5,20 @@ using System.Threading.Tasks;
 
 namespace SparkDotNet
 {
-
     public partial class Spark
     {
-
         private readonly string membershipsBase = "/v1/memberships";
 
         /// <summary>
         /// Lists all room memberships. By default, lists memberships for rooms to which the authenticated user belongs.
         /// - Use query parameters to filter the response.
         /// - Use roomId to list memberships for a room, by ID.
-        /// - Use either personId or personEmail to filter the results.
+        /// - Use either personId or personEmail to filter the results. The roomId parameter is required when using these parameters.
         /// </summary>
+        /// <remarks>
+        /// Note: For moderated team spaces, the list of memberships will include only the space moderators if the user
+        /// is a team member but not a direct participant of the space.
+        /// </remarks>
         /// <param name="roomId">List memberships associated with a room, by ID.</param>
         /// <param name="personId">List memberships associated with a person, by ID. The roomId parameter is required when using this parameter.</param>
         /// <param name="personEmail">List memberships associated with a person, by email address. The roomId parameter is required when using this parameter.</param>
@@ -24,27 +26,17 @@ namespace SparkDotNet
         /// <returns>A List of Membership objects.</returns>
         public async Task<SparkApiConnectorApiOperationResult<List<Membership>>> GetMembershipsAsync(string roomId = null, string personId = null, string personEmail = null, int max = 0)
         {
+            // Check if room Id is not empty when personId or person email is not empty
+            if (personId != null || personEmail != null && roomId == null)
+                return new SparkApiConnectorApiOperationResult<List<Membership>>() { ErrorMessage = $"If it is used either personId or personEmail to filter the results, then the roomId parameter is required.", ResultCode = SparkApiOperationResultCode.OtherError };
             var queryParams = new Dictionary<string, string>();
-            if (roomId != null) queryParams.Add("roomId",roomId);
-            if (personId != null) queryParams.Add("personId",personId);
-            if (personEmail != null) queryParams.Add("personEmail",personEmail);
-            if (max > 0) queryParams.Add("max",max.ToString());
+            if (roomId != null) queryParams.Add("roomId", roomId);
+            if (personId != null) queryParams.Add("personId", personId);
+            if (personEmail != null) queryParams.Add("personEmail", personEmail);
+            if (max > 0) queryParams.Add("max", max.ToString());
 
             var path = GetURL(membershipsBase, queryParams);
             return await GetItemsAsync<Membership>(path);
-        }
-
-        /// <summary>
-        /// Get details for a membership by ID.
-        /// Specify the membership ID in the membershipId URI parameter.
-        /// </summary>
-        /// <param name="membershipId">The unique identifier for the membership.</param>
-        /// <returns>Membership object.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<Membership>> GetMembershipAsync(string membershipId)
-        {
-            var queryParams = new Dictionary<string, string>();
-            var path = GetURL($"{membershipsBase}/{membershipId}", queryParams);
-            return await GetItemAsync<Membership>(path);
         }
 
         /// <summary>
@@ -73,7 +65,7 @@ namespace SparkDotNet
         /// <returns>Boolean representing the success of the operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(string membershipId)
         {
-            return await DeleteItemAsync($"{membershipsBase}/{membershipId}");            
+            return await DeleteItemAsync($"{membershipsBase}/{membershipId}");
         }
 
         /// <summary>
@@ -86,6 +78,7 @@ namespace SparkDotNet
         {
             return await DeleteTeamMembershipAsync(membership.id);
         }
+
         /// <summary>
         /// Updates properties for a membership by ID.
         /// Specify the membership ID in the membershipId URI parameter.
@@ -97,7 +90,7 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult<Membership>> UpdateMembershipAsync(string membershipId, bool isModerator, bool isRoomHidden)
         {
             var putBody = new Dictionary<string, object>();
-            putBody.Add("isModerator",isModerator);
+            putBody.Add("isModerator", isModerator);
             putBody.Add("isRoomHidden", isRoomHidden);
             var path = $"{membershipsBase}/{membershipId}";
             return await UpdateItemAsync<Membership>(path, putBody);

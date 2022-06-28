@@ -35,9 +35,9 @@ namespace SparkDotNet
             return await GetPersonSettingAsync<PersonCallForwardingSetting>(CallForwardingBaseUrl, personId, orgId);
         }
 
-        public async Task UpdatePersonCallForwardingSettingAsync(string personId, PersonCallForwardingSetting personCallForwardingSetting, string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult<PersonCallForwardingSetting>> UpdatePersonCallForwardingSettingAsync(string personId, PersonCallForwardingSetting personCallForwardingSetting, string orgId = null)
         {
-            await UpdatePersonSettingAsync(CallForwardingBaseUrl, personId, personCallForwardingSetting, orgId);
+           return await UpdatePersonSettingAsync(CallForwardingBaseUrl, personId, personCallForwardingSetting, orgId);
         }
     }
 }

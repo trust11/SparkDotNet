@@ -1,6 +1,5 @@
 using SparkDotNet.ExceptionHandling;
 using SparkDotNet.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SparkDotNet
@@ -50,9 +49,9 @@ namespace SparkDotNet
         /// <param name="orgId">A unique identifier for the organisation</param>
         /// <param name="profileId">A unique identifier for the person profile settings</param>
         /// <returns>Nothing</returns>
-        public async Task UpdatePersonUcProfileSettingAsync(string personId, PersonUcProfileSetting personUcProfileSetting, string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult<PersonUcProfileSetting>> UpdatePersonUcProfileSettingAsync(string personId, PersonUcProfileSetting personUcProfileSetting, string orgId = null)
         {
-            await UpdatePersonSettingAsync(CallingBehaviorBaseUrl, personId, personUcProfileSetting, orgId);
+            return await UpdatePersonSettingAsync(CallingBehaviorBaseUrl, personId, personUcProfileSetting, orgId);
         }
     }
 }

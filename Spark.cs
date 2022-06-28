@@ -145,18 +145,15 @@ namespace SparkDotNet
         {
             UriBuilder uriBuilder = new UriBuilder(basePath);
             uriBuilder.Path = path;
-            string queryString = "";
+            var queryString = new StringBuilder();
             if (dict.Count > 0)
             {
                 foreach (KeyValuePair<string, string> kv in dict)
                 {
-                    queryString += UrlEncode(kv.Key);
-                    queryString += "=";
-                    queryString += UrlEncode(kv.Value);
-                    queryString += "&";
+                    queryString.Append(UrlEncode(kv.Key)).Append('=').Append(UrlEncode(kv.Value)).Append('&');
                 }
             }
-            uriBuilder.Query = queryString;
+            uriBuilder.Query = queryString.ToString().Trim('&');
             return uriBuilder.Uri.ToString();
         }
 
@@ -439,10 +436,13 @@ namespace SparkDotNet
             }
             if (!string.IsNullOrEmpty(responseData))
             {
-                string requestUri = response?.RequestMessage?.RequestUri?.AbsolutePath;
+                string requestUri = response?.RequestMessage?.RequestUri?.AbsoluteUri;
                 try
                 {
                     result.Error = JsonConvert.DeserializeObject<SparkErrorContent>(responseData);
+                    result.Error.RequestUrl = response.RequestMessage.RequestUri;
+                    result.Error.Method = response.RequestMessage.Method.Method;
+                    result.Error.Body = await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     if (string.IsNullOrEmpty(result.Error.Message))
                     {

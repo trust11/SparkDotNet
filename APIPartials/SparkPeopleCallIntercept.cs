@@ -30,9 +30,9 @@ namespace SparkDotNet
             return await GetPersonSettingAsync<PersonCallInterceptSetting>(CallInterceptBaseUrl, personId, orgId);
         }
 
-        public async Task UpdatePersonCallInterceptSettingAsync(string personId, PersonCallInterceptSetting personCallInterceptSetting, string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult<PersonCallInterceptSetting>> UpdatePersonCallInterceptSettingAsync(string personId, PersonCallInterceptSetting personCallInterceptSetting, string orgId = null)
         {
-            await UpdatePersonSettingAsync(CallInterceptBaseUrl, personId, personCallInterceptSetting, orgId);
+            return await UpdatePersonSettingAsync(CallInterceptBaseUrl, personId, personCallInterceptSetting, orgId);
         }
     }
 }

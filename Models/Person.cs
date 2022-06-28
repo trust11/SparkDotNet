@@ -23,7 +23,7 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The email addresses of the person.
         /// </summary>
-        public List<string> emails { get; set; } = new List<string>();
+        public HashSet<string> emails { get; set; } = new HashSet<string>();
 
 
 
@@ -31,14 +31,14 @@ namespace SparkDotNet.Models
         /// Phone numbers for the person.
         /// </summary>
         [JsonProperty("phoneNumbers")]
-        public List<PhoneNumber> PhoneNumbers { get; set; } = new List<PhoneNumber>();
+        public HashSet<PhoneNumber> PhoneNumbers { get; set; } = new HashSet<PhoneNumber>();
 
 
         /// <summary>
         /// Sip addresses for the person.
         /// </summary>
         [JsonProperty("sipAddresses")]
-        public List<SipAddress> SipAddresses { get; set; } = new List<SipAddress>();
+        public HashSet<SipAddress> SipAddresses { get; set; } = new HashSet<SipAddress>();
 
 
         /// <summary>
@@ -86,12 +86,12 @@ namespace SparkDotNet.Models
         /// <summary>
         /// An array of role strings representing the roles to which this person belongs.
         /// </summary>
-        public List<string> roles { get; set; } = new List<string>();
+        public HashSet<string> roles { get; set; } = new HashSet<string>();
 
         /// <summary>
         /// An array of license strings allocated to this person.
         /// </summary>
-        public List<string> licenses { get; set; } = new List<string>();
+        public HashSet<string> licenses { get; set; } = new HashSet<string>();
 
 
         /// <summary>
@@ -154,5 +154,12 @@ namespace SparkDotNet.Models
         /// appuser: account is a guest user
         /// </summary>
         public string type { get; set; }
+
+        /// <summary>
+        /// One or several site names where this user has attendee role.
+        /// Append #attendee to the sitename (eg: mysite.webex.com#attendee)
+        /// Possible values: mysite.webex.com#attendee
+        /// </summary>
+        public HashSet<string> SiteUrls { get; set; }
     }
 }

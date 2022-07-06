@@ -318,7 +318,7 @@ namespace SparkDotNet
                     //Log($"Inner exception: {h.InnerException.Message}", 2);
                     result.ErrorDetail = h.InnerException.Message;
                 }
-                result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                result.ResultCode = SparkApiOperationResultCode.OtherError;
             }
             else
             {
@@ -329,7 +329,7 @@ namespace SparkDotNet
                     //Log($"Inner exception: {e.InnerException.Message}", 2);
                     result.ErrorDetail = e.InnerException.Message;
                 }
-                result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                result.ResultCode = SparkApiOperationResultCode.OtherError;
             }
         }
 

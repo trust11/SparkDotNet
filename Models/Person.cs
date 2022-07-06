@@ -1,6 +1,6 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace SparkDotNet.Models
 {
@@ -9,37 +9,31 @@ namespace SparkDotNet.Models
     /// Searching and viewing People requires an auth token with a scope of spark:people_read.
     /// Viewing the list of all People in your Organization requires an administrator auth token with spark-admin:people_read scope.
     /// Adding, updating, and removing People requires an administrator auth token with the spark-admin:people_write scope.
-    /// 
+    ///
     /// To learn more about managing people in a room see the Memberships API.
     /// For information about how to allocate Hybrid Services licenses to people, see the Managing Hybrid Services guide.
     /// </summary>
     public class Person : WebexObject
     {
         /// <summary>
-        /// A unique identifier for the person.
+        /// The URL to the person's avatar in PNG format.
         /// </summary>
-        public string id { get; set; }
+        public string avatar { get; set; }
+
+        /// <summary>
+        /// The date and time the person was created.
+        /// </summary>
+        public DateTime created { get; set; }
+
+        /// <summary>
+        /// The full name of the person.
+        /// </summary>
+        public string displayName { get; set; }
 
         /// <summary>
         /// The email addresses of the person.
         /// </summary>
         public HashSet<string> emails { get; set; } = new HashSet<string>();
-
-
-
-        /// <summary>
-        /// Phone numbers for the person.
-        /// </summary>
-        [JsonProperty("phoneNumbers")]
-        public HashSet<PhoneNumber> PhoneNumbers { get; set; } = new HashSet<PhoneNumber>();
-
-
-        /// <summary>
-        /// Sip addresses for the person.
-        /// </summary>
-        [JsonProperty("sipAddresses")]
-        public HashSet<SipAddress> SipAddresses { get; set; } = new HashSet<SipAddress>();
-
 
         /// <summary>
         /// The extension of the person retrieved from BroadCloud.
@@ -48,56 +42,27 @@ namespace SparkDotNet.Models
         public string Extension { get; set; }
 
         /// <summary>
-        /// The ID of the location for this person retrieved from BroadCloud.
-        /// </summary>
-        [JsonProperty("locationId")]
-        public string LocationId { get; set; }
-
-        /// <summary>
-        /// The full name of the person.
-        /// </summary>
-        public string displayName { get; set; }
-
-        /// <summary>
-        /// The nickname of the person if configured. If no nickname is configured for the person, this field will not be present.
-        /// </summary>
-        public string nickName { get; set; }
-
-        /// <summary>
         /// The first name of the person.
         /// </summary>
         public string firstName { get; set; }
 
         /// <summary>
-        /// The last name of the person.
+        /// A unique identifier for the person.
         /// </summary>
-        public string lastName { get; set; }
+        public string id { get; set; }
+        /// <summary>
+        /// Whether or not an invite is pending for the user to complete account activation.
+        /// This property is only returned if the authenticated user is an admin user for the person's organization.
+        /// true: the person has been invited to Webex Teams but has not created an account
+        /// false: an invite is not pending for this person
+        /// </summary>
+        [JsonProperty("invitePending")]
+        public bool InvitePending { get; set; }
 
         /// <summary>
-        /// The URL to the person's avatar in PNG format.
+        /// The date and time of the person's last activity within Webex Teams.
         /// </summary>
-        public string avatar { get; set; }
-
-        /// <summary>
-        /// The ID of the organization to which this person belongs.
-        /// </summary>
-        public string orgId { get; set; }
-
-        /// <summary>
-        /// An array of role strings representing the roles to which this person belongs.
-        /// </summary>
-        public HashSet<string> roles { get; set; } = new HashSet<string>();
-
-        /// <summary>
-        /// An array of license strings allocated to this person.
-        /// </summary>
-        public HashSet<string> licenses { get; set; } = new HashSet<string>();
-
-
-        /// <summary>
-        /// The date and time the person was created.
-        /// </summary>
-        public DateTime created { get; set; }
+        public DateTime lastActivity { get; set; }
 
         /// <summary>
         /// The date and time the person was last changed.
@@ -106,14 +71,62 @@ namespace SparkDotNet.Models
         public DateTime LastModified { get; set; }
 
         /// <summary>
-        /// The time zone of the person if configured. If no timezone is configured on the account, this field will not be present
+        /// The last name of the person.
         /// </summary>
-        public string timeZone { get; set; }
+        public string lastName { get; set; }
 
         /// <summary>
-        /// The date and time of the person's last activity within Webex Teams.
+        /// An array of license strings allocated to this person.
         /// </summary>
-        public DateTime lastActivity { get; set; }
+        public HashSet<string> licenses { get; set; } = new HashSet<string>();
+
+        /// <summary>
+        /// The ID of the location for this person retrieved from BroadCloud.
+        /// </summary>
+        [JsonProperty("locationId")]
+        public string LocationId { get; set; }
+
+        /// <summary>
+        /// Whether or not the user is allowed to use Webex Teams.
+        /// This property is only returned if the authenticated user is an admin user for the person's organization.
+        /// true: the person can log into Webex Teams
+        /// false: the person cannot log into Webex Teams
+        /// </summary>
+        [JsonProperty("loginEndbaled")]
+        public bool LoginEnabled { get; set; }
+
+        /// <summary>
+        /// The nickname of the person if configured. If no nickname is configured for the person, this field will not be present.
+        /// </summary>
+        public string nickName { get; set; }
+
+        /// <summary>
+        /// The ID of the organization to which this person belongs.
+        /// </summary>
+        public string orgId { get; set; }
+
+        /// <summary>
+        /// Phone numbers for the person.
+        /// </summary>
+        [JsonProperty("phoneNumbers")]
+        public HashSet<PhoneNumber> PhoneNumbers { get; set; } = new HashSet<PhoneNumber>();
+
+        /// <summary>
+        /// An array of role strings representing the roles to which this person belongs.
+        /// </summary>
+        public HashSet<string> roles { get; set; } = new HashSet<string>();
+
+        /// <summary>
+        /// Sip addresses for the person.
+        /// </summary>
+        [JsonProperty("sipAddresses")]
+        public HashSet<SipAddress> SipAddresses { get; set; } = new HashSet<SipAddress>();
+        /// <summary>
+        /// One or several site names where this user has attendee role.
+        /// Append #attendee to the sitename (eg: mysite.webex.com#attendee)
+        /// Possible values: mysite.webex.com#attendee
+        /// </summary>
+        public HashSet<string> SiteUrls { get; set; }
 
         /// <summary>
         /// The current presence status of the person.
@@ -130,23 +143,9 @@ namespace SparkDotNet.Models
         public string status { get; set; }
 
         /// <summary>
-        /// Whether or not an invite is pending for the user to complete account activation.
-        /// This property is only returned if the authenticated user is an admin user for the person's organization.
-        /// true: the person has been invited to Webex Teams but has not created an account
-        /// false: an invite is not pending for this person
+        /// The time zone of the person if configured. If no timezone is configured on the account, this field will not be present
         /// </summary>
-        [JsonProperty("invitePending")]
-        public bool InvitePending { get; set; }
-
-        /// <summary>
-        /// Whether or not the user is allowed to use Webex Teams.
-        /// This property is only returned if the authenticated user is an admin user for the person's organization.
-        /// true: the person can log into Webex Teams
-        /// false: the person cannot log into Webex Teams
-        /// </summary>
-        [JsonProperty("loginEndbaled")]
-        public bool LoginEnabled { get; set; }
-
+        public string timeZone { get; set; }
         /// <summary>
         /// The type of person account, such as person or bot.
         /// person: account belongs to a person
@@ -154,12 +153,5 @@ namespace SparkDotNet.Models
         /// appuser: account is a guest user
         /// </summary>
         public string type { get; set; }
-
-        /// <summary>
-        /// One or several site names where this user has attendee role.
-        /// Append #attendee to the sitename (eg: mysite.webex.com#attendee)
-        /// Possible values: mysite.webex.com#attendee
-        /// </summary>
-        public HashSet<string> SiteUrls { get; set; }
     }
 }

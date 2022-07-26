@@ -15,7 +15,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static Newtonsoft.Json.JsonConvert;
 using static SparkDotNet.ExceptionHandling.SparkApiOperationResultMapper;
 using static System.Net.WebUtility;
 
@@ -23,11 +22,13 @@ namespace SparkDotNet
 {
     public partial class Spark
     {
-        private string accessToken { get; set; }
-
         private const string baseURL = "https://webexapis.com";
 
         private HttpClient client = new HttpClient();
+
+        public static TicketInformations TicketInformations { get; private set; } = new TicketInformations();
+
+        private string accessToken { get; set; }
 
         public Spark(string accessToken)
         {
@@ -48,6 +49,20 @@ namespace SparkDotNet
 
         #region Private Helper Methods
 
+        private static bool IsLocalPath(object files)
+        {
+            List<string> filelist = (List<string>)files;
+            var p = filelist[0];
+            try
+            {
+                return new System.Uri(p).IsFile;
+            }
+            catch (Exception)
+            {
+                return true; // assume it's a local file if we can't create a URI out of it...
+            }
+        }
+
         private async Task<SparkApiConnectorApiOperationResult<bool>> DeleteItemAsync(string path)
         {
             var result = new SparkApiConnectorApiOperationResult<bool>();
@@ -57,9 +72,10 @@ namespace SparkDotNet
             {
                 var fullpath = $"{baseURL}{path}";
                 response = await client.DeleteAsync(fullpath);
+                await TicketInformations.FillRequestParameter(response);
+
                 result.Result = MapHttpStatusCode(HttpStatusCode.NoContent) == SparkApiOperationResultCode.OK;
                 result.ResultCode = MapHttpStatusCode(response.StatusCode);
-
             }
             catch (HttpRequestException ex)
             {
@@ -70,6 +86,94 @@ namespace SparkDotNet
             }
 
             return result;
+        }
+
+        private async Task<SparkApiConnectorApiOperationResult<T>> GetItemAsync<T>(string path)
+        {
+            var result = new SparkApiConnectorApiOperationResult<T>();
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await client.GetAsync(path).ConfigureAwait(false);
+                await TicketInformations.FillRequestParameter(response);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                }
+                else
+                {
+                    result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(result, ex, response);
+            }
+
+            return result;
+        }
+
+        private async Task<SparkApiConnectorApiOperationResult<List<T>>> GetItemsAsync<T>(string path, string rootNode = "items")
+        {
+            List<T> items = null;
+            JObject requestResult = null;
+            List<JToken> results = null;
+
+            var result = new SparkApiConnectorApiOperationResult<List<T>>();
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await client.GetAsync(path).ConfigureAwait(true);
+                await TicketInformations.FillRequestParameter(response);
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        items = new List<T>();
+                        requestResult = JObject.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                        results = requestResult[rootNode].Children().ToList();
+                        foreach (JToken token in results)
+                        {
+                            T item = JsonConvert.DeserializeObject<T>(token.ToString());
+                            items.Add(item);
+                        }
+                        result.Result = items;
+                    }
+                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        result.ResultCode = SparkApiOperationResultCode.OK;
+                    }
+                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(result, ex, response);
+            }
+
+            return result;
+        }
+
+        private string GetURL(string path, Dictionary<string, string> dict, string basePath = baseURL)
+        {
+            UriBuilder uriBuilder = new UriBuilder(basePath);
+            uriBuilder.Path = path;
+            var queryString = new StringBuilder();
+            if (dict.Count > 0)
+            {
+                foreach (KeyValuePair<string, string> kv in dict)
+                {
+                    queryString.Append(UrlEncode(kv.Key)).Append('=').Append(UrlEncode(kv.Value)).Append('&');
+                }
+            }
+            uriBuilder.Query = queryString.ToString().Trim('&');
+            return uriBuilder.Uri.ToString();
         }
 
         private async Task<SparkApiConnectorApiOperationResult<T>> PostItemAsync<T>(string path, Dictionary<string, object> bodyParams)
@@ -120,9 +224,11 @@ namespace SparkDotNet
                 }
 
                 response = await client.PostAsync(path, content);
+                await TicketInformations.FillRequestParameter(response);
+
                 if (response.IsSuccessStatusCode)
                 {
-                    result.Result = DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
                 }
                 else
@@ -141,147 +247,7 @@ namespace SparkDotNet
             return result;
         }
 
-        private string GetURL(string path, Dictionary<string, string> dict, string basePath = baseURL)
-        {
-            UriBuilder uriBuilder = new UriBuilder(basePath);
-            uriBuilder.Path = path;
-            var queryString = new StringBuilder();
-            if (dict.Count > 0)
-            {
-                foreach (KeyValuePair<string, string> kv in dict)
-                {
-                    queryString.Append(UrlEncode(kv.Key)).Append('=').Append(UrlEncode(kv.Value)).Append('&');
-                }
-            }
-            uriBuilder.Query = queryString.ToString().Trim('&');
-            return uriBuilder.Uri.ToString();
-        }
-
-        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, Dictionary<string, object> bodyParams)
-        {
-            var result = new SparkApiConnectorApiOperationResult<T>();
-            HttpResponseMessage response = null;
-            StringContent content;
-            try
-            {
-                var jsonBody = JsonConvert.SerializeObject(bodyParams);
-                content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-                response = await client.PutAsync(path, content);
-                if (response.IsSuccessStatusCode)
-                {
-                    result.Result = DeserializeObject<T>(await response.Content.ReadAsStringAsync());
-                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
-                }
-                else
-                {
-                    result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
-                }
-            }
-            catch (Exception ex)
-            {
-                await ProcessException(result, ex, response);
-            }
-
-            return result;
-        }
-
-        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, T body)
-        {
-            var result = new SparkApiConnectorApiOperationResult<T>();
-
-            var jsonBody = JsonConvert.SerializeObject(body);
-            StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync(path, content);
-            await CheckForErrorResponse(response);
-            if (response.IsSuccessStatusCode)
-            {
-                result.Result = DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-                result.ResultCode = MapHttpStatusCode(response.StatusCode);
-            }
-            else
-            {
-                result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
-            }
-            return result;
-        }
-
-        private async Task UpdateItemAsync(string path, Dictionary<string, object> bodyParams)
-        {
-            await UpdateItemAsync<Dictionary<string, object>>(path, bodyParams);
-        }
-
-        private async Task<SparkApiConnectorApiOperationResult<T>> GetItemAsync<T>(string path)
-        {
-            var result = new SparkApiConnectorApiOperationResult<T>();
-            HttpResponseMessage response = null;
-            try
-            {
-                response = await client.GetAsync(path).ConfigureAwait(false);
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    result.Result = DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
-                }
-                else
-                {
-                    result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
-                }
-            }
-            catch (Exception ex)
-            {
-                await ProcessException(result, ex, response);
-            }
-
-            return result;
-        }
-
-        private async Task<SparkApiConnectorApiOperationResult<List<T>>> GetItemsAsync<T>(string path, string rootNode = "items")
-        {
-            List<T> items = null;
-            JObject requestResult = null;
-            List<JToken> results = null;
-
-            var result = new SparkApiConnectorApiOperationResult<List<T>>();
-            HttpResponseMessage response = null;
-            try
-            {
-                response = await client.GetAsync(path).ConfigureAwait(true);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        items = new List<T>();
-                        requestResult = JObject.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
-                        results = requestResult[rootNode].Children().ToList();
-                        foreach (JToken token in results)
-                        {
-                            T item = DeserializeObject<T>(token.ToString());
-                            items.Add(item);
-                        }
-                        result.Result = items;
-                    }
-                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
-                }
-                else
-                {
-                    if (response.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        result.ResultCode = SparkApiOperationResultCode.OK;
-                    }
-                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
-                }
-            }
-            catch (Exception ex)
-            {
-                await ProcessException(result, ex, response);
-            }
-
-            return result;
-        }
-
-        private async Task ProcessException(GenericOperationResult result, Exception e, HttpResponseMessage response, [CallerMemberName] string methodName = null)
+        private async Task ProcessException(SparkApiConnectorApiOperationResult result, Exception e, HttpResponseMessage response, [CallerMemberName] string methodName = null)
         {
             HttpStatusCode code = HttpStatusCode.Unused;
             string responseData = null;
@@ -333,18 +299,61 @@ namespace SparkDotNet
             }
         }
 
-        private static bool IsLocalPath(object files)
+        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, Dictionary<string, object> bodyParams)
         {
-            List<string> filelist = (List<string>)files;
-            var p = filelist[0];
+            var result = new SparkApiConnectorApiOperationResult<T>();
+            HttpResponseMessage response = null;
+            StringContent content;
             try
             {
-                return new System.Uri(p).IsFile;
+                var jsonBody = JsonConvert.SerializeObject(bodyParams);
+                content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                response = await client.PutAsync(path, content);
+                await TicketInformations.FillRequestParameter(response);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                }
+                else
+                {
+                    result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return true; // assume it's a local file if we can't create a URI out of it...
+                await ProcessException(result, ex, response);
             }
+
+            return result;
+        }
+
+        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, T body)
+        {
+            var result = new SparkApiConnectorApiOperationResult<T>();
+
+            var jsonBody = JsonConvert.SerializeObject(body);
+            StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PutAsync(path, content);
+            await TicketInformations.FillRequestParameter(response);
+
+            await CheckForErrorResponse(response);
+            if (response.IsSuccessStatusCode)
+            {
+                result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                result.ResultCode = MapHttpStatusCode(response.StatusCode);
+            }
+            else
+            {
+                result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
+            }
+            return result;
+        }
+
+        private async Task UpdateItemAsync(string path, Dictionary<string, object> bodyParams)
+        {
+            await UpdateItemAsync<Dictionary<string, object>>(path, bodyParams);
         }
 
         #endregion Private Helper Methods
@@ -352,6 +361,8 @@ namespace SparkDotNet
         public async Task<PaginationResult<T>> GetItemsWithLinksAsync<T>(string path)
         {
             HttpResponseMessage response = await client.GetAsync(path);
+            await TicketInformations.FillRequestParameter(response);
+
             await CheckForErrorResponse(response);
             //todo:handle error
             //var errorResponse = await CheckForErrorResponse(response);
@@ -367,7 +378,7 @@ namespace SparkDotNet
             List<JToken> results = requestResult["items"].Children().ToList();
             foreach (JToken result in results)
             {
-                T item = DeserializeObject<T>(result.ToString());
+                T item = JsonConvert.DeserializeObject<T>(result.ToString());
                 items.Add(item);
             }
             if (response.Headers.Contains("Link"))
@@ -417,7 +428,7 @@ namespace SparkDotNet
                 return null;
             }
 
-            SparkErrorContent sparkErrorContent = DeserializeObject<SparkErrorContent>(await response.Content.ReadAsStringAsync());
+            SparkErrorContent sparkErrorContent = JsonConvert.DeserializeObject<SparkErrorContent>(await response.Content.ReadAsStringAsync());
             if (sparkErrorContent.Message == null)
                 sparkErrorContent.Message = response.ReasonPhrase;
             return sparkErrorContent;
@@ -440,9 +451,6 @@ namespace SparkDotNet
                 try
                 {
                     result.Error = JsonConvert.DeserializeObject<SparkErrorContent>(responseData);
-                    result.Error.RequestUrl = response.RequestMessage.RequestUri;
-                    result.Error.Method = response.RequestMessage.Method.Method;
-                    result.Error.Body = await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     if (string.IsNullOrEmpty(result.Error.Message))
                     {

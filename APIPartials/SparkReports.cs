@@ -113,6 +113,7 @@ namespace SparkDotNet
         public async Task<string> DownloadReport(string reportUrl)
         {
             HttpResponseMessage response = await client.GetAsync(reportUrl);
+            await TicketInformations.FillRequestParameter(response);
 
             await CheckForErrorResponse(response);
 

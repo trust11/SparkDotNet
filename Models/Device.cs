@@ -26,7 +26,13 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The place associated with the device.
         /// </summary>
+        [Obsolete("The placeId field has been deprecated. Please use workspaceId instead.")]
         public string PlaceId { get; set; }
+
+        /// <summary>
+        /// The
+        /// </summary>
+        public string WorkspaceId { get; set; }
 
         /// <summary>
         /// The person associated with the device.
@@ -41,12 +47,12 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The capabilities of the device.
         /// </summary>
-        public List<string> Capabilities { get; set; }
+        public HashSet<string> Capabilities { get; set; }
 
         /// <summary>
         /// The permissions the user has for this device. For example, xapi means this user is entitled to using the xapi against this device.
         /// </summary>
-        public List<string> Permissions { get; set; }
+        public HashSet<string> Permissions { get; set; }
 
         /// <summary>
         /// The connection status of the device.
@@ -61,7 +67,7 @@ namespace SparkDotNet.Models
         /// <summary>
         /// Tags assigned to the device.
         /// </summary>
-        public List<string> Tags { get; set; }
+        public HashSet<string> Tags { get; set; }
 
         /// <summary>
         /// The current IP address of the device.
@@ -86,7 +92,7 @@ namespace SparkDotNet.Models
         /// <summary>
         /// All SIP addresses to dial this device.
         /// </summary>
-        public List<string> SipUrls { get; set; }
+        public HashSet<string> SipUrls { get; set; }
 
         /// <summary>
         /// Serial number for the device.

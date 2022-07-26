@@ -28,7 +28,7 @@ namespace SparkDotNet
         {
             // Check if room Id is not empty when personId or person email is not empty
             if (personId != null || personEmail != null && roomId == null)
-                return new SparkApiConnectorApiOperationResult<List<Membership>>() { ErrorMessage = $"If it is used either personId or personEmail to filter the results, then the roomId parameter is required.", ResultCode = SparkApiOperationResultCode.OtherError };
+                return new SparkApiConnectorApiOperationResult<List<Membership>>() { ErrorMessage = $"If it is used either personId or personEmail to filter the results, then the roomId parameter is required.", ResultCode = SparkApiOperationResultCode.OtherError};
             var queryParams = new Dictionary<string, string>();
             if (roomId != null) queryParams.Add("roomId", roomId);
             if (personId != null) queryParams.Add("personId", personId);

@@ -7,7 +7,7 @@ namespace SparkDotNet.Models
     /// This is a common superclass for all Webex API objects.
     /// It will bundle their common behavior
     /// </summary>
-    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
+    [DebuggerDisplay("{" + nameof(ToStringFormatted) + "(),nq}")]
     public abstract class WebexObject
     {
         public enum JsonFormatting
@@ -20,7 +20,7 @@ namespace SparkDotNet.Models
         /// Returns the JSON representation of the object
         /// </summary>
         /// <returns></returns>
-        public string ToString(JsonFormatting format = JsonFormatting.None)
+        private string ToString(JsonFormatting format = JsonFormatting.None)
         {
             return JsonConvert.SerializeObject(this, (Formatting)format);
         }
@@ -30,7 +30,7 @@ namespace SparkDotNet.Models
             return ToString();
         }
 
-        private string GetDebuggerDisplay()
+        public string ToStringFormatted()
         {
             return ToString(JsonFormatting.Indented);
         }

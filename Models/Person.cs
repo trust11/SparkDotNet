@@ -50,6 +50,7 @@ namespace SparkDotNet.Models
         /// A unique identifier for the person.
         /// </summary>
         public string id { get; set; }
+
         /// <summary>
         /// Whether or not an invite is pending for the user to complete account activation.
         /// This property is only returned if the authenticated user is an admin user for the person's organization.
@@ -121,6 +122,7 @@ namespace SparkDotNet.Models
         /// </summary>
         [JsonProperty("sipAddresses")]
         public HashSet<SipAddress> SipAddresses { get; set; } = new HashSet<SipAddress>();
+
         /// <summary>
         /// One or several site names where this user has attendee role.
         /// Append #attendee to the sitename (eg: mysite.webex.com#attendee)
@@ -146,6 +148,7 @@ namespace SparkDotNet.Models
         /// The time zone of the person if configured. If no timezone is configured on the account, this field will not be present
         /// </summary>
         public string timeZone { get; set; }
+
         /// <summary>
         /// The type of person account, such as person or bot.
         /// person: account belongs to a person

@@ -351,6 +351,28 @@ namespace SparkDotNet
             return result;
         }
 
+        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T,U>(string path, U body)
+        {
+            var result = new SparkApiConnectorApiOperationResult<T>();
+
+            var jsonBody = JsonConvert.SerializeObject(body);
+            StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PutAsync(path, content);
+            await TicketInformations.FillRequestParameter(response);
+
+            await CheckForErrorResponse(response);
+            if (response.IsSuccessStatusCode)
+            {
+                result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                result.ResultCode = MapHttpStatusCode(response.StatusCode);
+            }
+            else
+            {
+                result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
+            }
+            return result;
+        }
+
         private async Task UpdateItemAsync(string path, Dictionary<string, object> bodyParams)
         {
             await UpdateItemAsync<Dictionary<string, object>>(path, bodyParams);
@@ -451,6 +473,8 @@ namespace SparkDotNet
                 try
                 {
                     result.Error = JsonConvert.DeserializeObject<SparkErrorContent>(responseData);
+                    result.ErrorMessage = result.Error?.Message;
+                    result.ErrorDetail = $"TrackingId : {result.Error?.TrackingId}";
 
                     if (string.IsNullOrEmpty(result.Error.Message))
                     {

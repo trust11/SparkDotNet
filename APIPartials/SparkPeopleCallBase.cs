@@ -21,5 +21,13 @@ namespace SparkDotNet
             var path = GetURL(string.Format(url, personId), queryParams);
             return await UpdateItemAsync(path, setting);
         }
+
+        private async Task<SparkApiConnectorApiOperationResult<T>> UpdatePersonSettingAsync<T,U>(string url, string personId, U setting, string orgId = null)
+        {
+            var queryParams = new Dictionary<string, string>();
+            if (orgId != null) queryParams.Add("orgId", orgId);
+            var path = GetURL(string.Format(url, personId), queryParams);
+            return await UpdateItemAsync<T,U>(path, setting);
+        }
     }
 }

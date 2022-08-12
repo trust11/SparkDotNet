@@ -49,9 +49,16 @@ namespace SparkDotNet
         /// <param name="orgId">A unique identifier for the organisation</param>
         /// <param name="profileId">A unique identifier for the person profile settings</param>
         /// <returns>Nothing</returns>
-        public async Task<SparkApiConnectorApiOperationResult<PersonUcProfileSetting>> UpdatePersonUcProfileSettingAsync(string personId, PersonUcProfileSetting personUcProfileSetting, string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult> UpdatePersonUcProfileSettingAsync(string personId, PersonUcProfileSettingConfig personUcProfileSettingConfig, string orgId = null)
         {
-            return await UpdatePersonSettingAsync(CallingBehaviorBaseUrl, personId, personUcProfileSetting, orgId);
+            if (personUcProfileSettingConfig.ProfileId == null)// || personUcProfileSettingConfig.BehaviorType == null)
+               return await UpdatePersonSettingAsync<PersonUcProfileSetting, object>(CallingBehaviorBaseUrl, personId, new { }, orgId).ConfigureAwait(false);
+            return await UpdatePersonSettingAsync<PersonUcProfileSetting, PersonUcProfileSettingConfig>(CallingBehaviorBaseUrl, personId, personUcProfileSettingConfig, orgId).ConfigureAwait(false);
+        }
+
+        public async Task<SparkApiConnectorApiOperationResult> UpdatePersonUcProfileSettingAsyncOfficial(string personId, PersonUcProfileSettingConfig personUcProfileSettingConfig, string orgId = null)
+        {
+            return await UpdatePersonSettingAsync<PersonUcProfileSetting, PersonUcProfileSettingConfig>(CallingBehaviorBaseUrl, personId, personUcProfileSettingConfig, orgId).ConfigureAwait(false);
         }
     }
 }

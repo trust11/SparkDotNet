@@ -16,16 +16,16 @@ namespace SparkDotNet
         /// Use query parameters to filter the response.
         /// Long result sets will be split into pages.
         /// </summary>
-        /// <param name="name">List locations whose name contains this string (case-insensitive).</param>
+        /// <param name="nameContains">List locations whose name contains this string (case-insensitive).</param>
         /// <param name="id">List locations by ID.</param>
         /// <param name="orgId">List locations in this organization. Only admin users of another organization (such as partners) may use this parameter.</param>
         /// <param name="max">Limit the maximum number of location in the response. Default: 100</param>
         /// <returns>A list of matching Location objects</returns>
-        public async Task<SparkApiConnectorApiOperationResult<List<Location>>> GetLocationsAsync(string name = null, string id = null, string orgId = null, int max = 0)
+        public async Task<SparkApiConnectorApiOperationResult<List<Location>>> GetLocationsAsync(string nameContains = null, string id = null, string orgId = null, int max = 0)
         {
             var queryParams = new Dictionary<string, string>();
 
-            if (name != null) queryParams.Add("name", name);
+            if (nameContains != null) queryParams.Add("name", nameContains);
             if (id != null) queryParams.Add("id", id);
             if (orgId != null) queryParams.Add("orgId", orgId);
             if (max > 0) queryParams.Add("max", max.ToString());

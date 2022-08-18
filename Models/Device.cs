@@ -65,6 +65,11 @@ namespace SparkDotNet.Models
         public string Product { get; set; }
 
         /// <summary>
+        /// The product type.
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
         /// Tags assigned to the device.
         /// </summary>
         public HashSet<string> Tags { get; set; }

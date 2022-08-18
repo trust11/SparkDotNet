@@ -93,6 +93,10 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult> Login(string login = null, string password = null, string applicationId = null, string secretKey = null, int timeout = 0)
         {
             var result = new SparkApiConnectorApiOperationResult();
+            if (!string.IsNullOrEmpty(config.Token))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", config.Token);
+            AccessToken = config.Token;
+
             //HttpResponseMessage response = null;
             //try
             //{
@@ -184,6 +188,11 @@ namespace SparkDotNet
                 config.Password = newConfig.Password;
                 config.ApplicationId = newConfig.ApplicationId;
                 config.SecretKey = newConfig.SecretKey;
+                if (config.Token != newConfig.Token && !string.IsNullOrEmpty(newConfig.Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", newConfig.Token);
+                    config.Token = newConfig.Token;
+                }
             }
         }
 
@@ -339,11 +348,7 @@ namespace SparkDotNet
                 }
                 else
                 {
-                    if (response.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        result.ResultCode = SparkApiOperationResultCode.OK;
-                    }
-                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                    result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

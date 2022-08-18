@@ -30,7 +30,12 @@ namespace SparkDotNet
 
         public override string ToString()
         {
-            return $"IsSuccess:{IsSuccess}";
+            if (IsSuccess)
+                return $"Success";
+            else
+            {
+                return $"{Error}";
+            }
         }
 
         public new static SparkApiConnectorApiOperationResult Success => new SparkApiConnectorApiOperationResult 

@@ -44,7 +44,7 @@ namespace SparkDotNet
         /// <param name="details"></param>
         /// <param name="tollFreeNumbers"></param>
         /// <returns></returns>
-        public async Task<SparkApiConnectorApiOperationResult<List<PhoneNumberDetails>>> GetNumbersAsync(
+        public async Task<SparkApiConnectorApiOperationResult<List<PhoneNumberDetails>>> GetPhoneNumbersAsync(
             string orgId = null,
             string location = null,
             int? max = null,

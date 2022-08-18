@@ -57,6 +57,8 @@ namespace SparkDotNet.ExceptionHandling
         {
             return $"IsSuccess:{IsSuccess}";
         }
+
+        public new static SparkApiConnectorApiOperationResult Success => new SparkApiConnectorApiOperationResult { IsSuccess = true, ResultCode = SparkApiOperationResultCode.OK };
     }
 
     internal class FixSizeQueue<T>
@@ -108,7 +110,7 @@ namespace SparkDotNet.ExceptionHandling
             ti.RequestBody = response.RequestMessage.Content != null ? await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
             ti.TrackingId = response.Headers.GetValues(nameof(TicketInformation.TrackingId)).FirstOrDefault();
             ti.ResponseBody = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
-            ti.Token = response.RequestMessage.Headers.GetValues("Authorization").FirstOrDefault();
+            ti.Token = response.RequestMessage.Headers.GetValues("Authorization")?.FirstOrDefault();
             ticketInformations.Enqueue(ti);
         }
 

@@ -1,4 +1,3 @@
-using SparkDotNet.ExceptionHandling;
 using SparkDotNet.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,7 +20,7 @@ namespace SparkDotNet
         /// This API requires a full, user, or read-only administrator auth token with a scope of spark-admin:people_read.
         /// </summary>
         /// <param name="orgId">List people in this organization. Only admin users of another organization (such as partners) may use this parameter.</param>
-        public async Task<SparkApiConnectorApiOperationResult<PersonExecutive>> GetPeopleAsync(string personId, string orgId = null)
+        public async Task<SparkApiConnectorApiOperationResult<PersonExecutive>> GetPersonExecutiveAssistantAsync(string personId, string orgId = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);

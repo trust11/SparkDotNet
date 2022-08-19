@@ -336,6 +336,20 @@ namespace SparkDotNet
                         result.Result = items;
                     }
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
+
+                    var pagination = LinkHeader.CreateInstance(response);
+                    if (pagination != null)
+                    {
+                        var pagRes = await GetItemsAsync<T>(pagination.NextLink, rootNode).ConfigureAwait(false);
+                        if (pagRes.IsSuccess)
+                        {
+                            result.Result.AddRange(pagRes.Result);
+                        }
+                        else
+                        {
+                            result = pagRes;
+                        }
+                    }
                 }
                 else
                 {

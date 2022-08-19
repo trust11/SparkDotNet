@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SparkDotNet.Models
 {
@@ -12,28 +13,29 @@ namespace SparkDotNet.Models
     ///
     /// To learn more about managing people in a room see the Memberships API.
     /// For information about how to allocate Hybrid Services licenses to people, see the Managing Hybrid Services guide.
+    /// https://developer.webex.com/docs/api/v1/people/list-people
     /// </summary>
     public class Person : WebexObject
     {
         /// <summary>
         /// The URL to the person's avatar in PNG format.
         /// </summary>
-        public string avatar { get; set; }
+        public string Avatar { get; set; }
 
         /// <summary>
         /// The date and time the person was created.
         /// </summary>
-        public DateTime created { get; set; }
+        public DateTime Created { get; set; }
 
         /// <summary>
         /// The full name of the person.
         /// </summary>
-        public string displayName { get; set; }
+        public string DisplayName { get; set; }
 
         /// <summary>
         /// The email addresses of the person.
         /// </summary>
-        public HashSet<string> emails { get; set; } = new HashSet<string>();
+        public HashSet<string> Emails { get; set; } = new HashSet<string>();
 
         /// <summary>
         /// The extension of the person retrieved from BroadCloud.
@@ -44,12 +46,12 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The first name of the person.
         /// </summary>
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// A unique identifier for the person.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Whether or not an invite is pending for the user to complete account activation.
@@ -63,7 +65,7 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The date and time of the person's last activity within Webex Teams.
         /// </summary>
-        public DateTime lastActivity { get; set; }
+        public DateTime LastActivity { get; set; }
 
         /// <summary>
         /// The date and time the person was last changed.
@@ -74,12 +76,12 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The last name of the person.
         /// </summary>
-        public string lastName { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// An array of license strings allocated to this person.
         /// </summary>
-        public HashSet<string> licenses { get; set; } = new HashSet<string>();
+        public HashSet<string> Licenses { get; set; } = new HashSet<string>();
 
         /// <summary>
         /// The ID of the location for this person retrieved from BroadCloud.
@@ -99,12 +101,12 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The nickname of the person if configured. If no nickname is configured for the person, this field will not be present.
         /// </summary>
-        public string nickName { get; set; }
+        public string NickName { get; set; }
 
         /// <summary>
         /// The ID of the organization to which this person belongs.
         /// </summary>
-        public string orgId { get; set; }
+        public string OrgId { get; set; }
 
         /// <summary>
         /// Phone numbers for the person.
@@ -115,7 +117,7 @@ namespace SparkDotNet.Models
         /// <summary>
         /// An array of role strings representing the roles to which this person belongs.
         /// </summary>
-        public HashSet<string> roles { get; set; } = new HashSet<string>();
+        public HashSet<string> Roles { get; set; } = new HashSet<string>();
 
         /// <summary>
         /// Sip addresses for the person.
@@ -142,12 +144,12 @@ namespace SparkDotNet.Models
         /// presenting: the user is sharing content
         /// unknown: the user’s status could not be determined
         /// </summary>
-        public string status { get; set; }
+        public StatusType Status { get; set; }
 
         /// <summary>
         /// The time zone of the person if configured. If no timezone is configured on the account, this field will not be present
         /// </summary>
-        public string timeZone { get; set; }
+        public string TimeZone { get; set; }
 
         /// <summary>
         /// The type of person account, such as person or bot.
@@ -155,6 +157,55 @@ namespace SparkDotNet.Models
         /// bot: account is a bot user
         /// appuser: account is a guest user
         /// </summary>
-        public string type { get; set; }
+        public TypeType Type { get; set; }
+    }
+
+    /// <summary>
+    /// The type of person account, such as person or bot.
+    /// </summary>
+    public enum TypeType
+    {
+        //account belongs to a person
+        [EnumMember(Value = "person")]
+        Person,
+        //account is a bot user
+        [EnumMember(Value = "bot")]
+        Bot,
+        //account is a guest user -> https://developer.webex.com/docs/guest-issuer
+        [EnumMember(Value = "appuser")]
+        Appuser
+    }
+
+    /// <summary>
+    /// The current presence status of the person.This will only be returned for people within your organization or an organization you manage.Presence information will not be shown if the authenticated user has disabled status sharing.
+    /// </summary>
+    public enum StatusType
+    {
+        //Active within the last 10 minutes
+        Call,
+
+        //the user is in a call
+        Active,
+
+        //the user has manually set their status to "Do Not Disturb"
+        DoNotDisturb,
+
+        //last activity occurred more than 10 minutes ago
+        Inactive,
+
+        //the user is in a meeting
+        Meeting,
+
+        //the user or a Hybrid Calendar service has indicated that they are "Out of Office"
+        OutOfOffice,
+
+        //the user has never logged in; a status cannot be determined
+        Pending,
+
+        //the user is sharing content
+        Presenting,
+
+        //the user’s status could not be determined
+        Unknown,
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace SparkDotNet
 {
-
     public partial class Spark
     {
         private readonly string peopleBase = "/v1/people";
@@ -115,8 +114,8 @@ namespace SparkDotNet
         /// <returns>The newly created person</returns>
         public async Task<SparkApiConnectorApiOperationResult<Person>> CreatePersonAsync(Person person, bool? callingData = null)
         {
-            return await CreatePersonAsync(person.emails, person.displayName, person.firstName, person.lastName, person.avatar, person.orgId,
-                                           person.roles, person.licenses, callingData, person.PhoneNumbers, person.Extension, person.LocationId, person.SiteUrls);
+            return await CreatePersonAsync(person.Emails, person.DisplayName, person.FirstName, person.LastName, person.Avatar, person.OrgId,
+                                           person.Roles, person.Licenses, callingData, person.PhoneNumbers, person.Extension, person.LocationId, person.SiteUrls);
         }
 
         /// <summary>
@@ -139,7 +138,7 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePersonAsync(Person person)
         {
             if(person == null) return new SparkApiConnectorApiOperationResult<bool> { Error = new SparkErrorContent() { Message = $"Parameter person was null" }, Result = false, IsSuccess = false };
-            return await DeletePersonAsync(person.id);
+            return await DeletePersonAsync(person.Id);
         }
 
         /// <summary>
@@ -199,8 +198,8 @@ namespace SparkDotNet
         /// <returns>Person object.</returns>
         public async Task<SparkApiConnectorApiOperationResult<Person>> UpdatePersonAsync(Person person, bool? callingData = null, bool? showAllTypes = null)
         {
-            return await UpdatePersonAsync(person.id, person.displayName, person.emails,person.LocationId, person.orgId, person.roles,
-                                           person.firstName, person.lastName, person.avatar, person.licenses,
+            return await UpdatePersonAsync(person.Id, person.DisplayName, person.Emails,person.LocationId, person.OrgId, person.Roles,
+                                           person.FirstName, person.LastName, person.Avatar, person.Licenses,
                                            callingData, person.PhoneNumbers, person.Extension, person.LoginEnabled, showAllTypes
 );
         }

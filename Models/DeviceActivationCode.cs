@@ -29,6 +29,4 @@ namespace SparkDotNet.Models
         /// </summary>
         public DateTime Expires { get; set; }
     }
-
-
 }

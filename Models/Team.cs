@@ -14,21 +14,21 @@ namespace SparkDotNet.Models
         /// <summary>
         /// A unique identifier for the team.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// A user-friendly name for the team.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Id of the person who created the Team.
         /// </summary>
-        public string creatorId { get; set; }
+        public string CreatorId { get; set; }
 
         /// <summary>
         /// The date and time the team was created.
         /// </summary>
-        public DateTime created { get; set; }
+        public DateTime Created { get; set; }
     }
 }

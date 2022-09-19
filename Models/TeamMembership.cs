@@ -13,41 +13,41 @@ namespace SparkDotNet.Models
         /// <summary>
         /// A unique identifier for the team membership.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The team ID.
         /// </summary>
-        public string teamId { get; set; }
+        public string TeamId { get; set; }
 
         /// <summary>
         /// The person ID.
         /// </summary>
-        public string personId { get; set; }
+        public string PersonId { get; set; }
 
         /// <summary>
         /// The email address of the person.
         /// </summary>
-        public string personEmail { get; set; }
+        public string PersonEmail { get; set; }
 
         /// <summary>
         /// The display name of the person.
         /// </summary>
-        public string personDisplayName { get; set; }
+        public string PersonDisplayName { get; set; }
 
         /// <summary>
         /// The organization ID of the person.
         /// </summary>
-        public string personOrgId { get; set; }
+        public string PersonOrgId { get; set; }
 
         /// <summary>
         /// Whether or not the participant is a team moderator.
         /// </summary>
-        public bool isModerator { get; set; }
+        public bool IsModerator { get; set; }
 
         /// <summary>
         /// The date and time when the team membership was created.
         /// </summary>
-        public DateTime created { get; set; }
+        public DateTime Created { get; set; }
     }
 }

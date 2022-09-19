@@ -20,6 +20,5 @@ namespace SparkDotNet.Models
         /// This attribute can be modified by Update Video Options API.
         /// </summary>
         public bool IsDefault { get; set; }
-
     }
 }

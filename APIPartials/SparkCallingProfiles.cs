@@ -14,9 +14,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="orgId">The organisation ID</param>
         /// <returns><c>UcManagerCallingProfiles</c></returns>
-        public async Task<SparkApiConnectorApiOperationResult<UcManagerCallingProfiles>> GetUcCallingProfilesAsync(string orgId = null)
-        {
-            return await GetUcManagerProfilesAsync<UcManagerCallingProfiles>(UcManagerProfileBaseUrl, orgId);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<UcManagerCallingProfiles>> GetUcCallingProfilesAsync(string orgId = null) =>
+            await GetUcManagerProfilesAsync<UcManagerCallingProfiles>(UcManagerProfileBaseUrl, orgId);
     }
 }

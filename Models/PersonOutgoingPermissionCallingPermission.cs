@@ -5,7 +5,9 @@ namespace SparkDotNet.Models
     public class PersonOutgoingPermissionCallingPermission
     {
         public CallType CallType { get; set; }
+
         public Action Action { get; set; }
+
         public bool TransferEnabled { get; set; }
     }
 
@@ -28,6 +30,7 @@ namespace SparkDotNet.Models
         [EnumMember(Value = "TOLL")] TOLL,
         [EnumMember(Value = "UNKNOWN")] UNKNOWN
     }
+
     public enum Action
     {
         [EnumMember(Value = "ALLOW")] ALLOW,

@@ -1,7 +1,5 @@
 #nullable enable
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 
 namespace SparkDotNet.Models

@@ -69,7 +69,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamAsync(Team team)
         {
-            return await DeleteTeamAsync(team.id);
+            return await DeleteTeamAsync(team.Id);
         }
 
         /// <summary>

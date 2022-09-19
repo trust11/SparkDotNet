@@ -6,6 +6,7 @@ namespace SparkDotNet.Models.PersonCallVoicemail
     {
         [EnumMember(Value = "INTERNAL")]
         INTERNAL,
+
         [EnumMember(Value = "EXTERNAL")]
         EXTERNAL
     }
@@ -15,6 +16,7 @@ namespace SparkDotNet.Models.PersonCallVoicemail
         public bool MwiEnabled { get; set; }
 
         public StorageTypes StorageType { get; set; }
+
         public string ExternalEmail { get; set; }
     }
 }

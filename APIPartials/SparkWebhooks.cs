@@ -78,7 +78,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWebhookAsync(Webhook webhook)
         {
-            return await DeleteWebhookAsync(webhook.id);
+            return await DeleteWebhookAsync(webhook.Id);
         }
 
         /// <summary>

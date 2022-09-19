@@ -6,6 +6,7 @@
     public class WorkspaceCallForwarding : WebexObject
     {
         public WorkspaceCallForwardingBusy Busy { get; set; }
+
         public WorkspaceCallForwardingNoAnswer NoAnswer { get; set; }
     }
 }

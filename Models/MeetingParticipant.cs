@@ -74,6 +74,4 @@ namespace SparkDotNet.Models
         [JsonProperty("devices")]
         public MeetingParticipantDevice Devices { get; set; }
     }
-
-
 }

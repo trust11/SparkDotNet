@@ -105,7 +105,6 @@ namespace SparkDotNet.Models
         [JsonProperty("isModified")]
         public bool IsModified { get; set; }
 
-
         /// <summary>
         /// Time zone of start and end, conforming with the IANA time zone database.
         /// </summary>

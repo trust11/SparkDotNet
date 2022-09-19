@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -84,6 +85,31 @@ namespace SparkDotNet.Models
         public HashSet<string> Licenses { get; set; } = new HashSet<string>();
 
         /// <summary>
+        /// The business department the user belongs to.
+        /// </summary>
+        public string Department { get; set; }
+
+        /// <summary>
+        /// A manager identifier
+        /// </summary>
+        public string Manager { get; set; }
+
+        /// <summary>
+        /// Person Id of the manager
+        /// </summary>
+        public string ManagerId { get; set; }
+
+        /// <summary>
+        /// The person's title
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Person's address
+        /// </summary>
+        public HashSet<PersonAddress> Addresses { get; set; }
+
+        /// <summary>
         /// The ID of the location for this person retrieved from BroadCloud.
         /// </summary>
         [JsonProperty("locationId")]
@@ -160,6 +186,39 @@ namespace SparkDotNet.Models
         public TypeType Type { get; set; }
     }
 
+    public class PersonAddress
+    {
+        /// <summary>
+        /// Possible values: US
+        /// </summary>
+        public string Country { get; set; }
+
+        /// <summary>
+        /// Possible values: Charlotte
+        /// </summary>
+        public string Locality { get; set; }
+
+        /// <summary>
+        /// Possible values: North Carolina
+        /// </summary>
+        public string Region { get; set; }
+
+        /// <summary>
+        /// Possible values: 1099 Bird Ave.
+        /// </summary>
+        public string StreetAddress { get; set; }
+
+        /// <summary>
+        /// Possible values: work
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Possible values: 99212
+        /// </summary>
+        public string PostalCode { get; set; }
+    }
+
     /// <summary>
     /// The type of person account, such as person or bot.
     /// </summary>
@@ -168,9 +227,11 @@ namespace SparkDotNet.Models
         //account belongs to a person
         [EnumMember(Value = "person")]
         Person,
+
         //account is a bot user
         [EnumMember(Value = "bot")]
         Bot,
+
         //account is a guest user -> https://developer.webex.com/docs/guest-issuer
         [EnumMember(Value = "appuser")]
         Appuser

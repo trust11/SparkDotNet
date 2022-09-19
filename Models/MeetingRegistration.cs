@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 namespace SparkDotNet.Models
 {
-
     public class MeetingRegistration : WebexObject
     {
         /// <summary>

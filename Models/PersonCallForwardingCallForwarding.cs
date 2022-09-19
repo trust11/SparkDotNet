@@ -6,7 +6,9 @@
     public class PersonCallForwardingCallForwarding : WebexObject
     {
         public PersonCallForwardingAlways Always { get; set; } = new PersonCallForwardingAlways();
+
         public PersonCallForwardingBusy Busy { get; set; } = new PersonCallForwardingBusy();
+
         public PersonCallForwardingNoAnswer NoAnswer { get; set; } = new PersonCallForwardingNoAnswer();
     }
 }

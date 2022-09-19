@@ -11,8 +11,10 @@ namespace SparkDotNet.Models
     {
         [EnumMember(Value = "UNASSIGNED")]
         UNASSIGNED,
+
         [EnumMember(Value = "EXECUTIVE")]
         EXECUTIVE,
+
         [EnumMember(Value = "EXECUTIVE_ASSISTANT")]
         EXECUTIVE_ASSISTANT
     }

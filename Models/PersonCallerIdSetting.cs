@@ -25,7 +25,6 @@ namespace SparkDotNet.Models
 
         //Block this user's identity when receiving a transferred or forwarded call.
         public bool? BlockInForwardCallsEnabled { get; set; }
-
     }
 
     public class PersonCallerIdSetting : PersonCallerIdUpdateSetting
@@ -51,7 +50,7 @@ namespace SparkDotNet.Models
         public CustomerInfo CustomerInfo { get; set; }
 
         //Block this user's identity when receiving a transferred or forwarded call.
-       // public bool BlockInForwardCallsEnabled { get; set; }
+        // public bool BlockInForwardCallsEnabled { get; set; }
 
         public string LocationExternalCallerIdName { get; set; }
     }
@@ -59,10 +58,10 @@ namespace SparkDotNet.Models
     public class CustomerInfo : WebexObject
     {
         //First name of custom caller ID number.
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
 
         //Last name of custom caller ID number.
-        public string lastName { get; set; }
+        public string LastName { get; set; }
 
         //EXTERNAL if the custom caller ID number is external, otherwise INTERNAL.
         public TypeOfCallerIdNumber Type { get; set; }
@@ -72,6 +71,7 @@ namespace SparkDotNet.Models
     {
         [EnumMember(Value = "INTERNAL")]
         INTERNAL,
+
         [EnumMember(Value = "EXTERNAL")]
         EXTERNAL
     }
@@ -80,22 +80,18 @@ namespace SparkDotNet.Models
     {
         //Outgoing caller ID will show the caller's direct line number and/or extension.
         [EnumMember(Value = "DIRECT_LINE")]
-
         DIRECT_LINE,
 
         //Outgoing caller ID will show the main number for the location.
         [EnumMember(Value = "LOCATION_NUMBER")]
-
         LOCATION_NUMBER,
 
         //Outgoing caller ID will show the mobile number for this person.
         [EnumMember(Value = "MOBILE_NUMBER")]
-
         MOBILE_NUMBER,
 
         //Outgoing caller ID will show the value from the customNumber field.
         [EnumMember(Value = "CUSTOM")]
-
         CUSTOM
     }
 

@@ -10,9 +10,6 @@ namespace SparkDotNet.ExceptionHandling
 
         public string TrackingId { get; set; }
 
-        public override string ToString()
-        {
-            return $"TrackingId:{TrackingId}\nMessage:{Message}\nErrors:{string.Join<SparkErrorMessage>("\n", Errors.ToArray())}";
-        }
+        public override string ToString() => $"TrackingId:{TrackingId}\nMessage:{Message}\nErrors:{string.Join<SparkErrorMessage>("\n", Errors.ToArray())}";
     }
 }

@@ -31,10 +31,12 @@ namespace SparkDotNet
         /// <returns>The newly created Attachment Action object</returns>
         public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> CreateAttachmentActionAsync(string type, string messageId, AttachmentActionInput inputs)
         {
-            var putBody = new Dictionary<string, object>();
-            putBody.Add("type", type);
-            putBody.Add("messageId", messageId);
-            putBody.Add("inputs", inputs);
+            var putBody = new Dictionary<string, object>
+            {
+                { "type", type },
+                { "messageId", messageId },
+                { "inputs", inputs }
+            };
             return await PostItemAsync<AttachmentAction>(attachmentActionBase, putBody);
         }
 
@@ -43,9 +45,6 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="attachment">The Attachment Action object to be created</param>
         /// <returns>The newly created Attachment Action object</returns>
-        public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> CreateAttachmentActionAsync(AttachmentAction attachment)
-        {
-            return await CreateAttachmentActionAsync(attachment.type, attachment.messageId, attachment.inputs);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> CreateAttachmentActionAsync(AttachmentAction attachment) => await CreateAttachmentActionAsync(attachment.Type, attachment.MessageId, attachment.Inputs);
     }
 }

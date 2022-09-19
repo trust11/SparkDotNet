@@ -22,10 +22,7 @@ namespace SparkDotNet.ExceptionHandling
 
         internal string Token { get; set; }
 
-        public override string ToString()
-        {
-            return $"TrackingId:{TrackingId}\nMethod:{RequestMethod}\nRequestURL:{RequestUrl}\nRequestBody:{RequestBody}\nResponseBody:{ResponseBody}\n{Token}";
-        }
+        public override string ToString() => $"TrackingId:{TrackingId}\nMethod:{RequestMethod}\nRequestURL:{RequestUrl}\nRequestBody:{RequestBody}\nResponseBody:{ResponseBody}\n{Token}";
     }
 
     
@@ -51,20 +48,11 @@ namespace SparkDotNet.ExceptionHandling
             }
         }
 
-        public T GetTicketInformation(int entryIndex)
-        {
-            return q.ElementAt<T>(entryIndex);
-        }
+        public T GetTicketInformation(int entryIndex) => q.ElementAt<T>(entryIndex);
 
-        public T GetLastTicketInformation()
-        {
-            return q.Last();
-        }
+        public T GetLastTicketInformation() => q.Last();
 
-        public List<T> GetAllTicketInformation()
-        {
-            return q.ToList();
-        }
+        public List<T> GetAllTicketInformation() => q.ToList();
     }
 
     public class TicketInformations
@@ -83,20 +71,11 @@ namespace SparkDotNet.ExceptionHandling
             ticketInformations.Enqueue(ti);
         }
 
-        public async Task<TicketInformation> GetTicketInformation(int entryIndex)
-        {
-            return ticketInformations.GetTicketInformation(entryIndex);
-        }
+        public async Task<TicketInformation> GetTicketInformation(int entryIndex) => await Task.Run(() => ticketInformations.GetTicketInformation(entryIndex));
 
-        public async Task<List<TicketInformation>> GetAllTicketInformation()
-        {
-            return ticketInformations.GetAllTicketInformation();
-        }
+        public async Task<List<TicketInformation>> GetAllTicketInformation() => await Task.Run(() => ticketInformations.GetAllTicketInformation());
 
-        public async Task<TicketInformation> GetLastTicketInformation()
-        {
-            return ticketInformations.GetLastTicketInformation();
-        }
+        public async Task<TicketInformation> GetLastTicketInformation() => await Task.Run(() => ticketInformations.GetLastTicketInformation());
 
         public override string ToString()
         {
@@ -108,9 +87,6 @@ namespace SparkDotNet.ExceptionHandling
             return sb.ToString();
         }
 
-        public async Task DumpToConsole()
-        {
-            ticketInformations.GetAllTicketInformation().ForEach(t => System.Console.WriteLine($"{t}\n"));
-        }
+        public async Task DumpToConsole() => await Task.Run(() => ticketInformations.GetAllTicketInformation().ForEach(t => System.Console.WriteLine($"{t}\n")));
     }
 }

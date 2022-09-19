@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SparkDotNet.Models
 {
-    public class MeetingTemplates:WebexObject
+    public class MeetingTemplates : WebexObject
     {
         [JsonProperty("items")]
         public List<MeetingTemplate> MeetingTemplateList { get; set; }

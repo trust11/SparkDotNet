@@ -16,6 +16,6 @@ namespace SparkDotNet.Models
         /// <summary>
         /// xAPI status result
         /// </summary>
-        public XAPIStatusResult result { get; set; }
+        public XAPIStatusResult Result { get; set; }
     }
 }

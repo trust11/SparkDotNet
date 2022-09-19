@@ -34,7 +34,7 @@ namespace SparkDotNet
         /// <returns>List of RoomTab objects.</returns>
         public async Task<SparkApiConnectorApiOperationResult<List<RoomTab>>> GetRoomTabsAsync(Room room)
         {
-            return await GetRoomTabsAsync(room.id);
+            return await GetRoomTabsAsync(room.Id);
         }
 
         /// <summary>

@@ -247,7 +247,7 @@ namespace SparkDotNet
 
         public async Task<SparkApiConnectorApiOperationResult> Logout(int timeout = 0)
         {
-            return SparkApiConnectorApiOperationResult.Success;
+            return await Task.Run(() => SparkApiConnectorApiOperationResult.Success);
         }
 
         #region Private Helper Methods
@@ -620,14 +620,12 @@ namespace SparkDotNet
             //}
 
             PaginationResult<T> paginationResult = new PaginationResult<T>();
-            List<T> items = new List<T>();
-            Links links = new Links();
             JObject requestResult = JObject.Parse(await response.Content.ReadAsStringAsync());
             List<JToken> results = requestResult["items"].Children().ToList();
             foreach (JToken result in results)
             {
                 T item = JsonConvert.DeserializeObject<T>(result.ToString());
-                items.Add(item);
+                paginationResult.Items.Add(item);
             }
             if (response.Headers.Contains("Link"))
             {
@@ -636,25 +634,24 @@ namespace SparkDotNet
                 {
                     // borrowed regex from spark-java-sdk
                     // https://github.com/ciscospark/spark-java-sdk/blob/master/src/main/java/com/ciscospark/LinkedResponse.java
-                    Regex r = new Regex("\\s*<(\\S+)>\\s*;\\s*rel=\"(\\S+)\",?", RegexOptions.Compiled);
-                    MatchCollection regmatch = r.Matches(link);
-                    foreach (Match item in regmatch)
+                    var regex = new Regex("\\s*<(\\S+)>\\s*;\\s*rel=\"(\\S+)\",?", RegexOptions.Compiled);
+                    var regmatch = regex.Matches(link);
+                    foreach (Match matchingItem in regmatch)
                     {
-                        var linktype = item.Groups[2].ToString().ToLower();
-                        Uri linkUrl = new Uri(item.Groups[1].ToString());
-
+                        var linkUrl = new Uri(matchingItem.Groups[1].ToString());
+                        var linktype = matchingItem.Groups[2].ToString().ToLower();
                         switch (linktype)
                         {
                             case "next":
-                                links.Next = linkUrl.PathAndQuery;
+                                paginationResult.Links.Next = linkUrl.PathAndQuery;
                                 break;
 
                             case "prev":
-                                links.Prev = linkUrl.PathAndQuery;
+                                paginationResult.Links.Prev = linkUrl.PathAndQuery;
                                 break;
 
                             case "first":
-                                links.First = linkUrl.PathAndQuery;
+                                paginationResult.Links.First = linkUrl.PathAndQuery;
                                 break;
 
                             default:
@@ -663,8 +660,6 @@ namespace SparkDotNet
                     }
                 }
             }
-            paginationResult.Items = items;
-            paginationResult.Links = links;
 
             return paginationResult;
         }

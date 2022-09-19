@@ -4,7 +4,6 @@ namespace SparkDotNet.Models
 {
     public class MeetingTelephony : WebexObject
     {
-
         /// <summary>
         /// Code for authenticating a user to join teleconference.
         /// Users join the teleconference using the call-in number or the global call-in number, followed by the value of the accessCode.
@@ -21,6 +20,4 @@ namespace SparkDotNet.Models
         /// </summary>
         public List<MeetingTelephonyCallInNumber> Links { get; set; }
     }
-
-
 }

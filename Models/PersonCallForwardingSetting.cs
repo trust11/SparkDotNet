@@ -20,6 +20,7 @@
     public class PersonCallForwardingSetting : WebexObject
     {
         public PersonCallForwardingCallForwarding CallForwarding { get; set; } = new PersonCallForwardingCallForwarding();
+
         public PersonCallForwardingBusinessContinuity BusinessContinuity { get; set; } = new PersonCallForwardingBusinessContinuity();
     }
 }

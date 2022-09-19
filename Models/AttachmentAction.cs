@@ -10,36 +10,36 @@ namespace SparkDotNet.Models
         /// <summary>
         /// A unique identifier for the action.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The ID of the person who performed the action.
         /// </summary>
-        public string personId { get; set; }
+        public string PersonId { get; set; }
 
         /// <summary>
         /// The ID of the room the action was performed within.
         /// </summary>
-        public string roomId { get; set; }
+        public string RoomId { get; set; }
 
         /// <summary>
         /// The type of action performed. submit
         /// </summary>
-        public string type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// The parent message the attachment action was performed on.
         /// </summary>
-        public string messageId { get; set; }
+        public string MessageId { get; set; }
 
         /// <summary>
         /// The action's inputs.
         /// </summary>
-        public AttachmentActionInput inputs { get; set; }
+        public AttachmentActionInput Inputs { get; set; }
 
         /// <summary>
         /// The date and time the action was created.
         /// </summary>
-        public DateTime created { get; set; }
+        public DateTime Created { get; set; }
     }
 }

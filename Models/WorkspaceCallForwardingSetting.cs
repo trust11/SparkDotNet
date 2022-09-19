@@ -19,6 +19,6 @@
     /// </summary>
     public class WorkspaceCallForwardingSetting : WebexObject
     {
-        WorkspaceCallForwarding CallForwarding { get; set; }
+        private WorkspaceCallForwarding CallForwarding { get; set; }
     }
 }

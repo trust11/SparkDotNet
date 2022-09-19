@@ -84,7 +84,7 @@ namespace SparkDotNet.Models
         /// This attribute can be modified by Update Personal Meeting Room Options API.
         /// </summary>
         [JsonProperty("coHosts")]
-        public List<MeetingPreferencesCoHost> choHosts { get; set; }
+        public List<MeetingPreferencesCoHost> ChoHosts { get; set; }
 
         /// <summary>
         /// SIP address for callback from a video system.
@@ -104,6 +104,4 @@ namespace SparkDotNet.Models
         [JsonProperty("telephony")]
         public MeetingTelephony Telephony { get; set; }
     }
-
-
 }

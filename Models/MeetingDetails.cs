@@ -5,31 +5,31 @@
         /// <summary>
         /// A unique identifier for the room.
         /// </summary>
-        public string roomId { get; set; }
+        public string RoomId { get; set; }
 
         /// <summary>
         /// The Webex meeting URL for the room.
         /// </summary>
-        public string meetingLink { get; set; }
+        public string MeetingLink { get; set; }
 
         /// <summary>
         /// The SIP address for the room.
         /// </summary>
-        public string sipAddress { get; set; }
+        public string SipAddress { get; set; }
 
         /// <summary>
         /// The Webex meeting number for the room.
         /// </summary>
-        public string meetingNumber { get; set; }
+        public string MeetingNumber { get; set; }
 
         /// <summary>
         /// The toll-free PSTN number for the room.
         /// </summary>
-        public string callInTollFreeNumber { get; set; }
+        public string CallInTollFreeNumber { get; set; }
 
         /// <summary>
         /// The toll (local) PSTN number for the room.
         /// </summary>
-        public string callInTollNumber { get; set; }
+        public string CallInTollNumber { get; set; }
     }
 }

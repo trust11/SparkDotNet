@@ -22,8 +22,10 @@ namespace SparkDotNet
         /// <returns>A list of all meeting participants.</returns>
         public async Task<SparkApiConnectorApiOperationResult<List<MeetingParticipant>>> GetMeetingParticipantsAsync(string meetingId, string hostEmail = null)
         {
-            var queryParams = new Dictionary<string, string>();
-            queryParams.Add("meetingId", meetingId);
+            var queryParams = new Dictionary<string, string>
+            {
+                { "meetingId", meetingId }
+            };
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
             var path = GetURL(meetingParticipantsBase, queryParams);
@@ -36,10 +38,8 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="participantId">The unique identifier for the meeting and the participant.</param>
         /// <returns>The requested meeting participant.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<MeetingParticipant>> GetMeetingParticipantDetailsAsync(string participantId)
-        {
-            return await GetItemAsync<MeetingParticipant>($"{meetingParticipantsBase}/{participantId}");
-        }
+        public async Task<SparkApiConnectorApiOperationResult<MeetingParticipant>> GetMeetingParticipantDetailsAsync(string participantId) => 
+            await GetItemAsync<MeetingParticipant>($"{meetingParticipantsBase}/{participantId}");
 
         /// <summary>
         /// To mute, unmute, expel, or admit a participant in a live meeting.

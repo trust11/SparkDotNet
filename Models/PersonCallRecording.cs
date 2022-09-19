@@ -13,7 +13,7 @@ namespace SparkDotNet.Models
 
         public Record Record { get; set; } = SparkDotNet.Record.Never;
 
-        public bool RecordVoicemailEnabled { get; set; }= false;
+        public bool RecordVoicemailEnabled { get; set; } = false;
 
         public bool StartStopAnnouncementEnabled { get; set; } = false;
 

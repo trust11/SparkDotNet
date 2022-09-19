@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 namespace SparkDotNet.Models
 {
-
     /// <summary>
     /// To retrieve quality information, you must use an administrator token with the analytics:read_all scope.
     /// The authenticated user must be a read-only or full administrator of the organization to which the

@@ -1014,8 +1014,7 @@ namespace SparkDotNet
 
             if (dotIndex != -1 && fileName.Length > dotIndex + 1)
             {
-                string result;
-                if (TypeMap.TryGetValue(fileName.Substring(dotIndex + 1), out result))
+                if (TypeMap.TryGetValue(fileName.Substring(dotIndex + 1), out var result))
                 {
                     return result;
                 }

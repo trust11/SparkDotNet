@@ -67,9 +67,11 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult<MeetingInvitee>> CreateMeetingInviteeAsync(string meetingId, string email, string displayName = null,
                                                                     bool? coHost = null, string hostEmail = null)
         {
-            var bodyParameters = new Dictionary<string, object>();
-            bodyParameters.Add("meetingId", meetingId);
-            bodyParameters.Add("email", email);
+            var bodyParameters = new Dictionary<string, object>
+            {
+                { "meetingId", meetingId },
+                { "email", email }
+            };
             if (displayName != null) bodyParameters.Add("displayName", displayName);
             if (coHost != null) bodyParameters.Add("coHost", coHost);
             if (hostEmail != null) bodyParameters.Add("hostEmail", hostEmail);
@@ -89,8 +91,10 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult<MeetingInvitee>> UpdateMeetingInviteeAsync(string meetingInviteeId, string email, string displayName = null,
                                                                     bool? coHost = null, string hostEmail = null)
         {
-            var bodyParameters = new Dictionary<string, object>();
-            bodyParameters.Add("email", email);
+            var bodyParameters = new Dictionary<string, object>
+            {
+                { "email", email }
+            };
             if (displayName != null) bodyParameters.Add("displayName", displayName);
             if (coHost != null) bodyParameters.Add("coHost", coHost);
             if (hostEmail != null) bodyParameters.Add("hostEmail", hostEmail);
@@ -104,11 +108,8 @@ namespace SparkDotNet
         /// <param name="meetingInvitee">The meeting invitee object to be updated</param>
         /// <param name="hostEmail">Email address for the meeting host. This attribute should only be set if the user or application calling the API has the admin on-behalf-of scopes. When used, the admin may specify the email of a user in a site they manage to be the meeting host.</param>
         /// <returns>The updated MeetingInvitee object</returns>
-        public async Task<SparkApiConnectorApiOperationResult<MeetingInvitee>> UpdateMeetingInviteeAsync(MeetingInvitee meetingInvitee, string hostEmail = null)
-        {
-            return await UpdateMeetingInviteeAsync(meetingInvitee.Id, meetingInvitee.Email, meetingInvitee.DisplayName,
-                                                   meetingInvitee.CoHost, hostEmail);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<MeetingInvitee>> UpdateMeetingInviteeAsync(MeetingInvitee meetingInvitee, string hostEmail = null) =>
+            await UpdateMeetingInviteeAsync(meetingInvitee.Id, meetingInvitee.Email, meetingInvitee.DisplayName, meetingInvitee.CoHost, hostEmail);
 
         /// <summary>
         /// Removes a meeting invitee identified by a meetingInviteeId specified in the URI.
@@ -139,10 +140,7 @@ namespace SparkDotNet
         /// <param name="meetingInvitee">The invitee to be removed. This parameter only applies to an invitee to a meeting series or a scheduled meeting. It doesn't apply to an invitee to an ended or ongoing meeting instance.</param>
         /// <param name="hostEmail">Email address for the meeting host. This parameter is only used if the user or application calling the API has the admin on-behalf-of scopes. If set, the admin may specify the email of a user in a site they manage and the API will delete a meeting invitee that is hosted by that user.</param>
         /// <returns>True if the meeting invitee was deleted, false otherwise.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMeetingInviteeAsync(MeetingInvitee meetingInvitee, string hostEmail = null)
-        {
-            return await DeleteMeetingInviteeAsync(meetingInvitee.Id, hostEmail);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMeetingInviteeAsync(MeetingInvitee meetingInvitee, string hostEmail = null) =>
+            await DeleteMeetingInviteeAsync(meetingInvitee.Id, hostEmail);
     }
-
 }

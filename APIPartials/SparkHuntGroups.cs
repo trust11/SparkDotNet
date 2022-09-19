@@ -48,7 +48,7 @@ namespace SparkDotNet
             if (phoneNumber != null) queryParams.Add("phoneNumber", phoneNumber);
             if (name != null) queryParams.Add("name", name);
 
-            var path = GetURL(numbersBase, queryParams);
+            var path = GetURL(huntGroupBase, queryParams);
             return await GetItemAsync<HuntGroupList>(path).ConfigureAwait(false);
         }
     }

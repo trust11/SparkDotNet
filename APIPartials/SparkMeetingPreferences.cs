@@ -35,12 +35,16 @@ namespace SparkDotNet
         /// <returns>The updated MeetingSite object</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingSite>> UpdateDefaultMeetingSite(bool defaultSite, string siteUrl)
         {
-            var queryParams = new Dictionary<string, string>();
-            queryParams.Add("defaultSite", defaultSite.ToString());
+            var queryParams = new Dictionary<string, string>
+            {
+                { "defaultSite", defaultSite.ToString().ToLower() }
+            };
             var path = GetURL($"{meetingsPreferencesBase}/sites", queryParams);
 
-            var postBody = new Dictionary<string, object>();
-            postBody.Add("siteUrl", siteUrl);
+            var postBody = new Dictionary<string, object>
+            {
+                { "siteUrl", siteUrl }
+            };
 
             return await PostItemAsync<MeetingSite>(path, postBody);
         }
@@ -71,10 +75,12 @@ namespace SparkDotNet
         /// <returns>The updated Meeting Scheduling Options</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingSchedulingOptions>> UpdateMeetingSchedulingOptionsAsync(bool enabledJoinBeforeHost, int joinBeforeHostMinutes, bool enabledAutoShareRecording)
         {
-            var postBody = new Dictionary<string, object>();
-            postBody.Add("enabledJoinBeforeHost", enabledJoinBeforeHost);
-            postBody.Add("joinBeforeHostMinutes", joinBeforeHostMinutes);
-            postBody.Add("enabledAutoShareRecording", enabledAutoShareRecording);
+            var postBody = new Dictionary<string, object>
+            {
+                { "enabledJoinBeforeHost", enabledJoinBeforeHost },
+                { "joinBeforeHostMinutes", joinBeforeHostMinutes },
+                { "enabledAutoShareRecording", enabledAutoShareRecording }
+            };
 
             return await UpdateItemAsync<MeetingSchedulingOptions>($"{meetingsPreferencesBase}/schedulingOptions", postBody);
         }
@@ -85,9 +91,7 @@ namespace SparkDotNet
         /// <param name="meetingSchedulingOptions">The new scheduling options</param>
         /// <returns>The updated Meeting Scheduling Options</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingSchedulingOptions>> UpdateMeetingSchedulingOptionsAsync(MeetingSchedulingOptions meetingSchedulingOptions)
-        {
-            return await UpdateMeetingSchedulingOptionsAsync(meetingSchedulingOptions.EnabledJoinBeforeHost, meetingSchedulingOptions.JoinBeforeHostMinutes, meetingSchedulingOptions.EnabledAutoShareRecording);
-        }
+        => await UpdateMeetingSchedulingOptionsAsync(meetingSchedulingOptions.EnabledJoinBeforeHost, meetingSchedulingOptions.JoinBeforeHostMinutes, meetingSchedulingOptions.EnabledAutoShareRecording);
 
         /// <summary>
         /// Retrieves video options for the authenticated user.
@@ -112,8 +116,10 @@ namespace SparkDotNet
         /// <returns>List of Video Devices</returns>
         public async Task<SparkApiConnectorApiOperationResult<List<MeetingVideoDevice>>> UpdateMeetingVideoDevicesAsync(List<MeetingVideoDevice> meetingVideoDevices)
         {
-            var postBody = new Dictionary<string, object>();
-            postBody.Add("meetingVideoDevices", meetingVideoDevices);
+            var postBody = new Dictionary<string, object>
+            {
+                { "meetingVideoDevices", meetingVideoDevices }
+            };
 
             // @flag @todo
             // This will not work as it returns an array instead of a single element
@@ -159,15 +165,17 @@ namespace SparkDotNet
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
-            var postBody = new Dictionary<string, object>();
-            postBody.Add("topic", topic);
-            postBody.Add("hostPin", hostPin);
-            postBody.Add("enableAutoLock", enableAutoLock);
-            postBody.Add("autoLockMinutes", autoLockMinutes);
-            postBody.Add("enabledNotifyHost", enabledNotifyHost);
-            postBody.Add("supportCoHost", supportCoHost);
-            postBody.Add("supportAnyoneAsCoHost", supportAnyoneAsCoHost);
-            postBody.Add("coHosts", coHosts);
+            var postBody = new Dictionary<string, object>
+            {
+                { "topic", topic },
+                { "hostPin", hostPin },
+                { "enableAutoLock", enableAutoLock },
+                { "autoLockMinutes", autoLockMinutes },
+                { "enabledNotifyHost", enabledNotifyHost },
+                { "supportCoHost", supportCoHost },
+                { "supportAnyoneAsCoHost", supportAnyoneAsCoHost },
+                { "coHosts", coHosts }
+            };
             if (allowFirstUserToBeCoHost != null) postBody.Add("allowFirstUserToBeCoHost", allowFirstUserToBeCoHost);
             if (allowAuthenticatedDevices != null) postBody.Add("allowAuthenticatedDevices", allowAuthenticatedDevices);
             if (userEmail != null) postBody.Add("userEmail", userEmail);
@@ -185,11 +193,6 @@ namespace SparkDotNet
         /// <param name="siteUrl">URL of the Webex site to query. For individual use, if siteUrl is not specified, the query will use the default site of the user. For admin use, if siteUrl is not specified, the query will use the default site for the admin's authorization token used to make the call. In the case where the user belongs to a site different than the admin’s default site, the admin can set the site to query using the siteUrl parameter. All available Webex sites and default site of a user can be retrieved from /meetingPreferences/sites.</param>
         /// <returns>The updated personal room options</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingPreferencesPMR>> UpdatePersonalMeetingRoomOptionsAsync(MeetingPreferencesPMR pmr, string userEmail = null, string siteUrl = null)
-        {
-            return await UpdatePersonalMeetingRoomOptionsAsync(pmr.Topic, pmr.HostPin, pmr.EnabledAutoLock, pmr.AutoLockMinutes,
-                                                               pmr.EnabledNotifyHost, pmr.SupportCoHost, pmr.SupportAnyoneAsCoHost,
-                                                               pmr.choHosts, pmr.AllowFirstUserToBeCoHost, pmr.AllowAuthenticatedDevices,
-                                                               userEmail, siteUrl);
-        }
+        => await UpdatePersonalMeetingRoomOptionsAsync(pmr.Topic, pmr.HostPin, pmr.EnabledAutoLock, pmr.AutoLockMinutes, pmr.EnabledNotifyHost, pmr.SupportCoHost, pmr.SupportAnyoneAsCoHost, pmr.ChoHosts, pmr.AllowFirstUserToBeCoHost, pmr.AllowAuthenticatedDevices, userEmail, siteUrl);
     }
 }

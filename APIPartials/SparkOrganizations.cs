@@ -61,10 +61,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="orgId">The id of the organization to be deleted</param>
         /// <returns>True if the deletion succeeded, false otherwise</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(string orgId)
-        {
-            return await DeleteItemAsync($"{organizationsBase}/{orgId}");
-        }
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(string orgId) => await DeleteItemAsync($"{organizationsBase}/{orgId}");
 
         /// <summary>
         /// Deletes an organization, by ID. It may take up to 10 minutes for the organization to be deleted
@@ -86,10 +83,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="organization">The organization to be deleted</param>
         /// <returns>True if the deletion succeeded, false otherwise</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(Organization organization)
-        {
-            return await DeleteOrganizationAsync(organization.id);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(Organization organization) => await DeleteOrganizationAsync(organization.Id);
 
     }
 

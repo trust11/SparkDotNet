@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SparkDotNet.Models
 {
-
     public class AdminEventData : WebexObject
     {
         /// <summary>

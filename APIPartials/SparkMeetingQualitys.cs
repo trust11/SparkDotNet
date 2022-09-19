@@ -21,8 +21,10 @@ namespace SparkDotNet
         /// <returns>Returns the Meeting Qualities for the specified meeting</returns>
         public async Task<SparkApiConnectorApiOperationResult<List<MeetingQuality>>> GetMeetingQualitiesAsync(string meetingId, int max = 100, int offset = 0)
         {
-            var queryParams = new Dictionary<string, string>();
-            queryParams.Add("meetingId", meetingId);
+            var queryParams = new Dictionary<string, string>
+            {
+                { "meetingId", meetingId }
+            };
             if (max > 0) queryParams.Add("max", max.ToString());
             if (offset > 0) queryParams.Add("offset", offset.ToString());
 

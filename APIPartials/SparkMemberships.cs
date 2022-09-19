@@ -49,8 +49,10 @@ namespace SparkDotNet
         /// <returns>Membership object.</returns>
         public async Task<SparkApiConnectorApiOperationResult<Membership>> CreateMembershipAsync(string roomId, string personId = null, string personEmail = null, bool isModerator = false)
         {
-            var postBody = new Dictionary<string, object>();
-            postBody.Add("roomId", roomId);
+            var postBody = new Dictionary<string, object>
+            {
+                { "roomId", roomId }
+            };
             if (personId != null) { postBody.Add("personId", personId); }
             if (personEmail != null) { postBody.Add("personEmail", personEmail); }
             postBody.Add("isModerator", isModerator);
@@ -63,10 +65,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membershipId">The unique identifier for the membership.</param>
         /// <returns>Boolean representing the success of the operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(string membershipId)
-        {
-            return await DeleteItemAsync($"{membershipsBase}/{membershipId}");
-        }
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(string membershipId) => await DeleteItemAsync($"{membershipsBase}/{membershipId}");
 
         /// <summary>
         /// Deletes a membership by Membership Object.
@@ -74,10 +73,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membership">The Membership object for the membership.</param>
         /// <returns>Boolean representing the success of the operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(Membership membership)
-        {
-            return await DeleteTeamMembershipAsync(membership.id);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(Membership membership) => await DeleteTeamMembershipAsync(membership.Id);
 
         /// <summary>
         /// Updates properties for a membership by ID.
@@ -89,9 +85,11 @@ namespace SparkDotNet
         /// <returns>Membership object.</returns>
         public async Task<SparkApiConnectorApiOperationResult<Membership>> UpdateMembershipAsync(string membershipId, bool isModerator, bool isRoomHidden)
         {
-            var putBody = new Dictionary<string, object>();
-            putBody.Add("isModerator", isModerator);
-            putBody.Add("isRoomHidden", isRoomHidden);
+            var putBody = new Dictionary<string, object>
+            {
+                { "isModerator", isModerator },
+                { "isRoomHidden", isRoomHidden }
+            };
             var path = $"{membershipsBase}/{membershipId}";
             return await UpdateItemAsync<Membership>(path, putBody);
         }
@@ -101,9 +99,6 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membership">The membership object to be updatad.</param>
         /// <returns>Membership object.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<Membership>> UpdateMembershipAsync(Membership membership)
-        {
-            return await UpdateMembershipAsync(membership.id, membership.isModerator, membership.isRoomHidden);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<Membership>> UpdateMembershipAsync(Membership membership) => await UpdateMembershipAsync(membership.Id, membership.IsModerator, membership.IsRoomHidden);
     }
 }

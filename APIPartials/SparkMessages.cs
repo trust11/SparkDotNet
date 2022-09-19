@@ -1,4 +1,3 @@
-using SparkDotNet.ExceptionHandling;
 using SparkDotNet.Models;
 using System;
 using System.Collections.Generic;
@@ -6,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace SparkDotNet
 {
-
     public partial class Spark
     {
-
         private readonly string messagesBase = "/v1/messages";
 
         /// <summary>
@@ -33,11 +30,11 @@ namespace SparkDotNet
 
             if (parentId != null) queryParams.Add("parentId", parentId);
 
-            if (mentionedPeople != null) queryParams.Add("mentionedPeople",mentionedPeople);
+            if (mentionedPeople != null) queryParams.Add("mentionedPeople", mentionedPeople);
             //TODO Parse before as a DateTime and check it's ok before we send the request.
             if (before != null) queryParams.Add("before", ((DateTime)before).ToString("o"));
-            if (beforeMessage != null) queryParams.Add("beforeMessage",beforeMessage);
-            if (max > 0) queryParams.Add("max",max.ToString());
+            if (beforeMessage != null) queryParams.Add("beforeMessage", beforeMessage);
+            if (max > 0) queryParams.Add("max", max.ToString());
 
             var path = GetURL(messagesBase, queryParams);
             return await GetItemsAsync<Message>(path);
@@ -63,7 +60,6 @@ namespace SparkDotNet
             var path = GetURL($"{messagesBase}/direct", queryParams);
             return await GetItemsAsync<Message>(path);
         }
-
 
         /// <summary>
         /// Shows details for a message, by message ID.
@@ -95,15 +91,15 @@ namespace SparkDotNet
                                                       List<string> files = null, string attachments = null)
         {
             var postBody = new Dictionary<string, object>();
-            if (roomId != null) postBody.Add("roomId",roomId);
+            if (roomId != null) postBody.Add("roomId", roomId);
             if (parentId != null) postBody.Add("parentId", parentId);
-            if (toPersonId != null) postBody.Add("toPersonId",toPersonId);
-            if (toPersonEmail != null) postBody.Add("toPersonEmail",toPersonEmail);
-            if (text != null) postBody.Add("text",text);
-            if (markdown != null) postBody.Add("markdown",markdown);
-            if (files != null) postBody.Add("files",files);
+            if (toPersonId != null) postBody.Add("toPersonId", toPersonId);
+            if (toPersonEmail != null) postBody.Add("toPersonEmail", toPersonEmail);
+            if (text != null) postBody.Add("text", text);
+            if (markdown != null) postBody.Add("markdown", markdown);
+            if (files != null) postBody.Add("files", files);
             if (attachments != null) postBody.Add("attachments", attachments);
-            return await PostItemAsync<Message>(messagesBase,postBody);
+            return await PostItemAsync<Message>(messagesBase, postBody);
         }
 
         /// <summary>
@@ -112,10 +108,8 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="messageId">The unique identifier for the message.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(string messageId)
-        {
-            return await DeleteItemAsync($"{messagesBase}/{messageId}");
-        }
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(string messageId) =>
+            await DeleteItemAsync($"{messagesBase}/{messageId}");
 
         /// <summary>
         /// Deletes a message, by message object.
@@ -123,10 +117,8 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="message">The message object for the message.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(Message message)
-        {
-            return await DeleteMessageAsync(message.id);
-        }
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(Message message) =>
+            await DeleteMessageAsync(message.Id);
 
         /// <summary>
         /// Update a message you have posted not more than 10 times.
@@ -152,8 +144,10 @@ namespace SparkDotNet
         /// <returns>The updated message object</returns>
         public async Task<SparkApiConnectorApiOperationResult<Message>> UpdateMessageAsync(string messageId, string roomId = null, string text = null, string markdown = null)
         {
-            var queryParams = new Dictionary<string, string>();
-            queryParams.Add("messageId", messageId);
+            var queryParams = new Dictionary<string, string>
+            {
+                { "messageId", messageId }
+            };
 
             var postBody = new Dictionary<string, object>();
             if (roomId != null) postBody.Add("roomId", roomId);
@@ -170,11 +164,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="message">The message to be updated</param>
         /// <returns>The updated message object</returns>
-        public async Task<SparkApiConnectorApiOperationResult<Message>> UpdateMessageAsync(Message message)
-        {
-            return await UpdateMessageAsync(message.id, message.roomId, message.text, message.markdown);
-        }
-
+        public async Task<SparkApiConnectorApiOperationResult<Message>> UpdateMessageAsync(Message message) =>
+            await UpdateMessageAsync(message.Id, message.RoomId, message.Text, message.Markdown);
     }
-
 }

@@ -1,5 +1,5 @@
-using System;
 using Newtonsoft.Json;
+using System;
 
 namespace SparkDotNet.Models
 {
@@ -14,17 +14,17 @@ namespace SparkDotNet.Models
         /// <summary>
         /// A unique identifier for the webhook.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// A user-friendly name for the webhook.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The URL that receives POST requests for each event.
         /// </summary>
-        public string targetUrl { get; set; }
+        public string TargetUrl { get; set; }
 
         /// <summary>
         /// The resource type for the webhook. Creating a webhook requires 'read' scope on the resource the webhook is for.
@@ -32,7 +32,7 @@ namespace SparkDotNet.Models
         /// messages: the Messages resource
         /// rooms: the Rooms resource
         /// </summary>
-        public string resource { get; set; }
+        public string Resource { get; set; }
 
         /// <summary>
         /// The event type for the webhook.
@@ -41,27 +41,28 @@ namespace SparkDotNet.Models
         /// deleted: an object was deleted
         /// </summary>
         [JsonProperty("event")]
-        public string sparkevent { get; set; }
+        public string Sparkevent { get; set; }
 
         /// <summary>
         /// The filter that defines the webhook scope.
         /// </summary>
-        public string filter { get; set; }
+        public string Filter { get; set; }
 
         /// <summary>
         /// The secret used to generate payload signature.
         /// </summary>
-        public string secret { get; set; }
+        public string Secret { get; set; }
 
         /// <summary>
         /// The status of the webhook. Use active to reactivate a disabled webhook.
         /// active: the webhook is active
         /// inactive: the webhook is inactive
         /// </summary>
-        public string status { get; set; }
+        public string Status { get; set; }
+
         /// <summary>
         /// The date and time the webhook was created.
         /// </summary>
-        public DateTime created { get; set; }
+        public DateTime Created { get; set; }
     }
 }

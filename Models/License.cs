@@ -1,6 +1,5 @@
 namespace SparkDotNet.Models
 {
-
     /// <summary>
     /// An allowance for features and services that are provided to users on a Webex Teams services subscription.
     /// Cisco and its partners manage the amount of licenses provided to administrators and users.
@@ -9,7 +8,6 @@ namespace SparkDotNet.Models
     /// </summary>
     public class License : WebexObject
     {
-
         /// <summary>
         /// A unique identifier for the license.
         /// </summary>

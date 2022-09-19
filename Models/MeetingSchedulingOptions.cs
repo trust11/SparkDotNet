@@ -22,8 +22,5 @@ namespace SparkDotNet.Models
         /// This attribute can be modified by Update Scheduling Options API.
         /// </summary>
         public bool EnabledAutoShareRecording { get; set; }
-
     }
-
-
 }

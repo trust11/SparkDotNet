@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace SparkDotNet.Models
 {
-
     /// <summary>
     /// Hybrid Connectors are pieces of software that run on-premise and provide a link between the Cisco Webex Cloud and on-premise resources.
     /// For example, the Calendar Connector enables the linking of information from an on-premise Exchange server with the Cisco Webex Cloud.

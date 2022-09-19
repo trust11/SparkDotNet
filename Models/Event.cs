@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 namespace SparkDotNet.Models
 {
-
     /// <summary>
     /// Events are generated when actions take place within Webex Teams, such as when someone creates or deletes a message.
     /// Compliance Officers may use the Events API to retrieve events for all users within an organization.

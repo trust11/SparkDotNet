@@ -18,6 +18,4 @@ namespace SparkDotNet.Models
         [JsonProperty("displayName")]
         public string DisplayName { get; set; }
     }
-
-
 }

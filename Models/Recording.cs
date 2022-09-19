@@ -59,6 +59,4 @@ namespace SparkDotNet.Models
         /// </summary>
         public bool ShareToMe { get; set; }
     }
-
-
 }

@@ -36,6 +36,4 @@ namespace SparkDotNet.Models
         [JsonProperty("meetingId")]
         public string MeetingId { get; set; }
     }
-
-
 }

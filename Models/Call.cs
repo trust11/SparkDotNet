@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace SparkDotNet.Models
 {
-
     public class Call : WebexObject
     {
         /// <summary>

@@ -1,6 +1,5 @@
 namespace SparkDotNet.Models
 {
-
     public class CallParkedAgainst : WebexObject
     {
         /// <summary>
@@ -9,7 +8,7 @@ namespace SparkDotNet.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Identified where the call is parked 
+        /// Identified where the call is parked
         /// </summary>
         public string Number { get; set; }
 

@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 namespace SparkDotNet.Models
 {
-
     /// <summary>
     /// Admin Audit Events are available to full administrators for certain events performed in Webex Control Hub.
     /// Administrators with accounts created before 2019 who have never logged into Webex Control Hub will

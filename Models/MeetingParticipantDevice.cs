@@ -28,5 +28,4 @@ namespace SparkDotNet.Models
         [JsonProperty("correlationId")]
         public bool CorrelationId { get; set; }
     }
-
 }

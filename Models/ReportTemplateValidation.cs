@@ -1,5 +1,3 @@
-using System;
-
 namespace SparkDotNet.Models
 {
     public class ReportTemplateValidation

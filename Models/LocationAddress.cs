@@ -1,8 +1,5 @@
-using System;
-
 namespace SparkDotNet.Models
 {
-
     public class LocationAddress : WebexObject
     {
         /// <summary>

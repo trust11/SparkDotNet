@@ -1,8 +1,5 @@
-using System;
-
 namespace SparkDotNet.Models
 {
-
     /// <summary>
     /// Locations are used to organize Webex Calling (BroadCloud) features within physical locations.
     /// Webex Control Hub may be used to define new locations.

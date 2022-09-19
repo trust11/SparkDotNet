@@ -16,44 +16,44 @@ namespace SparkDotNet.Models
         /// <summary>
         /// A unique identifier for the room.
         /// </summary>
-        public string id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// A user-friendly name for the room.
         /// </summary>
-        public string title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// The room type.
         /// direct: 1:1 room
         /// group: group room
         /// </summary>
-        public string type { get; set; }
+        public string Type { get; set; }
 
         /// <summary>
         /// Whether the room is moderated (locked) or not.
         /// </summary>
-        public bool isLocked { get; set; }
+        public bool IsLocked { get; set; }
 
         /// <summary>
         /// The ID for the team with which this room is associated.
         /// </summary>
-        public string teamId { get; set; }
+        public string TeamId { get; set; }
 
         /// <summary>
         /// The date and time of the room's last activity.
         /// </summary>
-        public DateTime lastActivity { get; set; }
+        public DateTime LastActivity { get; set; }
 
         /// <summary>
         /// The ID of the person who created this room.
         /// </summary>
-        public string creatorId { get; set; }
+        public string CreatorId { get; set; }
 
         /// <summary>
         /// The date and time the room was created.
         /// </summary>
-        public DateTime created { get; set; }
+        public DateTime Created { get; set; }
 
         /// <summary>
         /// The ID of the organization which owns this room. See Webex Teams Data in the Compliance Guide for more information.

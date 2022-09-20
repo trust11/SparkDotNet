@@ -134,7 +134,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="personCallRecording">The person call recording object to update</param>
         /// <returns>Person object.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<PersonCallRecording>> UpdatePersonCallRecordingSettingsAsync(string personId, string orgId, PersonCallRecording personCallRecording)
+        public async Task<SparkApiConnectorApiOperationResult<PersonCallRecording>> UpdatePersonCallRecordingSettingsAsync(string personId, PersonCallRecording personCallRecording, string orgId = null)
         {
             return await UpdatePersonCallRecordingSettingsAsync(personId, orgId,
                 personCallRecording.Enabled, personCallRecording.Record, personCallRecording.RecordVoicemailEnabled,

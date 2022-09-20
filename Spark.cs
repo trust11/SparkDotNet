@@ -33,7 +33,7 @@ namespace SparkDotNet
 
         private readonly SemaphoreSlim tokenRefreshLock = new SemaphoreSlim(1, 1);
 
-        public static TicketInformations TicketInformations { get; private set; } = new TicketInformations();
+        public static TicketInformations TicketInformations { get; set; } = new TicketInformations();
 
         public string AccessToken { get; private set; }
 

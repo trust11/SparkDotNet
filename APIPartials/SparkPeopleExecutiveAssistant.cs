@@ -22,8 +22,19 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
             var path = GetURL(string.Format(peopleExecutiveAssistantBase, personId), queryParams);
+            return await GetItemAsync<PersonExecutive>(path).ConfigureAwait(false);
+        }
 
-            return await GetItemAsync<PersonExecutive>(path);
+        public async Task<SparkApiConnectorApiOperationResult> UpdatePersonExecutiveAssistantAsync(string personId, ExecutiveType executiveAssistentType, string orgId = null)
+        {
+            var queryParams = new Dictionary<string, string>();
+            if (orgId != null) queryParams.Add("orgId", orgId);
+            var bodyParam = new Dictionary<string, string>
+            {
+                { "type", executiveAssistentType.ToString() }
+            };
+            var path = GetURL(string.Format(peopleExecutiveAssistantBase, personId), queryParams);
+            return await UpdateItemAsync(path,bodyParam).ConfigureAwait(false);
         }
     }
 }

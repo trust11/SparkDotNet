@@ -1,19 +1,26 @@
-
-using SparkDotNet.ExceptionHandling;
 using SparkDotNet.Models;
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace SparkDotNet
 {
+    public enum OperationType
+    {
+        Delete,
+        Add
+    }
+
+    public class PathMemberWithOperation : WebexObject
+    {
+        public string Group { get; set; }
+
+        public string Id { get; set; }
+
+        public OperationType Operation { get; set; }
+    }
 
     public partial class Spark
     {
-
         private readonly string groupsBase = "/v1/groups";
 
         /// <summary>
@@ -44,6 +51,18 @@ namespace SparkDotNet
 
             var path = GetURL(groupsBase, queryParams);
             return await GetItemAsync<GroupsOverview>(path);
+        }
+
+        public async Task<SparkApiConnectorApiOperationResult<Group>> UpdateGroupsOverviewAsync(string groupId, string displayName = null, string description = null, List<PathMemberWithOperation> members = null)
+        {
+            var queryParams = new Dictionary<string, string>();
+            var putBody = new Dictionary<string, object>();
+            if (displayName != null) putBody.Add("displayName", displayName);
+            if (description != null) putBody.Add("description", description);
+            if (members != null) putBody.Add("members", members);
+
+            var path = GetURL($"{groupsBase}/{groupId}", queryParams);
+            return await PatchItemAsync<Group>(path, putBody).ConfigureAwait(false);
         }
     }
 }

@@ -472,7 +472,6 @@ namespace SparkDotNet
 
             return result;
         }
-
         private async Task ProcessException(SparkApiConnectorApiOperationResult result, Exception e, HttpResponseMessage response, [CallerMemberName] string methodName = null)
         {
             HttpStatusCode code = HttpStatusCode.Unused;
@@ -535,6 +534,45 @@ namespace SparkDotNet
                 var jsonBody = JsonConvert.SerializeObject(bodyParams);
                 content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
                 response = await client.PutAsync(path, content);
+                await TicketInformations.FillRequestParameter(response);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                }
+                else
+                {
+                    result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                await ProcessException(result, ex, response);
+            }
+
+            return result;
+        }
+
+        private async Task<SparkApiConnectorApiOperationResult<T>> PatchItemAsync<T>(string path, Dictionary<string, object> bodyParams)
+        {
+            var result = new SparkApiConnectorApiOperationResult<T>();
+            HttpResponseMessage response = null;
+            StringContent content;
+            try
+            {
+                var jsonBody = JsonConvert.SerializeObject(bodyParams);
+                content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                var method = "PATCH";
+                var httpVerb = new HttpMethod(method);
+                var httpRequestMessage = new HttpRequestMessage(httpVerb, path)
+                {
+                    Content = content
+                };
+
+
+                response = await client.SendAsync(httpRequestMessage);
                 await TicketInformations.FillRequestParameter(response);
 
                 if (response.IsSuccessStatusCode)

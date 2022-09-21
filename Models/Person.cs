@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -36,7 +35,7 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The email addresses of the person.
         /// </summary>
-        public HashSet<string> Emails { get; set; } = new HashSet<string>();
+        public HashSet<string> Emails { get; set; }
 
         /// <summary>
         /// The extension of the person retrieved from BroadCloud.
@@ -66,13 +65,13 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The date and time of the person's last activity within Webex Teams.
         /// </summary>
-        public DateTime LastActivity { get; set; }
+        public DateTime? LastActivity { get; set; }
 
         /// <summary>
         /// The date and time the person was last changed.
         /// </summary>
         [JsonProperty("lastModified")]
-        public DateTime LastModified { get; set; }
+        public DateTime? LastModified { get; set; }
 
         /// <summary>
         /// The last name of the person.
@@ -82,7 +81,7 @@ namespace SparkDotNet.Models
         /// <summary>
         /// An array of license strings allocated to this person.
         /// </summary>
-        public HashSet<string> Licenses { get; set; } = new HashSet<string>();
+        public HashSet<string> Licenses { get; set; }
 
         /// <summary>
         /// The business department the user belongs to.
@@ -122,7 +121,7 @@ namespace SparkDotNet.Models
         /// false: the person cannot log into Webex Teams
         /// </summary>
         [JsonProperty("loginEndbaled")]
-        public bool LoginEnabled { get; set; }
+        public bool? LoginEnabled { get; set; }
 
         /// <summary>
         /// The nickname of the person if configured. If no nickname is configured for the person, this field will not be present.
@@ -138,18 +137,18 @@ namespace SparkDotNet.Models
         /// Phone numbers for the person.
         /// </summary>
         [JsonProperty("phoneNumbers")]
-        public HashSet<PhoneNumber> PhoneNumbers { get; set; } = new HashSet<PhoneNumber>();
+        public HashSet<PhoneNumber> PhoneNumbers { get; set; }
 
         /// <summary>
         /// An array of role strings representing the roles to which this person belongs.
         /// </summary>
-        public HashSet<string> Roles { get; set; } = new HashSet<string>();
+        public HashSet<string> Roles { get; set; }
 
         /// <summary>
         /// Sip addresses for the person.
         /// </summary>
         [JsonProperty("sipAddresses")]
-        public HashSet<SipAddress> SipAddresses { get; set; } = new HashSet<SipAddress>();
+        public HashSet<SipAddress> SipAddresses { get; set; }
 
         /// <summary>
         /// One or several site names where this user has attendee role.
@@ -170,7 +169,7 @@ namespace SparkDotNet.Models
         /// presenting: the user is sharing content
         /// unknown: the user’s status could not be determined
         /// </summary>
-        public StatusType Status { get; set; }
+        public StatusType? Status { get; set; }
 
         /// <summary>
         /// The time zone of the person if configured. If no timezone is configured on the account, this field will not be present
@@ -183,7 +182,7 @@ namespace SparkDotNet.Models
         /// bot: account is a bot user
         /// appuser: account is a guest user
         /// </summary>
-        public TypeType Type { get; set; }
+        public TypeType? Type { get; set; }
     }
 
     public class PersonAddress

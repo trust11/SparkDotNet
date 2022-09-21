@@ -71,6 +71,20 @@ namespace SparkDotNet
         }
 
         /// <summary>
+        /// extracts a group with all their members
+        /// </summary>
+        /// <param name="groupId">A unique identifier for the group.</param>
+        /// <param name="count">maximal number of group members to extract (if the group has more than 500)</param>
+        /// <returns></returns>
+        public async Task<SparkApiConnectorApiOperationResult<Group>> GetGroupWithAllMembers(string groupId, int count = 500)
+        {
+            var groupRes = await GetGroup(groupId, true).ConfigureAwait(false);
+            if (!groupRes.IsSuccess)
+                return groupRes;
+            return await CompleteGroupMembers(groupRes.Result, count).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Gets the members of a group. The default maximum members returned is 500. Control parameters is available to page through the members and to control the size of the results.
         /// </summary>
         /// <param name="groupId">A unique identifier for the group.</param>
@@ -96,30 +110,39 @@ namespace SparkDotNet
         /// <returns></returns>
         public async Task<SparkApiConnectorApiOperationResult<Group>> GetAllGroupMembers(string groupId, int count = 500)
         {
+            var path = $"{groupsBase}/{groupId}";
+            var initialGetRes = await GetItemAsync<Group>(path).ConfigureAwait(false);
+            if (!initialGetRes.IsSuccess)
+                return initialGetRes;
+            return await CompleteGroupMembers(initialGetRes.Result, count).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// completes the group member collection if the group has more than 500 members
+        /// </summary>
+        /// <param name="group">the existing group (with the first 'page' of members already loaded)</param>
+        /// <param name="count">Non-negative Integer. Specifies the desired number of search results per page; e.g., 100. Maximum value for the count is 500</param>
+        /// <returns></returns>
+        private async Task<SparkApiConnectorApiOperationResult<Group>> CompleteGroupMembers(Group group, int count = 500)
+        {
             if (count > 500)
                 count = 500;
             else if (count < 0)
                 count = 1;
             var queryParams = new Dictionary<string, string>();
-            var path = $"{groupsBase}/{groupId}";
-            var initialGetRes = await GetItemAsync<Group>(path).ConfigureAwait(false);
-
-            if (!initialGetRes.IsSuccess)
-                return initialGetRes;
-            var group = initialGetRes.Result;
-            int nbItems = initialGetRes.Result.MemberSize;
+            int nbItems = group.Members.Count;
             while (group.Members.Count < nbItems)
             {
                 queryParams.Add("startIndex", group.Members.Count.ToString());
                 queryParams.Add("count", count.ToString());
-                path = GetURL($"{groupsBase}/{groupId}", queryParams);
+                var path = GetURL($"{groupsBase}/{group.Id}", queryParams);
                 var getRes = await GetItemAsync<Group>(path).ConfigureAwait(false);
                 if (!getRes.IsSuccess)
                     return getRes;
                 if (getRes.Result.Members != null)
                     group.Members.AddRange(getRes.Result.Members);
             }
-            return initialGetRes;
+            return SparkApiConnectorApiOperationResult<Group>.SuccessResult(group);
         }
 
         /// <summary>

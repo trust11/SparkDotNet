@@ -12,6 +12,19 @@ namespace SparkDotNet
             var inhString = base.ToString();
             return $"{Result}\n{inhString}";
         }
+
+        public new static SparkApiConnectorApiOperationResult<T> Success => new SparkApiConnectorApiOperationResult<T>
+        {
+            IsSuccess = true,
+            ResultCode = SparkApiOperationResultCode.OK
+        };
+
+        public static SparkApiConnectorApiOperationResult<T> SuccessResult(T value) => new SparkApiConnectorApiOperationResult<T>
+        {
+            Result = value,
+            IsSuccess = true,
+            ResultCode = SparkApiOperationResultCode.OK
+        };
     }
 
     public class SparkApiConnectorApiOperationResult : GenericOperationResult

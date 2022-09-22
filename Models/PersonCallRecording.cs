@@ -9,17 +9,17 @@ namespace SparkDotNet.Models
     /// </summary>
     public class PersonCallRecording : WebexObject
     {
-        public bool Enabled { get; set; } = false;
+        public bool? Enabled { get; set; }
 
-        public Record Record { get; set; } = SparkDotNet.Record.Never;
+        public Record? Record { get; set; }
 
-        public bool RecordVoicemailEnabled { get; set; } = false;
+        public bool? RecordVoicemailEnabled { get; set; }
 
-        public bool StartStopAnnouncementEnabled { get; set; } = false;
+        public bool? StartStopAnnouncementEnabled { get; set; }
 
-        public Notification Notification { get; set; } = new Notification();
+        public Notification Notification { get; set; }
 
-        public Repeat Repeat { get; set; } = new Repeat();
+        public Repeat Repeat { get; set; }
 
         public string ServiceProvider { get; set; }
 

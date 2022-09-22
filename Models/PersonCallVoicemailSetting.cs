@@ -6,7 +6,7 @@ namespace SparkDotNet.Models
     {
         public EmailCopyOfMessage EmailCopyOfMessage { get; set; } = new EmailCopyOfMessage();
 
-        public bool Enabled { get; set; } = true;
+        public bool? Enabled { get; set; } = true;
 
         public FaxMessago FaxMessage { get; set; } = new FaxMessago();
 
@@ -22,6 +22,6 @@ namespace SparkDotNet.Models
 
         public TransferToNumber TransferToNumber { get; set; } = new TransferToNumber();
 
-        public bool VoiceMessageForwardingEnabled { get; set; }
+        public bool? VoiceMessageForwardingEnabled { get; set; }
     }
 }

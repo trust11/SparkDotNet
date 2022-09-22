@@ -6,7 +6,7 @@ namespace SparkDotNet.Models
     public class PersonCallerIdUpdateSetting : WebexObject
     {
         //Which type of outgoing Caller ID will be used.
-        public CallerIdSelectedType Selected { get; set; }
+        public CallerIdSelectedType? Selected { get; set; }
 
         //This value must be an assigned number from the person's location.
         public string CustomNumber { get; set; }
@@ -44,7 +44,7 @@ namespace SparkDotNet.Models
         //Mobile number which will be shown if MOBILE_NUMBER is selected
         public string MobileNumber { get; set; }
 
-        public bool TollFreeLocationNumber { get; set; }
+        public bool? TollFreeLocationNumber { get; set; }
 
         //Information about the custom caller ID number.
         public CustomerInfo CustomerInfo { get; set; }
@@ -64,7 +64,7 @@ namespace SparkDotNet.Models
         public string LastName { get; set; }
 
         //EXTERNAL if the custom caller ID number is external, otherwise INTERNAL.
-        public TypeOfCallerIdNumber Type { get; set; }
+        public TypeOfCallerIdNumber? Type { get; set; }
     }
 
     public enum TypeOfCallerIdNumber

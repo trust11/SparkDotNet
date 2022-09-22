@@ -4,7 +4,7 @@ namespace SparkDotNet.Models
 {
     public class PersonExecutive
     {
-        public ExecutiveType Type { get; set; }
+        public ExecutiveType? Type { get; set; }
     }
 
     public enum ExecutiveType

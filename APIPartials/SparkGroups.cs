@@ -12,8 +12,6 @@ namespace SparkDotNet
 
     public class PathMemberWithOperation : WebexObject
     {
-        public string Group { get; set; }
-
         public string Id { get; set; }
 
         public OperationType Operation { get; set; }

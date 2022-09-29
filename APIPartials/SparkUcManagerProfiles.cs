@@ -11,7 +11,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
             var path = GetURL(url, queryParams);
-            return await GetItemAsync<T>(path);
+            return await GetItemAsync<T>(path).ConfigureAwait(false);
         }
     }
 }

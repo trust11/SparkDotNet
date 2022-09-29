@@ -29,7 +29,7 @@ namespace SparkDotNet
             if (offset > 0) queryParams.Add("offset", offset.ToString());
 
             var path = GetURL(meetingQualitiesBase, queryParams, "https://analytics.webexapis.com");
-            return await GetItemsAsync<MeetingQuality>(path);
+            return await GetItemsAsync<MeetingQuality>(path).ConfigureAwait(false);
 
         }
 

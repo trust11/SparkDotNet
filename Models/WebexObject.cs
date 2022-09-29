@@ -16,15 +16,6 @@ namespace SparkDotNet.Models
             Indented = Formatting.Indented
         }
 
-        /// <summary>
-        /// Returns the JSON representation of the object
-        /// </summary>
-        /// <returns></returns>
-        private string ToString(JsonFormatting format = JsonFormatting.None)
-        {
-            return JsonConvert.SerializeObject(this, (Formatting)format);
-        }
-
         public override string ToString()
         {
             return ToString();
@@ -33,6 +24,15 @@ namespace SparkDotNet.Models
         public string ToStringFormatted()
         {
             return ToString(JsonFormatting.Indented);
+        }
+
+        /// <summary>
+        /// Returns the JSON representation of the object
+        /// </summary>
+        /// <returns></returns>
+        private string ToString(JsonFormatting format = JsonFormatting.None)
+        {
+            return JsonConvert.SerializeObject(this, (Formatting)format);
         }
     }
 }

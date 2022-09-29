@@ -36,7 +36,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
             var path = GetURL($"{meetingInviteesBase}/{meetingId}", queryParams);
-            return await GetItemsAsync<MeetingInvitee>(path);
+            return await GetItemsAsync<MeetingInvitee>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
             var path = GetURL($"{meetingInviteesBase}/{meetingInviteeId}", queryParams);
-            return await GetItemAsync<MeetingInvitee>(path);
+            return await GetItemAsync<MeetingInvitee>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SparkDotNet
             if (coHost != null) bodyParameters.Add("coHost", coHost);
             if (hostEmail != null) bodyParameters.Add("hostEmail", hostEmail);
 
-            return await PostItemAsync<MeetingInvitee>($"{meetingInviteesBase}", bodyParameters);
+            return await PostItemAsync<MeetingInvitee>($"{meetingInviteesBase}", bodyParameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace SparkDotNet
             if (coHost != null) bodyParameters.Add("coHost", coHost);
             if (hostEmail != null) bodyParameters.Add("hostEmail", hostEmail);
 
-            return await UpdateItemAsync<MeetingInvitee>($"{meetingInviteesBase}/{meetingInviteeId}", bodyParameters);
+            return await UpdateItemAsync<MeetingInvitee>($"{meetingInviteesBase}/{meetingInviteeId}", bodyParameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace SparkDotNet
         /// <param name="hostEmail">Email address for the meeting host. This attribute should only be set if the user or application calling the API has the admin on-behalf-of scopes. When used, the admin may specify the email of a user in a site they manage to be the meeting host.</param>
         /// <returns>The updated MeetingInvitee object</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingInvitee>> UpdateMeetingInviteeAsync(MeetingInvitee meetingInvitee, string hostEmail = null) =>
-            await UpdateMeetingInviteeAsync(meetingInvitee.Id, meetingInvitee.Email, meetingInvitee.DisplayName, meetingInvitee.CoHost, hostEmail);
+            await UpdateMeetingInviteeAsync(meetingInvitee.Id, meetingInvitee.Email, meetingInvitee.DisplayName, meetingInvitee.CoHost, hostEmail).ConfigureAwait(false);
 
         /// <summary>
         /// Removes a meeting invitee identified by a meetingInviteeId specified in the URI.
@@ -127,7 +127,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
             var path = GetURL($"{meetingInviteesBase}/{meetingInviteeId}", queryParams);
-            return await DeleteItemAsync(path);
+            return await DeleteItemAsync(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -141,6 +141,6 @@ namespace SparkDotNet
         /// <param name="hostEmail">Email address for the meeting host. This parameter is only used if the user or application calling the API has the admin on-behalf-of scopes. If set, the admin may specify the email of a user in a site they manage and the API will delete a meeting invitee that is hosted by that user.</param>
         /// <returns>True if the meeting invitee was deleted, false otherwise.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMeetingInviteeAsync(MeetingInvitee meetingInvitee, string hostEmail = null) =>
-            await DeleteMeetingInviteeAsync(meetingInvitee.Id, hostEmail);
+            await DeleteMeetingInviteeAsync(meetingInvitee.Id, hostEmail).ConfigureAwait(false);
     }
 }

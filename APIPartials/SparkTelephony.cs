@@ -19,7 +19,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{telephonyBase}/calls", queryParams);
-            return await GetItemsAsync<Call>(path);
+            return await GetItemsAsync<Call>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{telephonyBase}/calls/{callId}", queryParams);
-            return await GetItemAsync<Call>(path);
+            return await GetItemAsync<Call>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (type != null) queryParams.Add("direction", type);
             var path = GetURL($"{telephonyBase}/calls/history", queryParams);
-            return await GetItemsAsync<CallHistoryRecord>(path);
+            return await GetItemsAsync<CallHistoryRecord>(path).ConfigureAwait(false);
         }
 
         #endregion Calls GET commands
@@ -65,7 +65,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("destination", destination);
-            return await PostItemAsync<Dictionary<string, string>>($"(telephonyBase)/calls/dial", postBody);
+            return await PostItemAsync<Dictionary<string, string>>($"(telephonyBase)/calls/dial", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("callId", callId);
-            return await PostItemAsync<object>($"(telephonyBase)/calls/answer", postBody);
+            return await PostItemAsync<object>($"(telephonyBase)/calls/answer", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("callId", callId);
-            return await PostItemAsync<object>($"(telephonyBase)/calls/reject", postBody);
+            return await PostItemAsync<object>($"(telephonyBase)/calls/reject", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("callId", callId);
-            return await PostItemAsync<object>($"(telephonyBase)/calls/hangup", postBody);
+            return await PostItemAsync<object>($"(telephonyBase)/calls/hangup", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("callId", callId);
-            return await PostItemAsync<object>($"(telephonyBase)/calls/hold", postBody);
+            return await PostItemAsync<object>($"(telephonyBase)/calls/hold", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("callId", callId);
-            return await PostItemAsync<object>($"(telephonyBase)/calls/resume", postBody);
+            return await PostItemAsync<object>($"(telephonyBase)/calls/resume", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace SparkDotNet
             postBody.Add("callId", callId);
             postBody.Add("destination", destination);
             postBody.Add("toVoicemail", toVoicemail);
-            return await PostItemAsync<object>($"(telephonyBase)/calls/divert", postBody);
+            return await PostItemAsync<object>($"(telephonyBase)/calls/divert", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace SparkDotNet
             var postBody = new Dictionary<string, object>();
             postBody.Add("callId1", callId1);
             postBody.Add("callId2", callId1);
-            return await PostItemAsync<object>($"(telephonyBase)/calls/divert", postBody);
+            return await PostItemAsync<object>($"(telephonyBase)/calls/divert", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace SparkDotNet
             postBody.Add("callId", callId);
             postBody.Add("destination", destination);
             postBody.Add("isGroupPark", isGroupPark);
-            return await PostItemAsync<CallParkedAgainst>($"(telephonyBase)/calls/park", postBody);
+            return await PostItemAsync<CallParkedAgainst>($"(telephonyBase)/calls/park", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("destination", destination);
-            return await PostItemAsync<Dictionary<string, string>>($"(telephonyBase)/calls/retrieve", postBody);
+            return await PostItemAsync<Dictionary<string, string>>($"(telephonyBase)/calls/retrieve", postBody).ConfigureAwait(false);
         }
 
         #endregion Calls POST commands

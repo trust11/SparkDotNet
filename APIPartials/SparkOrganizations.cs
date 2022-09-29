@@ -23,7 +23,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", max.ToString());
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
             var path = GetURL(organizationsBase, queryParams);
-            return await GetItemsAsync<Organization>(path);
+            return await GetItemsAsync<Organization>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString());
             var path = GetURL($"{organizationsBase}/{orgId}", queryParams);
-            return await GetItemAsync<Organization>(path);
+            return await GetItemAsync<Organization>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="orgId">The id of the organization to be deleted</param>
         /// <returns>True if the deletion succeeded, false otherwise</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(string orgId) => await DeleteItemAsync($"{organizationsBase}/{orgId}");
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(string orgId) => await DeleteItemAsync($"{organizationsBase}/{orgId}").ConfigureAwait(false);
 
         /// <summary>
         /// Deletes an organization, by ID. It may take up to 10 minutes for the organization to be deleted
@@ -83,7 +83,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="organization">The organization to be deleted</param>
         /// <returns>True if the deletion succeeded, false otherwise</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(Organization organization) => await DeleteOrganizationAsync(organization.Id);
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteOrganizationAsync(Organization organization) => await DeleteOrganizationAsync(organization.Id).ConfigureAwait(false);
 
     }
 

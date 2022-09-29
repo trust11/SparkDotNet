@@ -36,7 +36,7 @@ namespace SparkDotNet
             if (from != null) queryParams.Add("from", ((DateTime)from).ToString("yyyy-MM-dd"));
             if (to != null) queryParams.Add("to", ((DateTime)from).ToString("yyyy-MM-dd"));
             var path = GetURL(reportBase, queryParams);
-            return await GetItemsAsync<Report>(path);
+            return await GetItemsAsync<Report>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{reportBase}/{reportId}", queryParams);
-            return await GetItemAsync<Report>(path);
+            return await GetItemAsync<Report>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SparkDotNet
             if (endDate != null) bodyParams.Add("endDate", ((DateTime)endDate).ToString("yyyy-MM-dd"));
             if (siteList != null) bodyParams.Add("siteList", siteList);
 
-            return await PostItemAsync<Report>($"{reportBase}", bodyParams);
+            return await PostItemAsync<Report>($"{reportBase}", bodyParams).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace SparkDotNet
         /// <returns>true if Report was deleted, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteReportAsync(string reportId)
         {
-            return await DeleteItemAsync($"{reportBase}/{reportId}");
+            return await DeleteItemAsync($"{reportBase}/{reportId}").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace SparkDotNet
         /// <returns>true if Report was deleted, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteReportAsync(Report report)
         {
-            return await DeleteReportAsync(report.Id);
+            return await DeleteReportAsync(report.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -112,13 +112,10 @@ namespace SparkDotNet
         /// <returns>The CSV Report</returns>
         public async Task<string> DownloadReport(string reportUrl)
         {
-            HttpResponseMessage response = await client.GetAsync(reportUrl);
-            await TicketInformations.FillRequestParameter(response);
-
-            await CheckForErrorResponse(response);
-
-            return await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response = await client.GetAsync(reportUrl).ConfigureAwait(false);
+            await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
+            await CheckForErrorResponse(response).ConfigureAwait(false);
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
-   }
-
+    }
 }

@@ -27,7 +27,7 @@ namespace SparkDotNet
             queryParams.Add("deviceId", deviceId);
             queryParams.Add("name", name);
             var path = GetURL($"{xAPIBase}/status", queryParams);
-            return await GetItemAsync<XAPIStatus>(path);
+            return await GetItemAsync<XAPIStatus>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace SparkDotNet
         /// <returns>The xAPI status of the device</returns>
         public async Task<SparkApiConnectorApiOperationResult<XAPIStatus>> QueryStatusAsync(Device device, string name)
         {
-            return await QueryStatusAsync(device.Id, name);
+            return await QueryStatusAsync(device.Id, name).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SparkDotNet
             postBody.Add("commandName", commandName);
             postBody.Add("deviceId", deviceId);
             postBody.Add("arguments", arguments);
-            return await PostItemAsync<XAPIStatus>($"{xAPIBase}/{commandName}", postBody);
+            return await PostItemAsync<XAPIStatus>($"{xAPIBase}/{commandName}", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SparkDotNet
         /// <returns></returns>
         public async Task<SparkApiConnectorApiOperationResult<XAPIStatus>> ExecuteCommandAsync(string commandName, Device device, object arguments = null)
         {
-            return await ExecuteCommandAsync(commandName, device.Id, arguments);
+            return await ExecuteCommandAsync(commandName, device.Id, arguments).ConfigureAwait(false);
         }
     }
 

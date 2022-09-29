@@ -22,7 +22,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
             var path = GetURL(teamsBase, queryParams);
-            return await GetItemsAsync<Team>(path);
+            return await GetItemsAsync<Team>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{teamsBase}/{teamId}", queryParams);
-            return await GetItemAsync<Team>(path);
+            return await GetItemAsync<Team>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("name", name);
-            return await PostItemAsync<Team>(teamsBase, postBody);
+            return await PostItemAsync<Team>(teamsBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamAsync(string teamId)
         {
-            return await DeleteItemAsync($"{teamsBase}/{teamId}");
+            return await DeleteItemAsync($"{teamsBase}/{teamId}").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamAsync(Team team)
         {
-            return await DeleteTeamAsync(team.Id);
+            return await DeleteTeamAsync(team.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -84,8 +84,7 @@ namespace SparkDotNet
             var putBody = new Dictionary<string, object>();
             putBody.Add("name",name);
             var path = $"{teamsBase}/{teamId}";
-            return await UpdateItemAsync<Team>(path, putBody);
+            return await UpdateItemAsync<Team>(path, putBody).ConfigureAwait(false);
         }
     }
-
 }

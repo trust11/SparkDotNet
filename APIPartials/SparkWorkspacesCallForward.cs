@@ -22,12 +22,12 @@ namespace SparkDotNet
         /// <returns><c>PersonBargeInSetting</c> object</returns>
         public async Task<SparkApiConnectorApiOperationResult<WorkspaceCallForwardingSetting>> GetWorkspaceCallForwardingSettingAsync(string personId, string orgId = null)
         {
-            return await GetPersonSettingAsync<WorkspaceCallForwardingSetting>(WorkspaceCallForwardingBase, personId, orgId);
+            return await GetPersonSettingAsync<WorkspaceCallForwardingSetting>(WorkspaceCallForwardingBase, personId, orgId).ConfigureAwait(false);
         }
 
         public async Task UpdateWorkspaceCallForwardingSettingAsync(string personId, WorkspaceCallForwardingSetting setting, string orgId = null)
         {
-            await UpdatePersonSettingAsync(WorkspaceCallForwardingBase, personId, setting, orgId);
+            await UpdatePersonSettingAsync(WorkspaceCallForwardingBase, personId, setting, orgId).ConfigureAwait(false);
         }
     }
 }

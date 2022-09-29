@@ -25,7 +25,7 @@ namespace SparkDotNet
             if (teamId != null) queryParams.Add("teamId",teamId);
             if (max > 0) queryParams.Add("max",max.ToString());
             var path = GetURL(teamMembershipsBase, queryParams);
-            return await GetItemsAsync<TeamMembership>(path);
+            return await GetItemsAsync<TeamMembership>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{teamMembershipsBase}/{membershipId}", queryParams);
-            return await GetItemAsync<TeamMembership>(path);
+            return await GetItemAsync<TeamMembership>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SparkDotNet
             if (personId != null) { postBody.Add("personId", personId); }
             if (personEmail != null) { postBody.Add("personEmail", personEmail); }
             postBody.Add("isModerator", isModerator);
-            return await PostItemAsync<TeamMembership>(teamMembershipsBase, postBody);
+            return await PostItemAsync<TeamMembership>(teamMembershipsBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamMembershipAsync(string membershipId)
         {
-            return await DeleteItemAsync($"{teamMembershipsBase}/{membershipId}");            
+            return await DeleteItemAsync($"{teamMembershipsBase}/{membershipId}").ConfigureAwait(false);            
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteTeamMembershipAsync(TeamMembership membership)
         {
-            return await DeleteTeamMembershipAsync(membership.Id);
+            return await DeleteTeamMembershipAsync(membership.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace SparkDotNet
             var putBody = new Dictionary<string, object>();
             putBody.Add("isModerator",isModerator);
             var path = $"{teamMembershipsBase}/{membershipId}";
-            return await UpdateItemAsync<TeamMembership>(path, putBody);
+            return await UpdateItemAsync<TeamMembership>(path, putBody).ConfigureAwait(false);
         }
     }
 }

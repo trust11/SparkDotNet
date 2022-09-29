@@ -60,7 +60,7 @@ namespace SparkDotNet
             if (managerId != null) postBody.Add("managerId", managerId);
             if (title != null) postBody.Add("title", title);
             if (addresses != null) postBody.Add("addresses", addresses);
-            return await PostItemAsync<Person>(path, postBody);
+            return await PostItemAsync<Person>(path, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace SparkDotNet
                 person.PhoneNumbers,
                 person.Extension,
                 person.LocationId,
-                person.SiteUrls);
+                person.SiteUrls).ConfigureAwait(false);
 
         /// <summary>
         /// Remove a person from the system. Only an admin can remove a person.
@@ -97,7 +97,7 @@ namespace SparkDotNet
         /// <param name="personId">A unique identifier for the person.</param>
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePersonAsync(string personId)
-            => await DeleteItemAsync($"{peopleBase}/{personId}");
+            => await DeleteItemAsync($"{peopleBase}/{personId}").ConfigureAwait(false);
 
         /// <summary>
         /// Remove a person from the system. Only an admin can remove a person.
@@ -108,7 +108,7 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePersonAsync(Person person)
         {
             if (person == null) return new SparkApiConnectorApiOperationResult<bool> { Error = new SparkErrorContent() { Message = $"Parameter person was null" }, Result = false, IsSuccess = false };
-            return await DeletePersonAsync(person.Id);
+            return await DeletePersonAsync(person.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString().ToLower());
             var path = GetURL($"{peopleBase}/me", queryParams);
-            return await GetItemAsync<Person>(path);
+            return await GetItemAsync<Person>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -131,24 +131,24 @@ namespace SparkDotNet
         /// <param name="displayName">List people whose name starts with this string. For non-admin requests, either this or email are required.</param>
         /// <param name="ids">List people by ID. Accepts up to 85 person IDs. If this parameter is provided then presence information (such as the lastActivity or status properties) will not be included in the response unless showAllTypes is set to true.</param>
         /// <param name="orgId">List people in this organization. Only admin users of another organization (such as partners) may use this parameter.</param>
-        /// <param name="max">Limit the maximum number of people in the response. Default: 100</param>
+        /// <param name="pageSize">Limit the maximum number of people in the response. Default: 100</param>
         /// <param name="callingData">Include BroadCloud user details in the response. Default: false</param>
         /// <param name="locationId">List people present in this location.</param>
         /// <param name="showAllTypes">If the status is removed due to performance issues (ie. when querying via orgId or ids), it can be forced to be returned anyway by setting this to true</param>
         /// <returns>List of People objects.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<List<Person>>> GetPeopleAsync(string email = null, string displayName = null, List<string> ids = null, string orgId = null, int max = 0, bool? callingData = null, string locationId = null, bool? showAllTypes = null)
+        public async Task<SparkApiConnectorApiOperationResult<List<Person>>> GetPeopleAsync(string email = null, string displayName = null, List<string> ids = null, string orgId = null, int? pageSize = null, bool? callingData = null, string locationId = null, bool? showAllTypes = null)
         {
             var queryParams = new Dictionary<string, string>();
             if (email != null) queryParams.Add("email", email);
             if (displayName != null) queryParams.Add("displayName", displayName);
             if (ids != null) queryParams.Add("id", string.Join(",", ids));
             if (orgId != null) queryParams.Add("orgId", orgId);
-            if (max > 0) queryParams.Add("max", max.ToString());
+            if (pageSize > 0) queryParams.Add("max", pageSize.ToString());
             if (callingData != null) queryParams.Add("callingData", callingData.ToString().ToLower());
             if (locationId != null) queryParams.Add("locationId", locationId);
             if (showAllTypes != null) queryParams.Add("showAllTypes", showAllTypes.ToString().ToLower());
             var path = GetURL(peopleBase, queryParams);
-            return await GetItemsAsync<Person>(path);
+            return await GetItemsAsync<Person>(path).ConfigureAwait(false);
         }
         /// <summary>
         /// Shows details for a person, by ID.
@@ -162,7 +162,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (callingData != null) queryParams.Add("callingData", callingData.ToString().ToLower());
             var path = GetURL($"{peopleBase}/{personId}", queryParams);
-            return await GetItemAsync<Person>(path);
+            return await GetItemAsync<Person>(path).ConfigureAwait(false);
         }
         /// <summary>
         /// Update details for a person, by ID.
@@ -210,7 +210,7 @@ namespace SparkDotNet
             if (licenses != null) putBody.Add("licenses", licenses);
             if (loginEnabled != null) putBody.Add("loginEnabled", loginEnabled);
 
-            return await UpdateItemAsync<Person>(path, putBody);
+            return await UpdateItemAsync<Person>(path, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -222,6 +222,6 @@ namespace SparkDotNet
         /// <param name="showAllTypes">Include additional user data like #attendee role</param>
         /// <returns>Person object.</returns>
         public async Task<SparkApiConnectorApiOperationResult<Person>> UpdatePersonAsync(Person person, bool? callingData = null, bool? showAllTypes = null)
-            => await UpdatePersonAsync(person.Id, person.DisplayName, person.Emails, person.LocationId, person.OrgId, person.Roles, person.FirstName, person.LastName, person.Avatar, person.Licenses, callingData, person.PhoneNumbers, person.Extension, person.LoginEnabled, showAllTypes);
+            => await UpdatePersonAsync(person.Id, person.DisplayName, person.Emails, person.LocationId, person.OrgId, person.Roles, person.FirstName, person.LastName, person.Avatar, person.Licenses, callingData, person.PhoneNumbers, person.Extension, person.LoginEnabled, showAllTypes).ConfigureAwait(false);
     }
 }

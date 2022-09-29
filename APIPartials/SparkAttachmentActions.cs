@@ -19,7 +19,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{attachmentActionBase}/{attachmentActionId}", queryParams);
-            return await GetItemAsync<AttachmentAction>(path);
+            return await GetItemAsync<AttachmentAction>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace SparkDotNet
                 { "messageId", messageId },
                 { "inputs", inputs }
             };
-            return await PostItemAsync<AttachmentAction>(attachmentActionBase, putBody);
+            return await PostItemAsync<AttachmentAction>(attachmentActionBase, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -45,6 +45,6 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="attachment">The Attachment Action object to be created</param>
         /// <returns>The newly created Attachment Action object</returns>
-        public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> CreateAttachmentActionAsync(AttachmentAction attachment) => await CreateAttachmentActionAsync(attachment.Type, attachment.MessageId, attachment.Inputs);
+        public async Task<SparkApiConnectorApiOperationResult<AttachmentAction>> CreateAttachmentActionAsync(AttachmentAction attachment) => await CreateAttachmentActionAsync(attachment.Type, attachment.MessageId, attachment.Inputs).ConfigureAwait(false);
     }
 }

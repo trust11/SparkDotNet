@@ -23,13 +23,13 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult<List<Room>>> GetRoomsAsync(string teamId = null, int max = 0, string type = null, string sortBy = null)
         {
             var queryParams = new Dictionary<string, string>();
-            if (teamId != null) queryParams.Add("teamId",teamId);
-            if (type != null) queryParams.Add("type",type);
+            if (teamId != null) queryParams.Add("teamId", teamId);
+            if (type != null) queryParams.Add("type", type);
             if (max > 0) queryParams.Add("max", System.Math.Max(max, 1000).ToString());
             if (sortBy != null) queryParams.Add("sortBy", sortBy);
 
             var path = GetURL(roomsBase, queryParams);
-            return await GetItemsAsync<Room>(path);
+            return await GetItemsAsync<Room>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{roomsBase}/{roomId}", queryParams);
-            return await GetItemAsync<Room>(path);
+            return await GetItemAsync<Room>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{roomsBase}/{roomId}/meetingInfo", queryParams);
-            return await GetItemAsync<MeetingDetails>(path);
+            return await GetItemAsync<MeetingDetails>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SparkDotNet
             };
             if (teamId != null) { postBody.Add("teamId", teamId); }
             if (classificationId != null) { postBody.Add("classificationId", classificationId); }
-            return await PostItemAsync<Room>(roomsBase, postBody);
+            return await PostItemAsync<Room>(roomsBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="roomId">The unique identifier for the room.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomAsync(string roomId) => await DeleteItemAsync($"{roomsBase}/{roomId}");
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomAsync(string roomId) => await DeleteItemAsync($"{roomsBase}/{roomId}").ConfigureAwait(false);
 
         /// <summary>
         /// Deletes a room, by object. Deleted rooms cannot be recovered.
@@ -91,7 +91,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="room">The room object to be deleted.</param>
         /// <returns>Boolean indicating success of operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomAsync(Room room) => await DeleteRoomAsync(room.Id);
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomAsync(Room room) => await DeleteRoomAsync(room.Id).ConfigureAwait(false);
 
         /// <summary>
         /// Updates details for a room, by ID.
@@ -108,15 +108,15 @@ namespace SparkDotNet
             };
             if (classificationId != null) putBody.Add("classificationId", classificationId);
             var path = $"{roomsBase}/{roomId}";
-            return await UpdateItemAsync<Room>(path, putBody);
+            return await UpdateItemAsync<Room>(path, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Updates details for a room, by Object.
         /// </summary>
         /// <param name="room">The room object to be updated.</param>
-        /// <returns>The udated room object</returns>
-        public async Task<SparkApiConnectorApiOperationResult<Room>> UpdateRoomAsync(Room room) => await UpdateRoomAsync(room.Id, room.Title, room.ClassificationId);
+        /// <returns>The updated room object</returns>
+        public async Task<SparkApiConnectorApiOperationResult<Room>> UpdateRoomAsync(Room room) => await UpdateRoomAsync(room.Id, room.Title, room.ClassificationId).ConfigureAwait(false);
     }
 
 }

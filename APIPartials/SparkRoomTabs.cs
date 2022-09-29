@@ -22,9 +22,9 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             queryParams.Add("roomId", roomId);
-      
-            var path = GetURL($"{roomTabsBase}" , queryParams);
-            return await GetItemsAsync<RoomTab>(path);
+
+            var path = GetURL($"{roomTabsBase}", queryParams);
+            return await GetItemsAsync<RoomTab>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace SparkDotNet
         /// <returns>List of RoomTab objects.</returns>
         public async Task<SparkApiConnectorApiOperationResult<List<RoomTab>>> GetRoomTabsAsync(Room room)
         {
-            return await GetRoomTabsAsync(room.Id);
+            return await GetRoomTabsAsync(room.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -47,15 +47,15 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{roomTabsBase}/{roomTabId}", queryParams);
-            return await GetItemAsync<RoomTab>(path);
+            return await GetItemAsync<RoomTab>(path).ConfigureAwait(false);
         }
 
 
         /// <summary>
-        /// Add a tab with a content url to a room that can be accessed in the room.
+        /// Add a tab with a content URL to a room that can be accessed in the room.
         /// </summary>
         /// <param name="roomId">A unique identifier for the room.</param>
-        /// <param name="contentUrl">Content Url of the Room Tab. Needs to use the https protocol.</param>
+        /// <param name="contentUrl">Content URL of the Room Tab. Needs to use the https protocol.</param>
         /// <param name="displayName">Display name of the Room tab.</param>
         /// <returns>The newly created Room Tab object.</returns>
         public async Task<SparkApiConnectorApiOperationResult<RoomTab>> CreateRoomTabAsync(string roomId, string contentUrl, string displayName)
@@ -65,7 +65,7 @@ namespace SparkDotNet
             postBody.Add("contentUrl", contentUrl);
             postBody.Add("displayName", displayName);
 
-            return await PostItemAsync<RoomTab>(roomTabsBase, postBody);
+            return await PostItemAsync<RoomTab>(roomTabsBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SparkDotNet
         /// <returns></returns>
         public async Task<SparkApiConnectorApiOperationResult<RoomTab>> CreateRoomTabAsync(RoomTab roomTab)
         {
-            return await CreateRoomTabAsync(roomTab.RoomId, roomTab.ContentUrl, roomTab.DisplayName);
+            return await CreateRoomTabAsync(roomTab.RoomId, roomTab.ContentUrl, roomTab.DisplayName).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomTabAsync(string roomTabId)
         {
-            return await DeleteItemAsync($"{roomTabsBase}/{roomTabId}");            
+            return await DeleteItemAsync($"{roomTabsBase}/{roomTabId}").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRoomTabAsync(RoomTab roomTab)
         {
-            return await DeleteRoomTabAsync(roomTab.Id);
+            return await DeleteRoomTabAsync(roomTab.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -113,9 +113,8 @@ namespace SparkDotNet
             var putBody = new Dictionary<string, object>();
             putBody.Add("contentUrl", contentUrl);
             putBody.Add("displayName", displayName);
-            
             var path = $"{roomTabsBase}/{roomTabId}";
-            return await UpdateItemAsync<RoomTab>(path, putBody);
+            return await UpdateItemAsync<RoomTab>(path, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -128,5 +127,4 @@ namespace SparkDotNet
             return await UpdateRoomTabAsync(roomTab.Id, roomTab.ContentUrl, roomTab.DisplayName);
         }
     }
-
 }

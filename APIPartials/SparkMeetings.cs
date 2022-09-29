@@ -52,7 +52,7 @@ namespace SparkDotNet
             if (integrationTag != null) queryParams.Add("integrationTag", integrationTag);
 
             var path = GetURL(meetingsBase, queryParams);
-            return await GetItemsAsync<Meeting>(path);
+            return await GetItemsAsync<Meeting>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace SparkDotNet
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
             var path = GetURL($"{meetingsBase}/{meetingId}", queryParams);
-            return await GetItemAsync<Meeting>(path);
+            return await GetItemAsync<Meeting>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace SparkDotNet
             bool enabledAutoRecordMeeting, bool allowAnyUserToBeCoHost,
             string agenda = null, TimeZoneInfo timezone = null, string recurrence = null,
             List<MeetingInvitee> invitees = null) =>
-                await CreateMeetingAsync(title, start, end, enabledAutoRecordMeeting, allowAnyUserToBeCoHost, password);
+                await CreateMeetingAsync(title, start, end, enabledAutoRecordMeeting, allowAnyUserToBeCoHost, password).ConfigureAwait(false);
 
         /// <summary>
         /// Creates a new meeting.
@@ -164,7 +164,7 @@ namespace SparkDotNet
             if (registration != null) bodyParameters.Add("registration", registration);
             if (integrationTags != null) bodyParameters.Add("integrationTags", integrationTags);
 
-            return await PostItemAsync<Meeting>(meetingsBase, bodyParameters);
+            return await PostItemAsync<Meeting>(meetingsBase, bodyParameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace SparkDotNet
                 meeting.AllowAnyUserToBeCoHost, meeting.Password, meeting.Agenda, meeting.Timezone, meeting.Recurrence,
                 invitees, meeting.HostEmail, meeting.SiteUrl, meeting.EnabledJoinBeforeHost, meeting.EnableConnectAudioBeforeHost,
                 meeting.JoinBeforeHostMinutes, meeting.AllowFirstUserToBeCoHost, meeting.AllowAuthenticatedDevices, sendEmail,
-                meeting.Registration, integrationTags);
+                meeting.Registration, integrationTags).ConfigureAwait(false);
 
         /// <summary>
         /// Deletes a meeting with a specified meeting ID. The deleted meeting cannot be recovered.
@@ -201,7 +201,7 @@ namespace SparkDotNet
 
             var path = GetURL($"{meetingsBase}/{meetingId}", queryParams);
 
-            return await DeleteItemAsync(path);
+            return await DeleteItemAsync(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace SparkDotNet
         /// <param name="meeting">Meeting object for the meeting to be deleted.</param>
         /// <returns>true if the Meeting was deleted, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMeetingAsync(Meeting meeting) =>
-            await DeleteMeetingAsync(meeting.Id, meeting.HostEmail, meeting.SiteUrl);
+            await DeleteMeetingAsync(meeting.Id, meeting.HostEmail, meeting.SiteUrl).ConfigureAwait(false);
 
         /// <summary>
         /// Lists scheduled meeting and meeting instances of a meeting series identified by meetingSeriesId.
@@ -247,7 +247,7 @@ namespace SparkDotNet
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
             var path = GetURL($"{meetingsBase}", queryParams);
-            return await GetItemsAsync<Meeting>(path);
+            return await GetItemsAsync<Meeting>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace SparkDotNet
             if (sendEmail != null) bodyParameters.Add("sendEmail", sendEmail);
             if (registration != null) bodyParameters.Add("registration", registration);
 
-            return await PostItemAsync<Meeting>($"{meetingsBase}/{meetingId}", bodyParameters);
+            return await PostItemAsync<Meeting>($"{meetingsBase}/{meetingId}", bodyParameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace SparkDotNet
                 meeting.Timezone, meeting.Recurrence, meeting.HostEmail, meeting.SiteUrl,
                 meeting.EnabledJoinBeforeHost, meeting.EnableConnectAudioBeforeHost,
                 meeting.JoinBeforeHostMinutes, meeting.AllowFirstUserToBeCoHost,
-                meeting.AllowAuthenticatedDevices, sendEmail, meeting.Registration);
+                meeting.AllowAuthenticatedDevices, sendEmail, meeting.Registration).ConfigureAwait(false);
 
         /// <summary>
         /// Get the meeting control of a live meeting, which is consisted of meeting control status on "locked" and "recording" to reflect whether the meeting is currently locked and there is recording in progress.
@@ -333,7 +333,7 @@ namespace SparkDotNet
                 { "meetingId", meetingId }
             };
             var path = GetURL($"{meetingsBase}/controls", queryParams);
-            return await GetItemAsync<MeetingControls>(path);
+            return await GetItemAsync<MeetingControls>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -342,7 +342,7 @@ namespace SparkDotNet
         /// <param name="meeting">The meeting object.</param>
         /// <returns>The controls status objects for the meeting</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingControls>> GetMeetingControlsAsync(Meeting meeting) =>
-            await GetMeetingControlsAsync(meeting.Id);
+            await GetMeetingControlsAsync(meeting.Id).ConfigureAwait(false);
 
         /// <summary>
         /// To start, pause, resume, or stop a meeting recording; To lock or unlock an on-going meeting.
@@ -367,7 +367,7 @@ namespace SparkDotNet
             if (recordingPaused != null) bodyParameters.Add("recordingPaused", recordingPaused);
             if (locked != null) bodyParameters.Add("locked", locked);
 
-            return await UpdateItemAsync<MeetingControls>(path, bodyParameters);
+            return await UpdateItemAsync<MeetingControls>(path, bodyParameters).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -377,6 +377,6 @@ namespace SparkDotNet
         /// <param name="controls">The new meeting control settings</param>
         /// <returns>The updated meeting state object</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingControls>> UpdateMeetingControlsAsync(Meeting meeting, MeetingControls controls) =>
-            await UpdateMeetingControlsAsync(meeting.Id, controls.RecordingStarted, controls.RecordingPaused, controls.Locked);
+            await UpdateMeetingControlsAsync(meeting.Id, controls.RecordingStarted, controls.RecordingPaused, controls.Locked).ConfigureAwait(false);
     }
 }

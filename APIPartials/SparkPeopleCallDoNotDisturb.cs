@@ -13,12 +13,12 @@ namespace SparkDotNet
 
         public async Task<SparkApiConnectorApiOperationResult<PersonCallDoNotDisturbSetting>> GetPersonDoNotDisturbSettingAsync(string personId, string orgId = null)
         {
-            return await GetPersonSettingAsync<PersonCallDoNotDisturbSetting>(CallDoNotDisturbBaseUrl, personId, orgId);
+            return await GetPersonSettingAsync<PersonCallDoNotDisturbSetting>(CallDoNotDisturbBaseUrl, personId, orgId).ConfigureAwait(false);
         }
 
         public async Task UpdatePersonDoNotDisturbSettingAsync(string personId, PersonCallDoNotDisturbSetting personCallDoNotDisturbSetting, string orgId = null)
         {
-            await UpdatePersonSettingAsync(CallDoNotDisturbBaseUrl, personId, personCallDoNotDisturbSetting, orgId);
+            await UpdatePersonSettingAsync(CallDoNotDisturbBaseUrl, personId, personCallDoNotDisturbSetting, orgId).ConfigureAwait(false);
         }
     }
 }

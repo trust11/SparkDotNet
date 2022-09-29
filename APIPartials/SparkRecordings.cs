@@ -35,7 +35,7 @@ namespace SparkDotNet
 
             var path = GetURL(recordingsBase, queryParams);
 
-            return await GetItemsAsync<Recording>(path);
+            return await GetItemsAsync<Recording>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace SparkDotNet
         /// <returns></returns>
         public async Task<SparkApiConnectorApiOperationResult<List<Recording>>> GetRecordingsAsync(int max = 0, DateTime? from = null, DateTime? to = null, Meeting meeting = null)
         {
-            return await GetRecordingsAsync(max, from, to, meeting == null ? null : meeting.Id);
+            return await GetRecordingsAsync(max, from, to, meeting == null ? null : meeting.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{recordingsBase}/{recordingId}", queryParams);
-            return await GetItemAsync<Recording>(path);
+            return await GetItemAsync<Recording>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SparkDotNet
         /// <returns>true if the recording was deleted, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRecordingAsync(string recordingId)
         {
-            return await DeleteItemAsync($"{recordingsBase}/{recordingId}");
+            return await DeleteItemAsync($"{recordingsBase}/{recordingId}").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SparkDotNet
         /// <returns>true if the recording was deleted, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteRecordingAsync(Recording recording)
         {
-            return await DeleteRecordingAsync(recording.Id);
+            return await DeleteRecordingAsync(recording.Id).ConfigureAwait(false);
         }
 
     }

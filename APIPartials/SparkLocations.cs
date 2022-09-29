@@ -31,7 +31,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", max.ToString());
 
             var path = GetURL(locationsBase, queryParams);
-            return await GetItemsAsync<Location>(path);
+            return await GetItemsAsync<Location>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{locationsBase}/{locationId}", queryParams);
-            return await GetItemAsync<Location>(path);
+            return await GetItemAsync<Location>(path).ConfigureAwait(false);
         }
     }
 

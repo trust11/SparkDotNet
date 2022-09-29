@@ -7,6 +7,8 @@ namespace SparkDotNet
     {
         public T Result { get; set; }
 
+        public string NextLink { get; set; }
+
         public override string ToString()
         {
             var inhString = base.ToString();

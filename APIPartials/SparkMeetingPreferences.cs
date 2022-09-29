@@ -24,7 +24,7 @@ namespace SparkDotNet
             if (userEmail != null) queryParams.Add("userEmail", userEmail);
 
             var path = GetURL($"{meetingsPreferencesBase}/sites", queryParams);
-            return await GetItemsAsync<MeetingSite>(path, "sites");
+            return await GetItemsAsync<MeetingSite>(path, "sites").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace SparkDotNet
                 { "siteUrl", siteUrl }
             };
 
-            return await PostItemAsync<MeetingSite>(path, postBody);
+            return await PostItemAsync<MeetingSite>(path, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace SparkDotNet
 
             var path = GetURL($"{meetingsPreferencesBase}/schedulingOptions", queryParams);
 
-            return await GetItemAsync<MeetingSchedulingOptions>(path);
+            return await GetItemAsync<MeetingSchedulingOptions>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace SparkDotNet
                 { "enabledAutoShareRecording", enabledAutoShareRecording }
             };
 
-            return await UpdateItemAsync<MeetingSchedulingOptions>($"{meetingsPreferencesBase}/schedulingOptions", postBody);
+            return await UpdateItemAsync<MeetingSchedulingOptions>($"{meetingsPreferencesBase}/schedulingOptions", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace SparkDotNet
         /// <param name="meetingSchedulingOptions">The new scheduling options</param>
         /// <returns>The updated Meeting Scheduling Options</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingSchedulingOptions>> UpdateMeetingSchedulingOptionsAsync(MeetingSchedulingOptions meetingSchedulingOptions)
-        => await UpdateMeetingSchedulingOptionsAsync(meetingSchedulingOptions.EnabledJoinBeforeHost, meetingSchedulingOptions.JoinBeforeHostMinutes, meetingSchedulingOptions.EnabledAutoShareRecording);
+        => await UpdateMeetingSchedulingOptionsAsync(meetingSchedulingOptions.EnabledJoinBeforeHost, meetingSchedulingOptions.JoinBeforeHostMinutes, meetingSchedulingOptions.EnabledAutoShareRecording).ConfigureAwait(false);
 
         /// <summary>
         /// Retrieves video options for the authenticated user.
@@ -106,7 +106,7 @@ namespace SparkDotNet
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
             var path = GetURL($"{meetingsPreferencesBase}/video", queryParams);
-            return await GetItemsAsync<MeetingVideoDevice>(path, "videoDevices");
+            return await GetItemsAsync<MeetingVideoDevice>(path, "videoDevices").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace SparkDotNet
 
             // @flag @todo
             // This will not work as it returns an array instead of a single element
-            return await UpdateItemAsync<List<MeetingVideoDevice>>($"{meetingsPreferencesBase}/video", postBody);
+            return await UpdateItemAsync<List<MeetingVideoDevice>>($"{meetingsPreferencesBase}/video", postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace SparkDotNet
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
 
             var path = GetURL($"{meetingsPreferencesBase}/personalMeetingRoom", queryParams);
-            return await GetItemAsync<MeetingPreferencesPMR>(path);
+            return await GetItemAsync<MeetingPreferencesPMR>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace SparkDotNet
             if (siteUrl != null) postBody.Add("siteUrl", siteUrl);
 
             var path = GetURL($"{meetingsPreferencesBase}/personalMeetingRoom", queryParams);
-            return await UpdateItemAsync<MeetingPreferencesPMR>(path, postBody);
+            return await UpdateItemAsync<MeetingPreferencesPMR>(path, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -193,6 +193,6 @@ namespace SparkDotNet
         /// <param name="siteUrl">URL of the Webex site to query. For individual use, if siteUrl is not specified, the query will use the default site of the user. For admin use, if siteUrl is not specified, the query will use the default site for the admin's authorization token used to make the call. In the case where the user belongs to a site different than the admin’s default site, the admin can set the site to query using the siteUrl parameter. All available Webex sites and default site of a user can be retrieved from /meetingPreferences/sites.</param>
         /// <returns>The updated personal room options</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingPreferencesPMR>> UpdatePersonalMeetingRoomOptionsAsync(MeetingPreferencesPMR pmr, string userEmail = null, string siteUrl = null)
-        => await UpdatePersonalMeetingRoomOptionsAsync(pmr.Topic, pmr.HostPin, pmr.EnabledAutoLock, pmr.AutoLockMinutes, pmr.EnabledNotifyHost, pmr.SupportCoHost, pmr.SupportAnyoneAsCoHost, pmr.ChoHosts, pmr.AllowFirstUserToBeCoHost, pmr.AllowAuthenticatedDevices, userEmail, siteUrl);
+        => await UpdatePersonalMeetingRoomOptionsAsync(pmr.Topic, pmr.HostPin, pmr.EnabledAutoLock, pmr.AutoLockMinutes, pmr.EnabledNotifyHost, pmr.SupportCoHost, pmr.SupportAnyoneAsCoHost, pmr.ChoHosts, pmr.AllowFirstUserToBeCoHost, pmr.AllowAuthenticatedDevices, userEmail, siteUrl).ConfigureAwait(false);
     }
 }

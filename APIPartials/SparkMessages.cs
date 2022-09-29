@@ -37,7 +37,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", max.ToString());
 
             var path = GetURL(messagesBase, queryParams);
-            return await GetItemsAsync<Message>(path);
+            return await GetItemsAsync<Message>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace SparkDotNet
             if (personEmail != null) queryParams.Add("personEmail", personEmail);
 
             var path = GetURL($"{messagesBase}/direct", queryParams);
-            return await GetItemsAsync<Message>(path);
+            return await GetItemsAsync<Message>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{messagesBase}/{messageId}", queryParams);
-            return await GetItemAsync<Message>(path);
+            return await GetItemAsync<Message>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace SparkDotNet
             if (markdown != null) postBody.Add("markdown", markdown);
             if (files != null) postBody.Add("files", files);
             if (attachments != null) postBody.Add("attachments", attachments);
-            return await PostItemAsync<Message>(messagesBase, postBody);
+            return await PostItemAsync<Message>(messagesBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace SparkDotNet
         /// <param name="messageId">The unique identifier for the message.</param>
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(string messageId) =>
-            await DeleteItemAsync($"{messagesBase}/{messageId}");
+            await DeleteItemAsync($"{messagesBase}/{messageId}").ConfigureAwait(false);
 
         /// <summary>
         /// Deletes a message, by message object.
@@ -118,7 +118,7 @@ namespace SparkDotNet
         /// <param name="message">The message object for the message.</param>
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMessageAsync(Message message) =>
-            await DeleteMessageAsync(message.Id);
+            await DeleteMessageAsync(message.Id).ConfigureAwait(false);
 
         /// <summary>
         /// Update a message you have posted not more than 10 times.
@@ -156,7 +156,7 @@ namespace SparkDotNet
 
             var path = GetURL($"{messagesBase}/{messageId}", queryParams);
 
-            return await UpdateItemAsync<Message>(path, postBody);
+            return await UpdateItemAsync<Message>(path, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -165,6 +165,6 @@ namespace SparkDotNet
         /// <param name="message">The message to be updated</param>
         /// <returns>The updated message object</returns>
         public async Task<SparkApiConnectorApiOperationResult<Message>> UpdateMessageAsync(Message message) =>
-            await UpdateMessageAsync(message.Id, message.RoomId, message.Text, message.Markdown);
+            await UpdateMessageAsync(message.Id, message.RoomId, message.Text, message.Markdown).ConfigureAwait(false);
     }
 }

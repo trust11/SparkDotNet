@@ -21,7 +21,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
             var path = GetURL(webhooksBase, queryParams);
-            return await GetItemsAsync<Webhook>(path);
+            return await GetItemsAsync<Webhook>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{webhooksBase}/{webhookId}", queryParams);
-            return await GetItemAsync<Webhook>(path);
+            return await GetItemAsync<Webhook>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SparkDotNet
             postBody.Add("event", sparkEvent);
             if (filter != null) postBody.Add("filter", filter);
             if (secret != null) postBody.Add("secret", secret);
-            return await PostItemAsync<Webhook>(webhooksBase, postBody);
+            return await PostItemAsync<Webhook>(webhooksBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWebhookAsync(string webhookId)
         {
-            return await DeleteItemAsync($"{webhooksBase}/{webhookId}");            
+            return await DeleteItemAsync($"{webhooksBase}/{webhookId}").ConfigureAwait(false);            
         }
 
 
@@ -78,7 +78,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWebhookAsync(Webhook webhook)
         {
-            return await DeleteWebhookAsync(webhook.Id);
+            return await DeleteWebhookAsync(webhook.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace SparkDotNet
             if (secret != null) putBody.Add("secret", secret);
             if (status != null) putBody.Add("status", status);
             var path = $"{webhooksBase}/{webhookId}";
-            return await UpdateItemAsync<Webhook>(path, putBody);
+            return await UpdateItemAsync<Webhook>(path, putBody).ConfigureAwait(false);
         }
     }
 

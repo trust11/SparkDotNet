@@ -11,7 +11,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
             var path = GetURL(string.Format(url, personId), queryParams);
-            return await GetItemAsync<T>(path);
+            return await GetItemAsync<T>(path).ConfigureAwait(false);
         }
 
         private async Task UpdateWorkspaceSettingAsync<T>(string url, string personId, T personCallSetting, string orgId = null)
@@ -19,7 +19,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
             var path = GetURL(string.Format(url, personId), queryParams);
-            await UpdateItemAsync(path, personCallSetting);
+            await UpdateItemAsync(path, personCallSetting).ConfigureAwait(false);
         }
     }
 }

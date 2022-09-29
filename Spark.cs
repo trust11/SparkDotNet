@@ -247,7 +247,7 @@ namespace SparkDotNet
 
         public async Task<SparkApiConnectorApiOperationResult> Logout(int timeout = 0)
         {
-            return await Task.Run(() => SparkApiConnectorApiOperationResult.Success);
+            return await Task.Run(() => SparkApiConnectorApiOperationResult.Success).ConfigureAwait(false);
         }
 
         #region Private Helper Methods
@@ -274,8 +274,8 @@ namespace SparkDotNet
             try
             {
                 var fullpath = $"{baseURL}{path}";
-                response = await client.DeleteAsync(fullpath);
-                await TicketInformations.FillRequestParameter(response);
+                response = await client.DeleteAsync(fullpath).ConfigureAwait(false);
+                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
                 result.Result = MapHttpStatusCode(HttpStatusCode.NoContent) == SparkApiOperationResultCode.OK;
                 result.ResultCode = MapHttpStatusCode(response.StatusCode);
@@ -298,12 +298,18 @@ namespace SparkDotNet
             try
             {
                 response = await client.GetAsync(path).ConfigureAwait(false);
-                await TicketInformations.FillRequestParameter(response);
+                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
+
+                    var pagination = LinkHeader.CreateInstance(response);
+                    if (pagination != null)
+                    {
+                        result.NextLink = pagination.NextLink;
+                    }
                 }
                 else
                 {
@@ -312,7 +318,7 @@ namespace SparkDotNet
             }
             catch (Exception ex)
             {
-                await ProcessException(result, ex, response);
+                await ProcessException(result, ex, response).ConfigureAwait(false);
             }
 
             return result;
@@ -329,7 +335,7 @@ namespace SparkDotNet
             try
             {
                 response = await client.GetAsync(path).ConfigureAwait(true);
-                await TicketInformations.FillRequestParameter(response);
+                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
@@ -367,24 +373,22 @@ namespace SparkDotNet
             }
             catch (Exception ex)
             {
-                await ProcessException(result, ex, response);
+                await ProcessException(result, ex, response).ConfigureAwait(false);
             }
 
             return result;
         }
 
-        private string GetURL(string path, Dictionary<string, string> dict, string basePath = baseURL)
+        private string GetURL(string path, Dictionary<string, string> dict = null, string basePath = baseURL)
         {
-            UriBuilder uriBuilder = new UriBuilder(basePath);
-            uriBuilder.Path = path;
-            var queryString = new StringBuilder();
-            if (dict.Count > 0)
+            UriBuilder uriBuilder = new UriBuilder(basePath)
             {
-                foreach (KeyValuePair<string, string> kv in dict)
-                {
-                    queryString.Append(UrlEncode(kv.Key)).Append('=').Append(UrlEncode(kv.Value)).Append('&');
-                }
-            }
+                Path = path
+            };
+            var queryString = new StringBuilder();
+            dict?.ToList().ForEach(
+                kv => queryString.Append(UrlEncode(kv.Key)).Append('=').Append(UrlEncode(kv.Value)).Append('&')
+            );
             uriBuilder.Query = queryString.ToString().Trim('&');
             return uriBuilder.Uri.ToString();
         }
@@ -405,7 +409,6 @@ namespace SparkDotNet
         private async Task<SparkApiConnectorApiOperationResult<T>> PostItemAsync<T>(string path, Dictionary<string, object> bodyParams)
         {
             var result = new SparkApiConnectorApiOperationResult<T>();
-            HttpResponseMessage response = null;
             HttpContent content;
             try
             {
@@ -449,8 +452,8 @@ namespace SparkDotNet
                     content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
                 }
 
-                response = await client.PostAsync(path, content);
-                await TicketInformations.FillRequestParameter(response);
+                var response = await client.PostAsync(path, content).ConfigureAwait(false);
+                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -533,12 +536,12 @@ namespace SparkDotNet
             {
                 var jsonBody = JsonConvert.SerializeObject(bodyParams);
                 content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-                response = await client.PutAsync(path, content);
-                await TicketInformations.FillRequestParameter(response);
+                response = await client.PutAsync(path, content).ConfigureAwait(false);
+                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
                 }
                 else
@@ -548,7 +551,7 @@ namespace SparkDotNet
             }
             catch (Exception ex)
             {
-                await ProcessException(result, ex, response);
+                await ProcessException(result, ex, response).ConfigureAwait(false);
             }
 
             return result;
@@ -572,13 +575,18 @@ namespace SparkDotNet
                 };
 
 
-                response = await client.SendAsync(httpRequestMessage);
-                await TicketInformations.FillRequestParameter(response);
+                response = await client.SendAsync(httpRequestMessage).ConfigureAwait(false);
+                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+                    result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                    var pagination = LinkHeader.CreateInstance(response);
+                    if (pagination != null)
+                    {
+                        result.NextLink = pagination.NextLink;
+                    }
                 }
                 else
                 {
@@ -587,7 +595,7 @@ namespace SparkDotNet
             }
             catch (Exception ex)
             {
-                await ProcessException(result, ex, response);
+                await ProcessException(result, ex, response).ConfigureAwait(false);
             }
 
             return result;
@@ -599,10 +607,10 @@ namespace SparkDotNet
 
             var jsonBody = JsonConvert.SerializeObject(body);
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync(path, content);
-            await TicketInformations.FillRequestParameter(response);
+            HttpResponseMessage response = await client.PutAsync(path, content).ConfigureAwait(false);
+            await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
-            await CheckForErrorResponse(response);
+            await CheckForErrorResponse(response).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
                 result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
@@ -621,10 +629,10 @@ namespace SparkDotNet
 
             var jsonBody = JsonConvert.SerializeObject(body);
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync(path, content);
-            await TicketInformations.FillRequestParameter(response);
+            HttpResponseMessage response = await client.PutAsync(path, content).ConfigureAwait(false);
+            await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
-            await CheckForErrorResponse(response);
+            await CheckForErrorResponse(response).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
                 result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
@@ -639,26 +647,26 @@ namespace SparkDotNet
 
         private async Task UpdateItemAsync(string path, Dictionary<string, object> bodyParams)
         {
-            await UpdateItemAsync<Dictionary<string, object>>(path, bodyParams);
+            await UpdateItemAsync<Dictionary<string, object>>(path, bodyParams).ConfigureAwait(false);
         }
 
         #endregion Private Helper Methods
 
         public async Task<PaginationResult<T>> GetItemsWithLinksAsync<T>(string path)
         {
-            HttpResponseMessage response = await client.GetAsync(path);
-            await TicketInformations.FillRequestParameter(response);
+            HttpResponseMessage response = await client.GetAsync(path).ConfigureAwait(false);
+            await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
-            await CheckForErrorResponse(response);
+            await CheckForErrorResponse(response).ConfigureAwait(false);
             //todo:handle error
-            //var errorResponse = await CheckForErrorResponse(response);
+            //var errorResponse = await CheckForErrorResponse(response).ConfigureAwait(false);
             //if (errorResponse is null)
             //{
             //    return null;
             //}
 
             PaginationResult<T> paginationResult = new PaginationResult<T>();
-            JObject requestResult = JObject.Parse(await response.Content.ReadAsStringAsync());
+            JObject requestResult = JObject.Parse(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             List<JToken> results = requestResult["items"].Children().ToList();
             foreach (JToken result in results)
             {
@@ -709,7 +717,7 @@ namespace SparkDotNet
                 return null;
             }
 
-            SparkErrorContent sparkErrorContent = JsonConvert.DeserializeObject<SparkErrorContent>(await response.Content.ReadAsStringAsync());
+            SparkErrorContent sparkErrorContent = JsonConvert.DeserializeObject<SparkErrorContent>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
             if (sparkErrorContent.Message == null)
                 sparkErrorContent.Message = response.ReasonPhrase;
             return sparkErrorContent;

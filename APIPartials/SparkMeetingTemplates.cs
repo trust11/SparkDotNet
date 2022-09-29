@@ -35,7 +35,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
             if (siteUrl != null) queryParams.Add("siteUrl", siteUrl);
             var path = GetURL(meetingsTemplateBase, queryParams);
-            return await GetItemAsync<MeetingTemplates>(path);
+            return await GetItemAsync<MeetingTemplates>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
             var path = GetURL($"{meetingsTemplateBase}/{templateId}", queryParams);
-            return await GetItemAsync<MeetingTemplate>(path);
+            return await GetItemAsync<MeetingTemplate>(path).ConfigureAwait(false);
         }
     }
 

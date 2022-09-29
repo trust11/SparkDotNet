@@ -32,12 +32,12 @@ namespace SparkDotNet
         /// <returns>PersonCallForwardingSetting object</returns>
         public async Task<SparkApiConnectorApiOperationResult<PersonCallForwardingSetting>> GetPersonCallForwardingSettingAsync(string personId, string orgId = null)
         {
-            return await GetPersonSettingAsync<PersonCallForwardingSetting>(CallForwardingBaseUrl, personId, orgId);
+            return await GetPersonSettingAsync<PersonCallForwardingSetting>(CallForwardingBaseUrl, personId, orgId).ConfigureAwait(false);
         }
 
         public async Task<SparkApiConnectorApiOperationResult<PersonCallForwardingSetting>> UpdatePersonCallForwardingSettingAsync(string personId, PersonCallForwardingSetting personCallForwardingSetting, string orgId = null)
         {
-           return await UpdatePersonSettingAsync(CallForwardingBaseUrl, personId, personCallForwardingSetting, orgId);
+           return await UpdatePersonSettingAsync(CallForwardingBaseUrl, personId, personCallForwardingSetting, orgId).ConfigureAwait(false);
         }
     }
 }

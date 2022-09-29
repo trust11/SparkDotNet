@@ -36,7 +36,7 @@ namespace SparkDotNet
             if (max > 0) queryParams.Add("max", max.ToString());
 
             var path = GetURL(membershipsBase, queryParams);
-            return await GetItemsAsync<Membership>(path);
+            return await GetItemsAsync<Membership>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SparkDotNet
             if (personId != null) { postBody.Add("personId", personId); }
             if (personEmail != null) { postBody.Add("personEmail", personEmail); }
             postBody.Add("isModerator", isModerator);
-            return await PostItemAsync<Membership>(membershipsBase, postBody);
+            return await PostItemAsync<Membership>(membershipsBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membershipId">The unique identifier for the membership.</param>
         /// <returns>Boolean representing the success of the operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(string membershipId) => await DeleteItemAsync($"{membershipsBase}/{membershipId}");
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(string membershipId) => await DeleteItemAsync($"{membershipsBase}/{membershipId}").ConfigureAwait(false);
 
         /// <summary>
         /// Deletes a membership by Membership Object.
@@ -73,7 +73,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membership">The Membership object for the membership.</param>
         /// <returns>Boolean representing the success of the operation.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(Membership membership) => await DeleteTeamMembershipAsync(membership.Id);
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteMembershipAsync(Membership membership) => await DeleteTeamMembershipAsync(membership.Id).ConfigureAwait(false);
 
         /// <summary>
         /// Updates properties for a membership by ID.
@@ -91,7 +91,7 @@ namespace SparkDotNet
                 { "isRoomHidden", isRoomHidden }
             };
             var path = $"{membershipsBase}/{membershipId}";
-            return await UpdateItemAsync<Membership>(path, putBody);
+            return await UpdateItemAsync<Membership>(path, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,6 +99,6 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="membership">The membership object to be updatad.</param>
         /// <returns>Membership object.</returns>
-        public async Task<SparkApiConnectorApiOperationResult<Membership>> UpdateMembershipAsync(Membership membership) => await UpdateMembershipAsync(membership.Id, membership.IsModerator, membership.IsRoomHidden);
+        public async Task<SparkApiConnectorApiOperationResult<Membership>> UpdateMembershipAsync(Membership membership) => await UpdateMembershipAsync(membership.Id, membership.IsModerator, membership.IsRoomHidden).ConfigureAwait(false);
     }
 }

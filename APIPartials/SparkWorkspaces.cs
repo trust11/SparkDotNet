@@ -46,7 +46,7 @@ namespace SparkDotNet
             if (workspaceLocationId != null) queryParams.Add(nameof(workspaceLocationId), workspaceLocationId);
 
             var path = GetURL(workspacesBase, queryParams);
-            return await GetItemsAsync<Workspace>(path);
+            return await GetItemsAsync<Workspace>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{workspacesBase}/{workspaceId}", queryParams);
-            return await GetItemAsync<Workspace>(path);
+            return await GetItemAsync<Workspace>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace SparkDotNet
             if (calendar != null) postBody.Add("calendar", calendar);
             if (notes != null) postBody.Add("notes", notes);
 
-            return await PostItemAsync<Workspace>(workspacesBase, postBody);
+            return await PostItemAsync<Workspace>(workspacesBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWorkspaceAsync(string workspaceId)
         {
-            return await DeleteItemAsync($"{workspacesBase}/{workspaceId}");            
+            return await DeleteItemAsync($"{workspacesBase}/{workspaceId}").ConfigureAwait(false);            
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace SparkDotNet
         /// <returns>Boolean indicating success of operation.</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteWorkspaceAsync(Workspace workspace)
         {
-            return await DeleteWorkspaceAsync(workspace.Id);
+            return await DeleteWorkspaceAsync(workspace.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace SparkDotNet
             if (calendar != null) putBody.Add("calendar", calendar);
             if (notes != null) putBody.Add("notes", notes);
             var path = $"{workspacesBase}/{workspaceId}";
-            return await UpdateItemAsync<Workspace>(path, putBody);
+            return await UpdateItemAsync<Workspace>(path, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace SparkDotNet
         /// <returns>The udated workspace object</returns>
         public async Task<SparkApiConnectorApiOperationResult<Workspace>> UpdateWorkspacesync(Workspace workspace)
         {
-            return await UpdateWorkspaceAsync(workspace.Id, workspace.DisplayName, workspace.Capacity, workspace.Type.ToString(), workspace.Calendar, workspace.Notes);
+            return await UpdateWorkspaceAsync(workspace.Id, workspace.DisplayName, workspace.Capacity, workspace.Type.ToString(), workspace.Calendar, workspace.Notes).ConfigureAwait(false);
         }
     }
 

@@ -32,7 +32,7 @@ namespace SparkDotNet
             if (personOrgId != null) queryParams.Add("personOrgId", personOrgId);
             if (max > 0) queryParams.Add("max", max.ToString());
 
-            return await GetResourceGroupMembershipsAsync(queryParams);
+            return await GetResourceGroupMembershipsAsync(queryParams).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SparkDotNet
         public async Task<SparkApiConnectorApiOperationResult<List<ResourceGroupMembership>>> GetResourceGroupMembershipsAsync(Dictionary<string, string> queryParameters)
         {
             var path = GetURL(resourceGroupsBase, queryParameters);
-            return await GetItemsAsync<ResourceGroupMembership>(path);
+            return await GetItemsAsync<ResourceGroupMembership>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{resourceGroupMembershipsBase}/{resourceGroupMembershipId}", queryParams);
-            return await GetItemAsync<ResourceGroupMembership>(path);
+            return await GetItemAsync<ResourceGroupMembership>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace SparkDotNet
             bodyParameter.Add("personOrgId", personOrgId);
             bodyParameter.Add("status", status);
 
-            return await UpdateItemAsync<bool>($"{resourceGroupMembershipsBase}/{resourceGroupMembershipId}", bodyParameter);
+            return await UpdateItemAsync<bool>($"{resourceGroupMembershipsBase}/{resourceGroupMembershipId}", bodyParameter).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace SparkDotNet
         /// <returns>true if the update succeeded, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> UpdateReourceGroupMembershipAsync(ResourceGroupMembership resourceGroupMembership)
         {
-            return await UpdateReourceGroupMembershipAsync(resourceGroupMembership.Id, resourceGroupMembership.ResourceGroupId, resourceGroupMembership.LicenseId, resourceGroupMembership.PersonId, resourceGroupMembership.PersonOrgId, resourceGroupMembership.Status);
+            return await UpdateReourceGroupMembershipAsync(resourceGroupMembership.Id, resourceGroupMembership.ResourceGroupId, resourceGroupMembership.LicenseId, resourceGroupMembership.PersonId, resourceGroupMembership.PersonOrgId, resourceGroupMembership.Status).ConfigureAwait(false);
         }
 
     }

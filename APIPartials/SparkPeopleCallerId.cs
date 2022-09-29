@@ -17,12 +17,12 @@ namespace SparkDotNet
         /// <returns><c>PersonCallerIdSetting</c> object</returns>
         public async Task<SparkApiConnectorApiOperationResult<PersonCallerIdSetting>> GetPersonCallerIdAsync(string personId, string orgId = null)
         {
-            return await GetPersonSettingAsync<PersonCallerIdSetting>(CallerIdBaseUrl, personId, orgId);
+            return await GetPersonSettingAsync<PersonCallerIdSetting>(CallerIdBaseUrl, personId, orgId).ConfigureAwait(false);
         }
 
         public async Task<SparkApiConnectorApiOperationResult<PersonCallerIdUpdateSetting>> UpdatePersonCallerIdAsync(string personId, PersonCallerIdUpdateSetting personCallerIdSetting, string orgId = null)
         {
-            return await UpdatePersonSettingAsync<PersonCallerIdUpdateSetting>(CallerIdBaseUrl, personId, personCallerIdSetting, orgId);
+            return await UpdatePersonSettingAsync<PersonCallerIdUpdateSetting>(CallerIdBaseUrl, personId, personCallerIdSetting, orgId).ConfigureAwait(false);
         }
     }
 }

@@ -18,12 +18,12 @@ namespace SparkDotNet
         /// <returns><c>PersonBargeInSetting</c> object</returns>
         public async Task<SparkApiConnectorApiOperationResult<PersonIncomingPermissionSettings>> GetPeopleIncomingCallingPermissionsSettingsAsync(string personId, string orgId = null)
         {
-            return await GetPersonSettingAsync<PersonIncomingPermissionSettings>(IncomingPermissionBaseUrl, personId, orgId);
+            return await GetPersonSettingAsync<PersonIncomingPermissionSettings>(IncomingPermissionBaseUrl, personId, orgId).ConfigureAwait(false);
         }
 
         public async Task<SparkApiConnectorApiOperationResult<PersonIncomingPermissionSettings>> UpdatePeopleIncomingCallingPermissionsSettingsAsync(string personId, PersonIncomingPermissionSettings setting, string orgId = null)
         {
-            return await UpdatePersonSettingAsync(IncomingPermissionBaseUrl, personId, setting, orgId);
+            return await UpdatePersonSettingAsync(IncomingPermissionBaseUrl, personId, setting, orgId).ConfigureAwait(false);
         }
     }
 }

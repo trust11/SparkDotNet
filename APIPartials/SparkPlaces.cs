@@ -26,7 +26,7 @@ namespace SparkDotNet
             if (displayName != null) queryParams.Add("displayName", displayName);
             if (orgId != null) queryParams.Add("orgId", orgId);
             var path = GetURL(placesBase, queryParams);
-            return await GetItemsAsync<Place>(path);
+            return await GetItemsAsync<Place>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{placesBase}/{placeId}", queryParams);
-            return await GetItemAsync<Place>(path);
+            return await GetItemAsync<Place>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace SparkDotNet
         {
             var postBody = new Dictionary<string, object>();
             postBody.Add("displayName", displayName);
-            return await PostItemAsync<Place>(placesBase, postBody);
+            return await PostItemAsync<Place>(placesBase, postBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace SparkDotNet
         /// <returns>true if the Place was deleted, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePlaceAsync(string placeId)
         {
-            return await DeleteItemAsync($"{placesBase}/{placeId}");
+            return await DeleteItemAsync($"{placesBase}/{placeId}").ConfigureAwait(false);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace SparkDotNet
         /// <returns>true if the Place was deleted, false otherwise</returns>
         public async Task<SparkApiConnectorApiOperationResult<bool>> DeletePlaceAsync(Place place)
         {
-            return await DeletePlaceAsync(place.Id);
+            return await DeletePlaceAsync(place.Id).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SparkDotNet
             var putBody = new Dictionary<string, object>();
             putBody.Add("displayName", displayName);
             var path = $"{placesBase}/{placeId}";
-            return await UpdateItemAsync<Place>(path, putBody);
+            return await UpdateItemAsync<Place>(path, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -97,9 +97,7 @@ namespace SparkDotNet
         /// <returns>A Place object of the update place</returns>
         public async Task<SparkApiConnectorApiOperationResult<Place>> UpdatePlaceAsync(Place place)
         {
-            return await UpdatePlaceAsync(place.Id, place.DisplayName);
+            return await UpdatePlaceAsync(place.Id, place.DisplayName).ConfigureAwait(false);
         }
-
    }
-
 }

@@ -36,7 +36,7 @@ namespace SparkDotNet
             if (to != null) queryParams.Add("to", ((DateTime)to).ToString("o"));
             
             var path = GetURL(eventsBase, queryParams);
-            return await GetItemsAsync<Event>(path);
+            return await GetItemsAsync<Event>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{eventsBase}/{eventId}", queryParams);
-            return await GetItemAsync<Event>(path);
+            return await GetItemAsync<Event>(path).ConfigureAwait(false);
         }
 
     }

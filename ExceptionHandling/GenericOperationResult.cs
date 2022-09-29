@@ -64,18 +64,21 @@ namespace SparkDotNet.ExceptionHandling
             TicketInformation ti = new TicketInformation();
             ti.RequestUrl = response.RequestMessage.RequestUri.AbsoluteUri;
             ti.RequestMethod = response.RequestMessage.Method.Method;
-            ti.RequestBody = response.RequestMessage.Content != null ? await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
+            if(response.RequestMessage.Method != HttpMethod.Get)
+            {
+                ti.RequestBody = response.RequestMessage.Content != null ? await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
+            }
             ti.TrackingId = response.Headers.GetValues(nameof(TicketInformation.TrackingId)).FirstOrDefault();
             ti.ResponseBody = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
             ti.Token = response.RequestMessage.Headers.GetValues("Authorization")?.FirstOrDefault();
             ticketInformations.Enqueue(ti);
         }
 
-        public async Task<TicketInformation> GetTicketInformation(int entryIndex) => await Task.Run(() => ticketInformations.GetTicketInformation(entryIndex));
+        public async Task<TicketInformation> GetTicketInformation(int entryIndex) => await Task.Run(() => ticketInformations.GetTicketInformation(entryIndex)).ConfigureAwait(false);
 
-        public async Task<List<TicketInformation>> GetAllTicketInformation() => await Task.Run(() => ticketInformations.GetAllTicketInformation());
+        public async Task<List<TicketInformation>> GetAllTicketInformation() => await Task.Run(() => ticketInformations.GetAllTicketInformation()).ConfigureAwait(false);
 
-        public async Task<TicketInformation> GetLastTicketInformation() => await Task.Run(() => ticketInformations.GetLastTicketInformation());
+        public async Task<TicketInformation> GetLastTicketInformation() => await Task.Run(() => ticketInformations.GetLastTicketInformation()).ConfigureAwait(false);
 
         public override string ToString()
         {
@@ -87,6 +90,6 @@ namespace SparkDotNet.ExceptionHandling
             return sb.ToString();
         }
 
-        public async Task DumpToConsole() => await Task.Run(() => ticketInformations.GetAllTicketInformation().ForEach(t => System.Console.WriteLine($"{t}\n")));
+        public async Task DumpToConsole() => await Task.Run(() => ticketInformations.GetAllTicketInformation().ForEach(t => System.Console.WriteLine($"{t}\n"))).ConfigureAwait(false);
     }
 }

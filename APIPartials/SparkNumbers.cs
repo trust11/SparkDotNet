@@ -93,7 +93,7 @@ namespace SparkDotNet
         ////////////{
         ////////////    var queryParams = new Dictionary<string, string>();
         ////////////    var path = GetURL($"{numbersBase}", queryParams);
-        ////////////    return await GetItemAsync<License>(path);
+        ////////////    return await GetItemAsync<License>(path).ConfigureAwait(false);
         ////////////}
     }
 }

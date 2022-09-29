@@ -12,12 +12,12 @@ namespace SparkDotNet
 
         public async Task<SparkApiConnectorApiOperationResult<PersonCallVoicemailSetting>> GetPersonVoicemailSettingAsync(string personId, string orgId = null)
         {
-            return await GetPersonSettingAsync<PersonCallVoicemailSetting>(CallVoicemailBaseUrl, personId, orgId);
+            return await GetPersonSettingAsync<PersonCallVoicemailSetting>(CallVoicemailBaseUrl, personId, orgId).ConfigureAwait(false);
         }
 
         public async Task<SparkApiConnectorApiOperationResult<PersonCallVoicemailSetting>> UpdatePersonVoicemailSettingAsync(string personId, PersonCallVoicemailSetting personCallVoicemailSetting, string orgId = null)
         {
-            return await UpdatePersonSettingAsync(CallVoicemailBaseUrl, personId, personCallVoicemailSetting, orgId);
+            return await UpdatePersonSettingAsync(CallVoicemailBaseUrl, personId, personCallVoicemailSetting, orgId).ConfigureAwait(false);
         }
     }
 }

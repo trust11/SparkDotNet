@@ -56,7 +56,7 @@ namespace SparkDotNet
             if (start > 0) queryParams.Add("start", max.ToString());
             if (max > 0) queryParams.Add("max", max.ToString());
 
-            return await GetDevicesAsync<Device>(queryParams);
+            return await GetDevicesAsync<Device>(queryParams).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{devicesBase}/{deviceId}", queryParams);
-            return await GetItemAsync<Device>(path);
+            return await GetItemAsync<Device>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="deviceId">A unique identifier for the device.</param>
         /// <returns>true if the device was deleted, false otherwise</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteDeviceAsync(string deviceId) => await DeleteItemAsync($"{devicesBase}/{deviceId}");
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteDeviceAsync(string deviceId) => await DeleteItemAsync($"{devicesBase}/{deviceId}").ConfigureAwait(false);
 
         /// <summary>
         /// Deletes a device, by ID.
@@ -95,7 +95,7 @@ namespace SparkDotNet
         /// </summary>
         /// <param name="device">A Device object to delete.</param>
         /// <returns>true if the device was deleted, false otherwise</returns>
-        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteDeviceAsync(Device device) => await DeleteDeviceAsync(device.Id);
+        public async Task<SparkApiConnectorApiOperationResult<bool>> DeleteDeviceAsync(Device device) => await DeleteDeviceAsync(device.Id).ConfigureAwait(false);
 
         /// <summary>
         /// Generate an activation code for a device in a specific place by placeId.
@@ -109,7 +109,7 @@ namespace SparkDotNet
             {
                 { "workspaceId", workspaceId }
             };
-            return await PostItemAsync<DeviceActivationCode>($"{devicesBase}/activationCode", bodyParams);
+            return await PostItemAsync<DeviceActivationCode>($"{devicesBase}/activationCode", bodyParams).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -119,6 +119,6 @@ namespace SparkDotNet
         /// <param name="place">The place object of the place where the device will be activated.</param>
         /// <returns>A Device Activation COde objects</returns>
         public async Task<SparkApiConnectorApiOperationResult<DeviceActivationCode>> CreateDeviceActivationCodeAsync(Workspace workspace) =>
-            await CreateDeviceActivationCodeAsync(workspace.Id);
+            await CreateDeviceActivationCodeAsync(workspace.Id).ConfigureAwait(false);
     }
 }

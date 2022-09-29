@@ -34,7 +34,7 @@ namespace SparkDotNet
             if (offsett > 0) queryParams.Add("offsett", offsett.ToString());
 
             var path = GetURL($"{adminEventsBase}/events", queryParams);
-            return await GetItemsAsync<AdminEvent>(path);
+            return await GetItemsAsync<AdminEvent>(path).ConfigureAwait(false);
         }
     }
 }

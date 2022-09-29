@@ -26,7 +26,7 @@ namespace SparkDotNet
             if (orgId != null) queryParams.Add("orgId", orgId);
             
             var path = GetURL($"{hybridBase}/connectors", queryParams);
-            return await GetItemsAsync<HybridConnector>(path);
+            return await GetItemsAsync<HybridConnector>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{hybridBase}/connectors/{connectorId}", queryParams);
-            return await GetItemAsync<HybridConnector>(path);
+            return await GetItemAsync<HybridConnector>(path).ConfigureAwait(false);
         }
         #endregion HybridConnector
 
@@ -57,7 +57,7 @@ namespace SparkDotNet
             if (orgId != null) queryParams.Add("orgId", orgId);
 
             var path = GetURL($"{hybridBase}/clusters", queryParams);
-            return await GetItemsAsync<HybridCluster>(path);
+            return await GetItemsAsync<HybridCluster>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{hybridBase}/clusters/{hybridClusterId}", queryParams);
-            return await GetItemAsync<HybridCluster>(path);
+            return await GetItemAsync<HybridCluster>(path).ConfigureAwait(false);
         }
         #endregion HybridCluster
 

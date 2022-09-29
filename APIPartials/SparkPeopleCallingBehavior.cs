@@ -34,7 +34,7 @@ namespace SparkDotNet
         /// <returns>PersonUcProfileSetting object</returns>
         public async Task<SparkApiConnectorApiOperationResult<PersonUcProfileSetting>> GetPersonUcProfileSettingAsync(string personId, string orgId = null)
         {
-            return await GetPersonSettingAsync<PersonUcProfileSetting>(CallingBehaviorBaseUrl, personId, orgId);
+            return await GetPersonSettingAsync<PersonUcProfileSetting>(CallingBehaviorBaseUrl, personId, orgId).ConfigureAwait(false);
         }
 
         /// <summary>

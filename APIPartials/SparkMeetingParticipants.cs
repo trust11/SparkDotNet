@@ -29,7 +29,7 @@ namespace SparkDotNet
             if (hostEmail != null) queryParams.Add("hostEmail", hostEmail);
 
             var path = GetURL(meetingParticipantsBase, queryParams);
-            return await GetItemsAsync<MeetingParticipant>(path);
+            return await GetItemsAsync<MeetingParticipant>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SparkDotNet
         /// <param name="participantId">The unique identifier for the meeting and the participant.</param>
         /// <returns>The requested meeting participant.</returns>
         public async Task<SparkApiConnectorApiOperationResult<MeetingParticipant>> GetMeetingParticipantDetailsAsync(string participantId) => 
-            await GetItemAsync<MeetingParticipant>($"{meetingParticipantsBase}/{participantId}");
+            await GetItemAsync<MeetingParticipant>($"{meetingParticipantsBase}/{participantId}").ConfigureAwait(false);
 
         /// <summary>
         /// To mute, unmute, expel, or admit a participant in a live meeting.
@@ -60,7 +60,7 @@ namespace SparkDotNet
             if (admin != null) bodyParameters.Add("admin", admin);
             if (expel != null) bodyParameters.Add("expel", expel);
 
-            return await PostItemAsync<Meeting>($"{meetingParticipantsBase}/{participantId}", bodyParameters);
+            return await PostItemAsync<Meeting>($"{meetingParticipantsBase}/{participantId}", bodyParameters).ConfigureAwait(false);
         }
 
     }

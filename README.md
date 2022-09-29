@@ -7,7 +7,7 @@ using SparkDotNet;
 
 var token = System.Environment.GetEnvironmentVariable("SPARK_TOKEN");
 var spark = new Spark(token);
-var rooms = await spark.GetRoomsAsync(max: 10);
+var rooms = await spark.GetRoomsAsync(max: 10).ConfigureAwait(false);
 foreach (var room in rooms)
 {
     WriteLine(room);
@@ -124,13 +124,13 @@ namespace ConsoleApplication
 
             try
             {
-                var orgs = await spark.GetOrganizationsAsync();
+                var orgs = await spark.GetOrganizationsAsync().ConfigureAwait(false);
                 foreach (var org in orgs)
                 {
                     WriteLine(org);
                 }
 
-                WriteLine(await spark.GetMeAsync());
+                WriteLine(await spark.GetMeAsync().ConfigureAwait(false));
             }
             catch (SparkException ex)
             {
@@ -239,14 +239,14 @@ This method returns a new `PaginationResult` class which contains the `Items` of
 The following provides an example of returning `Person` items with pagination:
 
 ```{.cs}
-var result = await spark.GetItemsWithLinksAsync<SparkDotNet.Person>("/v1/people?max=3");
+var result = await spark.GetItemsWithLinksAsync<SparkDotNet.Person>("/v1/people?max=3").ConfigureAwait(false);
 foreach (var person in result.Items)
 {
     WriteLine(person);
 }
 if (!string.IsNullOrEmpty(result.Links.Next))
 {
-    var result2 = await spark.GetItemsWithLinksAsync<SparkDotNet.Person>(result.Links.Next);
+    var result2 = await spark.GetItemsWithLinksAsync<SparkDotNet.Person>(result.Links.Next).ConfigureAwait(false);
     foreach (var person in result2.Items)
     {
         WriteLine(person);
@@ -263,7 +263,7 @@ To avoid runtime errors, wrap calls to Cisco Spark in a `try-catch` statement:
 ```{.cs}
 try
 {
-    WriteLine(await spark.GetMeAsync());    
+    WriteLine(await spark.GetMeAsync().ConfigureAwait(false));    
 }
 catch (SparkException ex)
 {
@@ -284,7 +284,7 @@ using System.Linq;
 
 try
 {
-    WriteLine(await spark.GetMeAsync());    
+    WriteLine(await spark.GetMeAsync().ConfigureAwait(false));    
 }
 catch (SparkException ex)
 {
@@ -320,7 +320,7 @@ card.Body.Add(new AdaptiveImage()
 string json = card.ToJson();
 var webexTeamsAttachment = "{\"contentType\": \"application/vnd.microsoft.card.adaptive\",\"content\":" + json + "}";
 
-var res = await spark.CreateMessageAsync(roomId: RoomID, text: "Test Message", attachments: webexTeamsAttachment);
+var res = await spark.CreateMessageAsync(roomId: RoomID, text: "Test Message", attachments: webexTeamsAttachment).ConfigureAwait(false);
 ```
 
 The content is expected to be JSON as a string.

@@ -22,7 +22,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (max > 0) queryParams.Add("max",max.ToString());
             var path = GetURL(rolesBase, queryParams);
-            return await GetItemsAsync<Role>(path);
+            return await GetItemsAsync<Role>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{rolesBase}/{roleId}", queryParams);
-            return await GetItemAsync<Role>(path);
+            return await GetItemAsync<Role>(path).ConfigureAwait(false);
         }
 
     }

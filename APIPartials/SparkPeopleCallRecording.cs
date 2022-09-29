@@ -89,7 +89,7 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
             var path = GetURL(string.Format(peopleCallRecordingBase, personId), queryParams);
-            return await GetItemAsync<PersonCallRecording>(path);
+            return await GetItemAsync<PersonCallRecording>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace SparkDotNet
             if (startStopAnnouncementEnabled != null) putBody.Add("startStopAnnouncementEnabled", startStopAnnouncementEnabled);
             if (notification != null) putBody.Add("notification", notification);
             if (repeat != null) putBody.Add("repeat", repeat);
-            return await UpdateItemAsync<PersonCallRecording>(path, putBody);
+            return await UpdateItemAsync<PersonCallRecording>(path, putBody).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace SparkDotNet
         {
             return await UpdatePersonCallRecordingSettingsAsync(personId, orgId,
                 personCallRecording.Enabled, personCallRecording.Record, personCallRecording.RecordVoicemailEnabled,
-                personCallRecording.StartStopAnnouncementEnabled, personCallRecording.Notification, personCallRecording.Repeat);
+                personCallRecording.StartStopAnnouncementEnabled, personCallRecording.Notification, personCallRecording.Repeat).ConfigureAwait(false);
         }
     }
 }

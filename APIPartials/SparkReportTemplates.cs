@@ -18,7 +18,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL(reportTemplateBase, queryParams);
-            return await GetItemsAsync<ReportTemplate>(path);
+            return await GetItemsAsync<ReportTemplate>(path).ConfigureAwait(false);
         }
     }
 }

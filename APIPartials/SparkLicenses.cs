@@ -24,7 +24,7 @@ namespace SparkDotNet
             if (orgId != null) queryParams.Add("orgId", orgId);
             if (max > 0) queryParams.Add("max",max.ToString());
             var path = GetURL(licensesBase, queryParams);
-            return await GetItemsAsync<License>(path);
+            return await GetItemsAsync<License>(path).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             var path = GetURL($"{licensesBase}/{licenseId}", queryParams);
-            return await GetItemAsync<License>(path);
+            return await GetItemAsync<License>(path).ConfigureAwait(false);
         }
 
     }

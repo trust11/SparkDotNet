@@ -5,7 +5,7 @@ namespace SparkDotNet.Models
 {
     /// <summary>
     /// Devices represent cloud-registered Webex RoomOS devices, as well as actively-connected Webex soft clients on mobile or desktop.
-    /// Devices may be associated with Places.
+    /// Devices may be associated with Workspaces.
     /// Searching and viewing details for your devices requires an auth token with the spark:devices_read scope.Updating
     /// or deleting your devices requires an auth token with the spark:devices_write scope. Viewing the list of all devices
     /// in an organization requires an administrator auth token with the spark-admin:devices_read scope. Adding, updating,
@@ -23,11 +23,6 @@ namespace SparkDotNet.Models
         /// </summary>
         public string DisplayName { get; set; }
 
-        /// <summary>
-        /// The place associated with the device.
-        /// </summary>
-        [Obsolete("The placeId field has been deprecated. Please use workspaceId instead.")]
-        public string PlaceId { get; set; }
 
         /// <summary>
         /// The
@@ -50,7 +45,7 @@ namespace SparkDotNet.Models
         public HashSet<string> Capabilities { get; set; }
 
         /// <summary>
-        /// The permissions the user has for this device. For example, xapi means this user is entitled to using the xapi against this device.
+        /// The permissions the user has for this device. For example, XAPI means this user is entitled to using the XAPI against this device.
         /// </summary>
         public HashSet<string> Permissions { get; set; }
 
@@ -80,7 +75,7 @@ namespace SparkDotNet.Models
         public string Ip { get; set; }
 
         /// <summary>
-        /// The current network connectivty for the device.
+        /// The current network connectivity for the device.
         /// </summary>
         public string ActiveInterface { get; set; }
 

@@ -14,7 +14,6 @@ namespace SparkDotNet
         /// Administrators can list all devices within an organization.
         /// </summary>
         /// <param name="personId">List devices by person ID.</param>
-        /// <param name="placeId">List devices by place ID.</param>
         /// <param name="workspaceId">List devices by workspace ID.</param>
         /// <param name="orgId">List devices in this organization. Only admin users of another organization (such as partners) may use this parameter.</param>
         /// <param name="displayName">List devices with this display name.</param>
@@ -30,7 +29,7 @@ namespace SparkDotNet
         /// <param name="start">Offset. Default is 0.</param>
         /// <param name="max">Limit the maximum number of devices in the response.</param>
         /// <returns>A list of Device objects</returns>
-        public async Task<SparkApiConnectorApiOperationResult<List<Device>>> GetDevicesAsync(string personId = null, string placeId = null, string workspaceId = null, string orgId = null,
+        public async Task<SparkApiConnectorApiOperationResult<List<Device>>> GetDevicesAsync(string personId = null, string workspaceId = null, string orgId = null,
                                                         string displayName = null, string product = null, string tag = null,
                                                         string connectionStatus = null, string serial = null, string software = null,
                                                         string upgradeChannel = null, string errorCode = null, string capability = null,
@@ -40,7 +39,6 @@ namespace SparkDotNet
             var queryParams = new Dictionary<string, string>();
 
             if (personId != null) queryParams.Add("personId", personId);
-            if (placeId != null) queryParams.Add("placeId", placeId);
             if (workspaceId != null) queryParams.Add("placeId", workspaceId);
             if (orgId != null) queryParams.Add("orgId", orgId);
             if (displayName != null) queryParams.Add("displayName", displayName);
@@ -101,7 +99,7 @@ namespace SparkDotNet
         /// Generate an activation code for a device in a specific place by placeId.
         /// Currently, activation codes may only be generated for shared places--personal mode is not supported.
         /// </summary>
-        /// <param name="placeId">The placeId of the place where the device will be activated.</param>
+        /// <param name="workspaceId">The placeId of the place where the device will be activated.</param>
         /// <returns>A Device Activation COde objects</returns>
         public async Task<SparkApiConnectorApiOperationResult<DeviceActivationCode>> CreateDeviceActivationCodeAsync(string workspaceId)
         {

@@ -326,9 +326,9 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<List<T>>> GetItemsAsync<T>(string path, string rootNode = "items")
         {
-            List<T> items = null;
-            JObject requestResult = null;
-            List<JToken> results = null;
+            List<T> items;
+            JObject requestResult;
+            List<JToken> results;
 
             var result = new SparkApiConnectorApiOperationResult<List<T>>();
             HttpResponseMessage response = null;
@@ -557,7 +557,7 @@ namespace SparkDotNet
             return result;
         }
 
-        private async Task<SparkApiConnectorApiOperationResult<T>> PatchItemAsync<T>(string path, Dictionary<string, object> bodyParams)
+        private async Task<SparkApiConnectorApiOperationResult<T>> PatchItemAsync<T>(string path, Dictionary<string, object> bodyParams, string contentType = ContentJsonTypes.ApplicationJson)
         {
             var result = new SparkApiConnectorApiOperationResult<T>();
             HttpResponseMessage response = null;
@@ -565,7 +565,7 @@ namespace SparkDotNet
             try
             {
                 var jsonBody = JsonConvert.SerializeObject(bodyParams);
-                content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                content = new StringContent(jsonBody, Encoding.UTF8, contentType);
 
                 var method = "PATCH";
                 var httpVerb = new HttpMethod(method);

@@ -17,10 +17,10 @@ namespace SparkDotNet.Models
     {
         public string DeviceId { get; set; }
 
-        public Dictionary<string, DeviceCoinfigurationData> Items { get; set; }
+        public Dictionary<string, DeviceConfigurationData> Items { get; set; }
     }
 
-    public class DeviceCoinfigurationData
+    public class DeviceConfigurationData
     {
         public string Source { get; set; }
 

@@ -13,7 +13,7 @@ namespace SparkDotNet.Models
         public object Value { get; set; }
     }
 
-    public class DeviceCoinfiguration
+    public class DeviceConfiguration
     {
         public string DeviceId { get; set; }
 

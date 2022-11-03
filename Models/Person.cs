@@ -120,7 +120,6 @@ namespace SparkDotNet.Models
         /// true: the person can log into Webex Teams
         /// false: the person cannot log into Webex Teams
         /// </summary>
-        [JsonProperty("loginEndbaled")]
         public bool? LoginEnabled { get; set; }
 
         /// <summary>

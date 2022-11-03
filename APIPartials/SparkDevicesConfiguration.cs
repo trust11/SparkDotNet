@@ -39,7 +39,7 @@ namespace SparkDotNet
         /// <param name="start">Offset. Default is 0.</param>
         /// <param name="max">Limit the maximum number of devices in the response.</param>
         /// <returns>A list of Device objects</returns>
-        public async Task<SparkApiConnectorApiOperationResult<DeviceCoinfiguration>> GetDeviceConfiguration(string deviceId, string key = null)
+        public async Task<SparkApiConnectorApiOperationResult<DeviceConfiguration>> GetDeviceConfiguration(string deviceId, string key = null)
         {
             var queryParams = new Dictionary<string, string>()
             {
@@ -47,7 +47,7 @@ namespace SparkDotNet
             };
             if (key != null) queryParams.Add("key", key);
 
-            return await GetItemAsync<DeviceCoinfiguration>(GetURL(deviceConfigurationsBase, queryParams)).ConfigureAwait(false);
+            return await GetItemAsync<DeviceConfiguration>(GetURL(deviceConfigurationsBase, queryParams)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace SparkDotNet
         /// <param name="path">Only paths ending in /sources/configured/value are supported.</param>
         /// <param name="value">One of string OR number OR boolean</param>
         /// <returns></returns>
-        public async Task<SparkApiConnectorApiOperationResult<DeviceCoinfiguration>> UpdateDevicConfigurationsAsync(string deviceId, DevicesConfigurationOp op, string path, object value)
+        public async Task<SparkApiConnectorApiOperationResult<DeviceConfiguration>> UpdateDevicConfigurationsAsync(string deviceId, DevicesConfigurationOp op, string path, object value)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -71,7 +71,7 @@ namespace SparkDotNet
                 { "op", op }, { "path", $"{path}/sources/configured/value"}, { "value",  value}
             };
 
-            return await PatchItemAsync<DeviceCoinfiguration>(GetURL(deviceConfigurationsBase, queryParams), bodyParams, ContentJsonTypes.ApplicationJsonPatch).ConfigureAwait(false);
+            return await PatchItemAsync<DeviceConfiguration>(GetURL(deviceConfigurationsBase, queryParams), bodyParams, ContentJsonTypes.ApplicationJsonPatch).ConfigureAwait(false);
         }
     }
 }

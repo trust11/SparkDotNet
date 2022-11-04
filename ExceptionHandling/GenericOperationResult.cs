@@ -1,4 +1,5 @@
 ﻿using GenericProvisioningLib;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace SparkDotNet.ExceptionHandling
         public override string ToString() => $"TrackingId:{TrackingId}\nMethod:{RequestMethod}\nRequestURL:{RequestUrl}\nRequestBody:{RequestBody}\nResponseBody:{ResponseBody}\n{Token}";
     }
 
-    
+
 
     internal class FixSizeQueue<T>
     {
@@ -59,15 +60,23 @@ namespace SparkDotNet.ExceptionHandling
     {
         private readonly FixSizeQueue<TicketInformation> ticketInformations = new FixSizeQueue<TicketInformation>(10);
 
-        public async Task FillRequestParameter(HttpResponseMessage response)
+        public async Task FillRequestParameter(HttpResponseMessage response, string requestPayload = "")
         {
             TicketInformation ti = new TicketInformation();
             ti.RequestUrl = response.RequestMessage.RequestUri.AbsoluteUri;
             ti.RequestMethod = response.RequestMessage.Method.Method;
-            if(response.RequestMessage.Method != HttpMethod.Get)
+            if (response.RequestMessage.Method != HttpMethod.Get)
             {
-                ti.RequestBody = response.RequestMessage.Content != null ? await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
+                try
+                {
+                    ti.RequestBody = response.RequestMessage.Content != null ? await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
+                }
+                catch (Exception ex)
+                {
+                    ti.RequestBody = requestPayload;
+                }
             }
+
             ti.TrackingId = response.Headers.GetValues(nameof(TicketInformation.TrackingId)).FirstOrDefault();
             ti.ResponseBody = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
             ti.Token = response.RequestMessage.Headers.GetValues("Authorization")?.FirstOrDefault();

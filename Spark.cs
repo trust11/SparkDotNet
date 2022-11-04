@@ -537,7 +537,7 @@ namespace SparkDotNet
                 var jsonBody = JsonConvert.SerializeObject(bodyParams);
                 content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
                 response = await client.PutAsync(path, content).ConfigureAwait(false);
-                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
+                await TicketInformations.FillRequestParameter(response, jsonBody).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {

@@ -112,7 +112,7 @@ namespace SparkDotNet
         /// <returns>The CSV Report</returns>
         public async Task<string> DownloadReport(string reportUrl)
         {
-            HttpResponseMessage response = await client.GetAsync(reportUrl).ConfigureAwait(false);
+            HttpResponseMessage response = await Client.GetAsync(reportUrl).ConfigureAwait(false);
             await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
             await CheckForErrorResponse(response).ConfigureAwait(false);
             return await response.Content.ReadAsStringAsync().ConfigureAwait(false);

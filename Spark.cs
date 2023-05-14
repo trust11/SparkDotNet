@@ -25,9 +25,9 @@ namespace SparkDotNet
     {
         private const string baseURL = "https://webexapis.com";
 
-        private HttpClient client;
+        private HttpClient Client { get; set; }
 
-        private HttpClientHandler clientHandler;
+        private HttpClientHandler ClientHandler { get; set; }
 
         public string HostName => baseURL;
 
@@ -35,14 +35,12 @@ namespace SparkDotNet
 
         public static TicketInformations TicketInformations { get; set; } = new TicketInformations();
 
-        public string AccessToken { get; private set; }
-
         public string Id => config?.Id;
 
         private readonly SparkConfiguration config;
 
-        public Spark(string accessToken)
-            : this(new SparkConfiguration { Token = accessToken })
+        public Spark(string clientId, string secretKey, string accessToken, string refreshToken)
+            : this(new SparkConfiguration { ApplicationId = clientId, SecretKey = secretKey, AccessToken = accessToken, RefreshToken = refreshToken })
         {
         }
 
@@ -58,24 +56,25 @@ namespace SparkDotNet
             serializerSettings.Converters.Add(new StringEnumConverter(true));
             serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); // use camel case so we can use proper .net notation
             JsonConvert.DefaultSettings = () => serializerSettings;
+            refreshTokenPayload.Initialize(config);
         }
 
         private void SetupHttpClient()
         {
-            clientHandler = new HttpClientHandler
+            ClientHandler = new HttpClientHandler
             {
                 //ServerCertificateCustomValidationCallback = valdiateCert
             };
             if (config.NoProxy)
             {
                 Log($"Proxy for {HostName} has been disabled by configuration", 5);
-                clientHandler.UseProxy = false;
+                ClientHandler.UseProxy = false;
             }
-            else if (clientHandler.UseProxy)
+            else if (ClientHandler.UseProxy)
             {
-                if (clientHandler.Proxy != null)
+                if (ClientHandler.Proxy != null)
                 {
-                    var proxy = clientHandler.Proxy.GetProxy(new Uri($"https://{HostName}"));
+                    var proxy = ClientHandler.Proxy.GetProxy(new Uri($"{HostName}"));
                     Log($"Using proxy {proxy?.AbsolutePath} for {HostName}", 5);
                 }
                 else
@@ -83,92 +82,23 @@ namespace SparkDotNet
             }
             else
                 Log($"Not using a proxy for API requests", 5);
-            client = new HttpClient(clientHandler);
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            if (!string.IsNullOrEmpty(config.Token))
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", config.Token);
+            Client = new HttpClient(ClientHandler);
+            Client.DefaultRequestHeaders.Accept.Clear();
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if (!string.IsNullOrEmpty(config.AccessToken))
+                SetBearerToken();
         }
 
-        public async Task<SparkApiConnectorApiOperationResult> Login(string login = null, string password = null, string applicationId = null, string secretKey = null, int timeout = 0)
+        public async Task<SparkApiConnectorApiOperationResult> RefreshToken(string applicationId = null, string secretKey = null)
         {
-            var result = new SparkApiConnectorApiOperationResult();
-            if (!string.IsNullOrEmpty(config.Token))
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", config.Token);
-            AccessToken = config.Token;
-
-            //HttpResponseMessage response = null;
-            //try
-            //{
-            //    var auth = Base64Encode($"{login ?? config.Login}:{password ?? config.Password}");
-            //    var authString = $"{secretKey ?? config.SecretKey}{password ?? config.Password}";
-            //    var appAuth = Base64Encode($"{applicationId ?? config.ApplicationId}:{ComputeSha256Hash(authString)}");
-
-            //    var uri = $"{RestUrl}/authentication/v1.0/login";
-            //    var msg = new HttpRequestMessage(HttpMethod.Get, uri);
-            //    msg.Headers.Add("x-rainbow-app-auth", $"Basic {appAuth}");
-            //    msg.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", auth);
-            //    msg.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            //    if (timeout > 0)
-            //    {
-            //        CancellationTokenSource src = new CancellationTokenSource(timeout * 1000);
-            //        response = await httpClient.SendAsync(msg, src.Token).ConfigureAwait(false);
-            //    }
-            //    else
-            //        response = await httpClient.SendAsync(msg).ConfigureAwait(false);
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            //        result.Result = JsonConvert.DeserializeObject<LoginData>(content, serializerSettings);
-            //        SetBearerToken(result.Result.Token);
-            //        Log($"successfully logged into Rainbow server using login {login ?? config.Login}", 4);
-            //        result.ResultCode = RainbowRestApiResultCode.OK;
-            //    }
-            //    else
-            //    {
-            //        result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    ProcessException(result, e, response);
-            //}
-            result.ResultCode = SparkApiOperationResultCode.OK;
-            return result;
-        }
-
-        public async Task<SparkApiConnectorApiOperationResult> Reinitialize(SparkConfiguration newConfig = null)
-        {
-            if (AccessToken != null)
-            {
-                var credentialsChanged = config == null
-                    || (!string.IsNullOrEmpty(newConfig?.Token) && config.Token != newConfig.Token);
-                //var credentialsChanged = config == null
-                //    || (!string.IsNullOrEmpty(newConfig?.Login) && config.Login != newConfig.Login)
-                //    || (!string.IsNullOrEmpty(newConfig?.Password) && config.Password != newConfig.Password)
-                //    || (!string.IsNullOrEmpty(newConfig?.ApplicationId) && config.ApplicationId != newConfig.ApplicationId)
-                //    || (!string.IsNullOrEmpty(newConfig?.SecretKey) && config.SecretKey != newConfig.SecretKey);
-                UpdateConfiguration(newConfig);
-                if (credentialsChanged) // need to relogin anyway
-                {
-                    var loginRes = await Login(newConfig?.Login, newConfig?.Password, newConfig?.ApplicationId, newConfig?.SecretKey).ConfigureAwait(false);
-                    if (loginRes.IsSuccess)
-                        UpdateCredentials(newConfig);
-                    return loginRes;
-                }
-                else if (IsTokenRefreshRequired())
-                {
-                    return await RefreshTokenOrReLogin().ConfigureAwait(false);
-                }
-                return SparkApiConnectorApiOperationResult.Success;
-            }
-            else
-            {
-                var loginRes = await Login(newConfig?.Login, newConfig?.Password, newConfig?.ApplicationId, newConfig?.SecretKey).ConfigureAwait(false);
-                if (loginRes.IsSuccess)
-                    UpdateCredentials(newConfig);
-                return loginRes;
-            }
+            return await RefreshTokenAsync().ConfigureAwait(false);
+            /////by now
+            //var result = new SparkApiConnectorApiOperationResult();
+            //bool tokenPresent = !string.IsNullOrEmpty(config.Token);
+            //if (tokenPresent)
+            //    Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", config.Token);
+            //AccessToken = config.Token;
+            /////by now
         }
 
         private void UpdateConfiguration(SparkConfiguration newConfig)
@@ -178,76 +108,6 @@ namespace SparkDotNet
                 config.LogAction = newConfig.LogAction;
                 config.NoProxy = newConfig.NoProxy;
             }
-        }
-
-        private void UpdateCredentials(SparkConfiguration newConfig)
-        {
-            if (newConfig != null)
-            {
-                config.Login = newConfig.Login;
-                config.Password = newConfig.Password;
-                config.ApplicationId = newConfig.ApplicationId;
-                config.SecretKey = newConfig.SecretKey;
-                if (config.Token != newConfig.Token && !string.IsNullOrEmpty(newConfig.Token))
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", newConfig.Token);
-                    config.Token = newConfig.Token;
-                }
-            }
-        }
-
-        private bool IsTokenRefreshRequired()
-        {
-            //if (parsedToken != null)
-            //{
-            //    var doRefresh = parsedToken.ValidTo < DateTime.UtcNow;
-            //    if (!doRefresh) // token is still valid
-            //    {
-            //        var timeSinceIssue = DateTime.UtcNow.Subtract(parsedToken.IssuedAt).TotalSeconds;
-            //        var tokenLifeTime = parsedToken.ValidTo.Subtract(parsedToken.IssuedAt).TotalSeconds;
-            //        if (timeSinceIssue * 2 > tokenLifeTime)
-            //            doRefresh = true;
-            //    }
-            //    return doRefresh;
-            //}
-            return false;
-        }
-
-        private async Task<SparkApiConnectorApiOperationResult> RefreshTokenOrReLogin([CallerMemberName] string methodName = null)
-        {
-            var result = new SparkApiConnectorApiOperationResult();
-            var lockAcquired = false;
-            try
-            {
-                await tokenRefreshLock.WaitAsync().ConfigureAwait(false);
-                lockAcquired = true;
-                if (!IsTokenRefreshRequired()) // check again.. so in case if a request was queued and the refresh was done, we don't run it again
-                {
-                    Log($"Skipping token refresh triggered from {methodName} because token refresh is no longer required", 4);
-                    result.ResultCode = SparkApiOperationResultCode.OK;
-                    return result;
-                }
-                //if (rainbowToken.CountRenewed < rainbowToken.MaxTokenRenew)
-                //{
-                //    return await RenewToken().ConfigureAwait(false);
-                //}
-                //else
-                //{
-                //    Log($"Maximum number of token refreshes has been exhausted, logging in again", 4);
-                //    return await Login().ConfigureAwait(false);
-                //}
-                return await Login().ConfigureAwait(false);
-            }
-            finally
-            {
-                if (lockAcquired)
-                    tokenRefreshLock.Release();
-            }
-        }
-
-        public async Task<SparkApiConnectorApiOperationResult> Logout(int timeout = 0)
-        {
-            return await Task.Run(() => SparkApiConnectorApiOperationResult.Success).ConfigureAwait(false);
         }
 
         #region Private Helper Methods
@@ -268,13 +128,13 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<bool>> DeleteItemAsync(string path)
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
             var result = new SparkApiConnectorApiOperationResult<bool>();
-
             HttpResponseMessage response = null;
             try
             {
                 var fullpath = $"{baseURL}{path}";
-                response = await client.DeleteAsync(fullpath).ConfigureAwait(false);
+                response = await Client.DeleteAsync(fullpath).ConfigureAwait(false);
                 await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
                 result.Result = MapHttpStatusCode(HttpStatusCode.NoContent) == SparkApiOperationResultCode.OK;
@@ -293,11 +153,12 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<T>> GetItemAsync<T>(string path)
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
             var result = new SparkApiConnectorApiOperationResult<T>();
             HttpResponseMessage response = null;
             try
             {
-                response = await client.GetAsync(path).ConfigureAwait(false);
+                response = await Client.GetAsync(path).ConfigureAwait(false);
                 await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
@@ -326,6 +187,8 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<List<T>>> GetItemsAsync<T>(string path, string rootNode = "items")
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
+
             List<T> items;
             JObject requestResult;
             List<JToken> results;
@@ -334,7 +197,7 @@ namespace SparkDotNet
             HttpResponseMessage response = null;
             try
             {
-                response = await client.GetAsync(path).ConfigureAwait(true);
+                response = await Client.GetAsync(path).ConfigureAwait(true);
                 await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
@@ -408,6 +271,8 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<T>> PostItemAsync<T>(string path, Dictionary<string, object> bodyParams)
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
+
             var result = new SparkApiConnectorApiOperationResult<T>();
             HttpContent content;
             try
@@ -452,7 +317,7 @@ namespace SparkDotNet
                     content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
                 }
 
-                var response = await client.PostAsync(path, content).ConfigureAwait(false);
+                var response = await Client.PostAsync(path, content).ConfigureAwait(false);
                 await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
@@ -475,6 +340,7 @@ namespace SparkDotNet
 
             return result;
         }
+
         private async Task ProcessException(SparkApiConnectorApiOperationResult result, Exception e, HttpResponseMessage response, [CallerMemberName] string methodName = null)
         {
             HttpStatusCode code = HttpStatusCode.Unused;
@@ -529,6 +395,8 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, Dictionary<string, object> bodyParams)
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
+
             var result = new SparkApiConnectorApiOperationResult<T>();
             HttpResponseMessage response = null;
             StringContent content;
@@ -536,7 +404,7 @@ namespace SparkDotNet
             {
                 var jsonBody = JsonConvert.SerializeObject(bodyParams);
                 content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-                response = await client.PutAsync(path, content).ConfigureAwait(false);
+                response = await Client.PutAsync(path, content).ConfigureAwait(false);
                 await TicketInformations.FillRequestParameter(response, jsonBody).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
@@ -559,6 +427,8 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<T>> PatchItemAsync<T>(string path, Dictionary<string, object> bodyParams, string contentType = ContentJsonTypes.ApplicationJson)
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
+
             var result = new SparkApiConnectorApiOperationResult<T>();
             HttpResponseMessage response = null;
             StringContent content;
@@ -574,8 +444,7 @@ namespace SparkDotNet
                     Content = content
                 };
 
-
-                response = await client.SendAsync(httpRequestMessage).ConfigureAwait(false);
+                response = await Client.SendAsync(httpRequestMessage).ConfigureAwait(false);
                 await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
@@ -603,11 +472,13 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, T body)
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
+
             var result = new SparkApiConnectorApiOperationResult<T>();
 
             var jsonBody = JsonConvert.SerializeObject(body);
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync(path, content).ConfigureAwait(false);
+            HttpResponseMessage response = await Client.PutAsync(path, content).ConfigureAwait(false);
             await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
             await CheckForErrorResponse(response).ConfigureAwait(false);
@@ -625,11 +496,13 @@ namespace SparkDotNet
 
         private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T, U>(string path, U body)
         {
+            await RefreshTokenIfRequired().ConfigureAwait(false);
+
             var result = new SparkApiConnectorApiOperationResult<T>();
 
             var jsonBody = JsonConvert.SerializeObject(body);
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync(path, content).ConfigureAwait(false);
+            HttpResponseMessage response = await Client.PutAsync(path, content).ConfigureAwait(false);
             await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
             await CheckForErrorResponse(response).ConfigureAwait(false);
@@ -654,7 +527,9 @@ namespace SparkDotNet
 
         public async Task<PaginationResult<T>> GetItemsWithLinksAsync<T>(string path)
         {
-            HttpResponseMessage response = await client.GetAsync(path).ConfigureAwait(false);
+            await RefreshTokenIfRequired().ConfigureAwait(false);
+
+            HttpResponseMessage response = await Client.GetAsync(path).ConfigureAwait(false);
             await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
             await CheckForErrorResponse(response).ConfigureAwait(false);

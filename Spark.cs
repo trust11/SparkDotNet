@@ -269,9 +269,11 @@ namespace SparkDotNet
             config.LogAction = logAction;
         }
 
-        private async Task<SparkApiConnectorApiOperationResult<T>> PostItemAsync<T>(string path, Dictionary<string, object> bodyParams)
+        private async Task<SparkApiConnectorApiOperationResult<T>> PostItemAsync<T>(string path, Dictionary<string, object> bodyParams, 
+            bool skipTokenRefresh = false)
         {
-            await RefreshTokenIfRequired().ConfigureAwait(false);
+            if (!skipTokenRefresh)
+                await RefreshTokenIfRequired().ConfigureAwait(false);
 
             var result = new SparkApiConnectorApiOperationResult<T>();
             HttpContent content;

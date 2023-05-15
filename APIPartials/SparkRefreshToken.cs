@@ -47,7 +47,7 @@ namespace SparkDotNet
         {
             var path = GetURL(refreshTokenBase);
             var postBody = refreshTokenPayload.PostBody();
-            var reqRes = await PostItemAsync<SparkToken>(path, postBody).ConfigureAwait(false);
+            var reqRes = await PostItemAsync<SparkToken>(path, postBody, true).ConfigureAwait(false);
             if (!reqRes.IsSuccess)
                 Log($"Refreshing token failed.\r\n{reqRes.Error}", 2);
             sparkToken = reqRes.Result;
@@ -70,7 +70,8 @@ namespace SparkDotNet
                 var isCredentialsChanged = config == null
                     || (!string.IsNullOrEmpty(newConfig?.ApplicationId) && config.ApplicationId != newConfig.ApplicationId)
                     || (!string.IsNullOrEmpty(newConfig?.SecretKey) && config.SecretKey != newConfig.SecretKey)
-                    || (!string.IsNullOrEmpty(newConfig?.AccessToken) && config.AccessToken != newConfig.AccessToken);
+                    || (!string.IsNullOrEmpty(newConfig?.AccessToken) && config.AccessToken != newConfig.AccessToken)
+                    || (!string.IsNullOrEmpty(newConfig?.RefreshToken) && config.RefreshToken != newConfig.RefreshToken);
                 UpdateConfiguration(newConfig);
                 if (isCredentialsChanged)
                 {

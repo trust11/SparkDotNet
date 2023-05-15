@@ -49,7 +49,10 @@ namespace SparkDotNet
             var postBody = refreshTokenPayload.PostBody();
             var reqRes = await PostItemAsync<SparkToken>(path, postBody, true).ConfigureAwait(false);
             if (!reqRes.IsSuccess)
+            {
                 Log($"Refreshing token failed.\r\n{reqRes.Error}", 2);
+                return reqRes;
+            }
             sparkToken = reqRes.Result;
             config.AccessToken = reqRes.Result.AccessToken;
             SetBearerToken();

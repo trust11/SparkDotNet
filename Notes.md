@@ -4,8 +4,9 @@
 Links
 -
 * [Webex Service App](https://developer.webex.com/docs/service-app)
+* [Refreshtoken Information](https://developer.webex.com/docs/integrations#using-the-refresh-token)
 * [Real world walkthrough of building an OAuth Webex integration](https://developer.webex.com/blog/real-world-walkthrough-of-building-an-oauth-webex-integration)
-* [My created Service App](https://developer.webex.com/my-apps/auth-41107)
+* [My created Service App](https://developer.webex.com/my-apps/auth-41107) see Register your Service App
 
 First result
 -----

@@ -15,6 +15,7 @@ namespace SparkDotNet.ExceptionHandling
             {
                 case HttpStatusCode.OK:
                 case HttpStatusCode.NoContent:
+                case HttpStatusCode.Created:
                     return SparkApiOperationResultCode.OK;
 
                 case HttpStatusCode.ServiceUnavailable:

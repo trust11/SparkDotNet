@@ -27,6 +27,7 @@ namespace SparkDotNet.Models
     {
         Work,
         Mobile,
-        Fax
+        Fax,
+        Work_Extension
     }
 }

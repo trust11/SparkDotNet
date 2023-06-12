@@ -37,7 +37,7 @@ namespace SparkDotNet
         {
             var queryParams = new Dictionary<string, string>();
             if (orgId != null) queryParams.Add("orgId", orgId);
-            var path = GetURL(string.Format(CallVoicemailBaseUrl, personId), queryParams);
+            var path = GetURL(string.Format($"{CallVoicemailBaseUrl}/actions/resetPin/invoke", personId), queryParams);
             string data = null;
             return await PostItemAsync(path, data).ConfigureAwait(false);
         }

@@ -5,7 +5,7 @@
     /// the network for any reason, such as power outage, failed Internet connection, or wiring
     /// problem.
     /// </summary>
-    public class PersonCallForwardingBusinessContinuity : WebexObject
+    public class PersonCallForwardingBusinessContinuity : WebexObject, IPersonCallForwarding
     {
         /// <summary>
         /// Business Continuity is enabled or disabled.

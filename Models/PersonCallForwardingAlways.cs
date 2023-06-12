@@ -3,7 +3,7 @@
     /// <summary>
     /// Settings for forwarding all incoming calls to the destination
     /// </summary>
-    public class PersonCallForwardingAlways : WebexObject
+    public class PersonCallForwardingAlways : WebexObject, IPersonCallForwarding
     {
         /// <summary>
         /// "Always" call forwarding is enabled or disabled.

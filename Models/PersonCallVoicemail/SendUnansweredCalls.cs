@@ -2,7 +2,7 @@
 
 namespace SparkDotNet.Models.PersonCallVoicemail
 {
-    public class SendUnansweredCalls : WebexObject
+    public class SendUnansweredCalls : WebexObject, IVoicemailForwarding
     {
         public bool Enabled { get; set; }
 

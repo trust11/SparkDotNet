@@ -24,4 +24,9 @@ namespace SparkDotNet.Models
 
         public bool? VoiceMessageForwardingEnabled { get; set; }
     }
+
+    public interface IVoicemailForwarding
+    {
+        bool Enabled { get; set; }
+    }
 }

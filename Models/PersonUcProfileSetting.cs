@@ -26,7 +26,9 @@ namespace SparkDotNet.Models
         [EnumMember(Value = "NATIVE_SIP_CALL_TO_UCM")]
         NATIVE_SIP_CALL_TO_UCM,
 
-        //Using the non-string value of null results in the organization-wide default calling behavior being in effect.
+        ////Using the non-string value of null results in the organization-wide default calling behavior being in effect.
+        //[EnumMember(Value = null)]
+        //Null
     }
 
     public enum EffectiveBehaviorType
@@ -65,11 +67,11 @@ namespace SparkDotNet.Models
         /// <summary>
         /// The current Calling Behavior setting for the person. If null, the effective Calling Behavior will be the Organization's current default.
         /// </summary>
-        public BehaviorType? BehaviorType { get; set; } = null;
+        public BehaviorType? BehaviorType { get; set; }
 
         /// <summary>
         /// A unique identifier for the person uc profile setting.
         /// </summary>
-        public string? ProfileId { get; set; } = null;
+        public string? ProfileId { get; set; }
     }
 }

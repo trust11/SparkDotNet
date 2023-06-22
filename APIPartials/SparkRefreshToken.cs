@@ -73,7 +73,7 @@ namespace SparkDotNet
                 var isCredentialsChanged = config == null
                     || (!string.IsNullOrEmpty(newConfig?.ApplicationId) && config.ApplicationId != newConfig.ApplicationId)
                     || (!string.IsNullOrEmpty(newConfig?.SecretKey) && config.SecretKey != newConfig.SecretKey)
-                    || (!string.IsNullOrEmpty(newConfig?.AccessToken) && config.AccessToken != newConfig.AccessToken)
+                    //|| (!string.IsNullOrEmpty(newConfig?.AccessToken) && config.AccessToken != newConfig.AccessToken)
                     || (!string.IsNullOrEmpty(newConfig?.RefreshToken) && config.RefreshToken != newConfig.RefreshToken);
                 UpdateConfiguration(newConfig);
                 if (isCredentialsChanged)
@@ -133,11 +133,11 @@ namespace SparkDotNet
                 config.ApplicationId = newConfig.ApplicationId;
                 config.SecretKey = newConfig.SecretKey;
                 config.RefreshToken = newConfig.RefreshToken;
-                if (config.AccessToken != newConfig.AccessToken && !string.IsNullOrEmpty(newConfig.AccessToken))
-                {
-                    config.AccessToken = newConfig.AccessToken;
-                    SetBearerToken();
-                }
+                //if (config.AccessToken != newConfig.AccessToken && !string.IsNullOrEmpty(newConfig.AccessToken))
+                //{
+                //    config.AccessToken = newConfig.AccessToken;
+                //    SetBearerToken();
+                //}
             }
         }
     }

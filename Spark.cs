@@ -14,6 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -273,7 +274,7 @@ namespace SparkDotNet
         }
 
         private async Task<SparkApiConnectorApiOperationResult> PostItemAsync(string path, MultipartFormDataContent mpfdc,
-    bool skipTokenRefresh = false)
+            bool skipTokenRefresh = false)
         {
             if (!skipTokenRefresh)
                 await RefreshTokenIfRequired().ConfigureAwait(false);
@@ -288,6 +289,42 @@ namespace SparkDotNet
                 if (response.IsSuccessStatusCode)
                 {
                     // result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+                    result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                }
+                else
+                {
+                    result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                result.Error = new SparkErrorContent();
+                result.Error.Errors = new List<SparkErrorMessage>(1) { new SparkErrorMessage() { Description = ex.StackTrace } };
+                result.Error.Message = ex.Message;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        private async Task<SparkApiConnectorApiOperationResult> PostItemAsync<T>(string path, T data,
+            bool skipTokenRefresh = false) where T: class
+        {
+            if (!skipTokenRefresh)
+                await RefreshTokenIfRequired().ConfigureAwait(false);
+
+            var result = new SparkApiConnectorApiOperationResult();
+            HttpContent content;
+            try
+            {
+                string jsonBody = string.Empty;
+                if (data != null)
+                    jsonBody = JsonConvert.SerializeObject(data);
+                content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                var response = await Client.PostAsync(path, content).ConfigureAwait(false);
+                await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
+                if (response.IsSuccessStatusCode)
+                {
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
                 }
                 else

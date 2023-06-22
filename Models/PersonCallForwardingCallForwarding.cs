@@ -11,4 +11,13 @@
 
         public PersonCallForwardingNoAnswer NoAnswer { get; set; } = new PersonCallForwardingNoAnswer();
     }
+
+    public interface IPersonCallForwarding
+    {
+        bool Enabled { get; set; }
+
+        bool DestinationVoicemailEnabled { get; set; }
+
+        string Destination { get; set; }
+    }
 }

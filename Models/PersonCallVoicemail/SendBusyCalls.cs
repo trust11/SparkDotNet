@@ -1,6 +1,6 @@
 ﻿namespace SparkDotNet.Models.PersonCallVoicemail
 {
-    public class SendBusyCalls : WebexObject
+    public class SendBusyCalls : WebexObject, IVoicemailForwarding
     {
         public bool Enabled { get; set; }
 

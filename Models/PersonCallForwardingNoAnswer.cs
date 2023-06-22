@@ -3,7 +3,7 @@
     /// <summary>
     /// Settings for forwarding which only occurs when you are away or not answering your phone.
     /// </summary>
-    public class PersonCallForwardingNoAnswer : WebexObject
+    public class PersonCallForwardingNoAnswer : WebexObject, IPersonCallForwarding
     {
         /// <summary>
         /// "No Answer" call forwarding is enabled or disabled.

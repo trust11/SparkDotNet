@@ -282,7 +282,6 @@ namespace SparkDotNet
             HttpContent content = mpfdc;
             try
             {
-
                 var response = await Client.PostAsync(path, content).ConfigureAwait(false);
                 await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
 
@@ -364,6 +363,7 @@ namespace SparkDotNet
                 {
                     result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
+                    result.StatusCode = response.StatusCode;
                 }
                 else
                 {
@@ -534,13 +534,18 @@ namespace SparkDotNet
             return result;
         }
 
-        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T, U>(string path, U body)
+        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T, U>(string path, U body, bool ignoreNull = false)
         {
             await RefreshTokenIfRequired().ConfigureAwait(false);
 
             var result = new SparkApiConnectorApiOperationResult<T>();
 
-            var jsonBody = JsonConvert.SerializeObject(body);
+            string jsonBody = string.Empty;
+            if (ignoreNull)
+                jsonBody = JsonConvert.SerializeObject(body, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            else
+                jsonBody = JsonConvert.SerializeObject(body);
+
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PutAsync(path, content).ConfigureAwait(false);
             await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);

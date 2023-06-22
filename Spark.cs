@@ -295,6 +295,7 @@ namespace SparkDotNet
                 {
                     result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
                 }
+                result.StatusCode = response.StatusCode;
             }
             catch (HttpRequestException ex)
             {
@@ -331,6 +332,7 @@ namespace SparkDotNet
                 {
                     result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
                 }
+                result.StatusCode = response.StatusCode;
             }
             catch (HttpRequestException ex)
             {
@@ -400,12 +402,12 @@ namespace SparkDotNet
                 {
                     result.Result = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
                     result.ResultCode = MapHttpStatusCode(response.StatusCode);
-                    result.StatusCode = response.StatusCode;
                 }
                 else
                 {
                     result.ResultCode = await ProcessNon200HttpResponse(result, response).ConfigureAwait(false);
                 }
+                result.StatusCode = response.StatusCode;
             }
             catch (HttpRequestException ex)
             {

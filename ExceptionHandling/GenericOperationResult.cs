@@ -71,15 +71,18 @@ namespace SparkDotNet.ExceptionHandling
                 {
                     ti.RequestBody = response.RequestMessage.Content != null ? await response.RequestMessage.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ti.RequestBody = requestPayload;
                 }
             }
-
-            ti.TrackingId = response.Headers.GetValues(nameof(TicketInformation.TrackingId)).FirstOrDefault();
+            try
+            {
+                ti.TrackingId = response.Headers.GetValues(nameof(TicketInformation.TrackingId)).FirstOrDefault();
+                ti.Token = response.RequestMessage.Headers.Authorization?.ToString();
+            }
+            catch (Exception) { }
             ti.ResponseBody = response.Content != null ? await response.Content.ReadAsStringAsync().ConfigureAwait(false) : "Empty";
-            ti.Token = response.RequestMessage.Headers.GetValues("Authorization")?.FirstOrDefault();
             ticketInformations.Enqueue(ti);
         }
 

@@ -17,10 +17,10 @@ namespace SparkDotNet
             return await GetItemAsync<T>(path).ConfigureAwait(false);
         }
 
-        private async Task<SparkApiConnectorApiOperationResult> UpdateSharedLineMembersAsync<T>(string url, string personId, string applicationId, T setting)
+        private async Task<SparkApiConnectorApiOperationResult> UpdateSharedLineMembersAsync<T>(string url, string personId, string applicationId, T setting, bool ignoreNull = false)
         {
             var path = GetURL(string.Format(url, personId, applicationId));
-            return await UpdateItemAsync(path, setting).ConfigureAwait(false);
+            return await UpdateItemAsync(path, setting, ignoreNull).ConfigureAwait(false);
         }
 
         private async Task<SparkApiConnectorApiOperationResult<TRetunType>> UpdateSharedLineMembersAsync<TRetunType, TPayloadType>(string url, string personId, string applicationId, TPayloadType setting)

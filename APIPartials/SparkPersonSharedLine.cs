@@ -41,7 +41,7 @@ public partial class Spark
     public async Task<SparkApiConnectorApiOperationResult> UpdateSharedLineAppearanceMembersAsync(string personId, string applicationId, PutSharedLineMemberItems payload)
     {
         var intPay = payload.Members.Select(o => (AvailableSharedLineMemberItem)o).Select(o=>o.GetPutSharedLineMemberItemInstance());
-        return await UpdateSharedLineMembersAsync(personSharedLineAppearanceMembersGetSetUrl, personId, applicationId, intPay);
+        return await UpdateSharedLineMembersAsync(personSharedLineAppearanceMembersGetSetUrl, personId, applicationId, intPay, true);
     }
 
     /// <summary>

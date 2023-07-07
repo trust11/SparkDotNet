@@ -549,13 +549,18 @@ namespace SparkDotNet
             return result;
         }
 
-        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, T body)
+        private async Task<SparkApiConnectorApiOperationResult<T>> UpdateItemAsync<T>(string path, T body, bool ignoreNull = false)
         {
             await RefreshTokenIfRequired().ConfigureAwait(false);
 
             var result = new SparkApiConnectorApiOperationResult<T>();
 
-            var jsonBody = JsonConvert.SerializeObject(body);
+            string jsonBody = string.Empty;
+            if (ignoreNull)
+                jsonBody = JsonConvert.SerializeObject(body, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            else
+                jsonBody = JsonConvert.SerializeObject(body);
+
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PutAsync(path, content).ConfigureAwait(false);
             await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);

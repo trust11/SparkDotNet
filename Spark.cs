@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -57,7 +58,7 @@ namespace SparkDotNet
                 NullValueHandling = NullValueHandling.Include,
                 DefaultValueHandling = DefaultValueHandling.Populate
             };
-            serializerSettings.Converters.Add(new StringEnumConverter(true));
+            serializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
             serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); // use camel case so we can use proper .net notation
             JsonConvert.DefaultSettings = () => serializerSettings;
             refreshTokenPayload.Initialize(config);
@@ -67,7 +68,7 @@ namespace SparkDotNet
         {
             ClientHandler = new HttpClientHandler
             {
-                //ServerCertificateCustomValidationCallback = valdiateCert
+                ServerCertificateCustomValidationCallback = valdiateCert
             };
             if (config.NoProxy)
             {
@@ -87,11 +88,14 @@ namespace SparkDotNet
             else
                 Log($"Not using a proxy for API requests", 5);
             Client = new HttpClient(ClientHandler);
+            Client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)");
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             if (!string.IsNullOrEmpty(config.AccessToken))
                 SetBearerToken();
         }
+
+        private readonly Func<HttpRequestMessage, X509Certificate2, X509Chain, SslPolicyErrors, bool> valdiateCert = (req, cert, chain, errors) => true;
 
         public async Task<SparkApiConnectorApiOperationResult> RefreshToken(string applicationId = null, string secretKey = null)
         {

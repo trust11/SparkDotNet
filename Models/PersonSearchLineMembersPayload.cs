@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SparkDotNet.Models;
 
+[JsonConverter(typeof(StringEnumConverter))]
 public enum LineType
 {
     ///<summary>
@@ -15,6 +20,7 @@ public enum LineType
     SHARED_CALL_APPEARANCE
 }
 
+[JsonConverter(typeof(StringEnumConverter))]
 public enum UserType
 {
     ///<summary>
@@ -321,8 +327,9 @@ public class PutSharedLineMemberItem : WebexObject
     public LineType LineType { get; set; }
 
     /// <summary>
-    /// Gets or sets the number of lines that have been configured for the person on the device.
+    /// Gets or sets the number of lines, between 1 to 16, that have been configured for the person on the device.
     /// </summary>
+    [Range(1, 16)]
     public int LineWeight { get; set; }
 
     /// <summary>

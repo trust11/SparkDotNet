@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Extensions;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -313,7 +315,7 @@ namespace SparkDotNet
         }
 
         private async Task<SparkApiConnectorApiOperationResult> PostItemAsync<T>(string path, T data,
-            bool skipTokenRefresh = false) where T: class
+            bool skipTokenRefresh = false) where T : class
         {
             if (!skipTokenRefresh)
                 await RefreshTokenIfRequired().ConfigureAwait(false);
@@ -324,7 +326,10 @@ namespace SparkDotNet
             {
                 string jsonBody = string.Empty;
                 if (data != null)
-                    jsonBody = JsonConvert.SerializeObject(data);
+                {
+                    var jx = data.DeepClone();
+                    jsonBody = JsonConvert.SerializeObject(jx);
+                }
                 content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
                 var response = await Client.PostAsync(path, content).ConfigureAwait(false);
                 await TicketInformations.FillRequestParameter(response).ConfigureAwait(false);
@@ -560,10 +565,11 @@ namespace SparkDotNet
             var result = new SparkApiConnectorApiOperationResult<T>();
 
             string jsonBody = string.Empty;
+            var jx = body.DeepClone();
             if (ignoreNull)
-                jsonBody = JsonConvert.SerializeObject(body, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                jsonBody = JsonConvert.SerializeObject(jx, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             else
-                jsonBody = JsonConvert.SerializeObject(body);
+                jsonBody = JsonConvert.SerializeObject(jx);
 
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PutAsync(path, content).ConfigureAwait(false);
@@ -589,10 +595,11 @@ namespace SparkDotNet
             var result = new SparkApiConnectorApiOperationResult<T>();
 
             string jsonBody = string.Empty;
+            var jx = body.DeepClone();
             if (ignoreNull)
-                jsonBody = JsonConvert.SerializeObject(body, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                jsonBody = JsonConvert.SerializeObject(jx, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             else
-                jsonBody = JsonConvert.SerializeObject(body);
+                jsonBody = JsonConvert.SerializeObject(jx);
 
             StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PutAsync(path, content).ConfigureAwait(false);
